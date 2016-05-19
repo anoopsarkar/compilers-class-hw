@@ -16,13 +16,13 @@ To customize the files used by default, run:
 """
 
 import sys, os, optparse, logging, tempfile, subprocess, shutil
-import getfile
+import iocollect
 
 class Check:
 
     def __init__(self, opts):
         self.testcase_dir = opts.testcase_dir # directory where testcases are placed
-        self.zipfile = getfile.extract_zip(opts.zipfile) # contents of output zipfile produced by `python zipout.py` as a dict
+        self.zipfile = iocollect.extract_zip(opts.zipfile) # contents of output zipfile produced by `python zipout.py` as a dict
 
     def check_path(self, path, files):
         for filename in files:
@@ -40,14 +40,14 @@ class Check:
 
     def check_all(self):
         # check if testcases has subdirectories
-        testcase_subdirs = getfile.getdirs(os.path.abspath(self.testcase_dir))
+        testcase_subdirs = iocollect.getdirs(os.path.abspath(self.testcase_dir))
 
         if len(testcase_subdirs) > 0:
             for subdir in testcase_subdirs:
-                files = getfile.getfiles(os.path.abspath(os.path.join(self.testcase_dir, subdir)))
+                files = iocollect.getfiles(os.path.abspath(os.path.join(self.testcase_dir, subdir)))
                 self.check_path(subdir, files)
         else:
-            files = getfile.getfiles(os.path.abspath(self.testcase_dir))
+            files = iocollect.getfiles(os.path.abspath(self.testcase_dir))
             self.check_path(None, files)
 
         return True

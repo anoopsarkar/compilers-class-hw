@@ -13,7 +13,7 @@ To customize the files used by default, run:
 """
 
 import sys, os, optparse, logging, tempfile, subprocess, shutil
-import getfile
+import iocollect
 
 class ZipOutput:
 
@@ -111,14 +111,14 @@ class ZipOutput:
             sys.exit(1)
 
         # check if testcases has subdirectories
-        testcase_subdirs = getfile.getdirs(os.path.abspath(self.testcase_dir))
+        testcase_subdirs = iocollect.getdirs(os.path.abspath(self.testcase_dir))
 
         if len(testcase_subdirs) > 0:
             for subdir in testcase_subdirs:
-                files = getfile.getfiles(os.path.abspath(os.path.join(self.testcase_dir, subdir)))
+                files = iocollect.getfiles(os.path.abspath(os.path.join(self.testcase_dir, subdir)))
                 self.run_path(subdir, files)
         else:
-            files = getfile.getfiles(os.path.abspath(self.testcase_dir))
+            files = iocollect.getfiles(os.path.abspath(self.testcase_dir))
             self.run_path(None, files)
 
         return True
