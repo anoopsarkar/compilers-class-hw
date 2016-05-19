@@ -13,6 +13,7 @@ To customize the files used by default, run:
 """
 
 import sys, os, optparse, logging, tempfile, subprocess, shutil
+import getfile
 
 class ZipOutput:
 
@@ -98,20 +99,6 @@ class ZipOutput:
                     with open(testfile_path) as f:
                         self.run(f, output_path, base)
 
-    def getfiles(self, path):
-        if os.path.isdir(path):
-            return set(f for f in os.listdir(path) if not f[0] == '.')
-        else:
-            logging.error("invalid directory or path: %s" % path)
-            return []
-
-    def getdirs(self, path):
-        if os.path.isdir(path):
-            return set(f for f in os.listdir(path) if (f[0] != '.') and os.path.isdir(os.path.join(path, f)))
-        else:
-            logging.error("invalid directory or path: %s" % path)
-            return []
-
     def run_all(self):
         # check that a compiled binary exists to run on the testcases
         argv = os.path.abspath(os.path.join(self.answer_dir, self.run_program))
@@ -121,14 +108,14 @@ class ZipOutput:
             sys.exit(1)
 
         # check if testcases has subdirectories
-        testcase_subdirs = self.getdirs(os.path.abspath(self.testcase_dir))
+        testcase_subdirs = getfile.getdirs(os.path.abspath(self.testcase_dir))
 
         if len(testcase_subdirs) > 0:
             for subdir in testcase_subdirs:
-                files = self.getfiles(os.path.abspath(os.path.join(self.testcase_dir, subdir)))
+                files = getfile.getfiles(os.path.abspath(os.path.join(self.testcase_dir, subdir)))
                 self.run_path(subdir, files)
         else:
-            files = self.getfiles(os.path.abspath(self.testcase_dir))
+            files = getfile.getfiles(os.path.abspath(self.testcase_dir))
             self.run_path(None, files)
 
         return True
