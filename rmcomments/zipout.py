@@ -86,7 +86,10 @@ class ZipOutput:
 
     def run_path(self, path, files):
         # set up output directory
-        output_path = os.path.abspath(os.path.join(self.output_dir, path))
+        if path is None or path == '':
+            output_path = os.path.abspath(self.output_dir)
+        else:
+            output_path = os.path.abspath(os.path.join(self.output_dir, path))
         self.mkdirp(output_path)
         for filename in files:
             if path is None or path == '':
