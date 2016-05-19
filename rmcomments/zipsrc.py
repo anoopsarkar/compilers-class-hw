@@ -1,3 +1,14 @@
+"""
+Run:
+
+    python zipsrc.py
+
+This will create a file `source.zip` which you can upload to Coursys (courses.cs.sfu.ca) as your submission.
+
+To customize the files used by default, run:
+
+    python zipsrc.py -h
+"""
 import sys, os, optparse, shutil
 
 if __name__ == '__main__':

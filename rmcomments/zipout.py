@@ -1,3 +1,17 @@
+"""
+First build the executable for your answer in ./answer/
+
+Then run:
+
+    python zipout.py
+
+This will create a file `output.zip` which you can upload to the leaderboard on sfu-yacc.appspot.com
+
+To customize the files used by default, run:
+
+    python zipout.py -h
+"""
+
 import sys, os, optparse, logging, tempfile, subprocess, shutil
 
 class ZipOutput:
