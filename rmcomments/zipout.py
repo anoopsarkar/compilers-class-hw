@@ -20,10 +20,8 @@ class ZipOutput:
         self.run_program = opts.run_program # solution to hw that is being tested
         self.answer_dir = opts.answer_dir # name of directory where run_program exists
         self.testcase_dir = opts.testcase_dir # directory where testcases are placed
-        self.dev_dir = opts.dev_dir # name of dev subdirectory which has output files
-        self.test_dir = opts.test_dir # name of test subdirectory without output files
+        self.output_dir = opts.output_dir # directory for output files of your program
         self.file_suffix = opts.file_suffix # file suffix for testcases
-        self.output_dir = opts.output_dir # file suffix for testcases
 
     def mkdirp(self, path):
         try:
@@ -90,15 +88,26 @@ class ZipOutput:
         output_path = os.path.abspath(os.path.join(self.output_dir, path))
         self.mkdirp(output_path)
         for filename in files:
-            testfile_path = os.path.abspath(os.path.join(self.testcase_dir, path, filename))
-            base = filename[:-len(self.file_suffix)]
-            if os.path.exists(testfile_path):
-                with open(testfile_path) as f:
-                    self.run(f, output_path, base)
+            if path is None or path == '':
+                testfile_path = os.path.abspath(os.path.join(self.testcase_dir, filename))
+            else:
+                testfile_path = os.path.abspath(os.path.join(self.testcase_dir, path, filename))
+            if filename[-len(self.file_suffix):] == self.file_suffix:
+                base = filename[:-len(self.file_suffix)]
+                if os.path.exists(testfile_path):
+                    with open(testfile_path) as f:
+                        self.run(f, output_path, base)
 
     def getfiles(self, path):
         if os.path.isdir(path):
             return set(f for f in os.listdir(path) if not f[0] == '.')
+        else:
+            logging.error("invalid directory or path: %s" % path)
+            return []
+
+    def getdirs(self, path):
+        if os.path.isdir(path):
+            return set(f for f in os.listdir(path) if (f[0] != '.') and os.path.isdir(os.path.join(path, f)))
         else:
             logging.error("invalid directory or path: %s" % path)
             return []
@@ -111,26 +120,28 @@ class ZipOutput:
             print >>sys.stderr, "Compile your source file to create an executable %s" % (argv)
             sys.exit(1)
 
-        # produce output on the dev testcases
-        devfiles = self.getfiles(os.path.abspath(os.path.join(self.testcase_dir, self.dev_dir)))
-        self.run_path(self.dev_dir, devfiles)
+        # check if testcases has subdirectories
+        testcase_subdirs = self.getdirs(os.path.abspath(self.testcase_dir))
 
-        # produce output on the test testcases
-        testfiles = self.getfiles(os.path.abspath(os.path.join(self.testcase_dir, self.test_dir)))
-        self.run_path(self.test_dir, testfiles)
+        if len(testcase_subdirs) > 0:
+            for subdir in testcase_subdirs:
+                files = self.getfiles(os.path.abspath(os.path.join(self.testcase_dir, subdir)))
+                self.run_path(subdir, files)
+        else:
+            files = self.getfiles(os.path.abspath(self.testcase_dir))
+            self.run_path(None, files)
+
+        return True
 
 if __name__ == '__main__':
-    #check_dir = os.path.dirname(os.path.abspath(sys.argv[0]))
+    #zipout_dir = os.path.dirname(os.path.abspath(sys.argv[0]))
     optparser = optparse.OptionParser()
     optparser.add_option("-r", "--run", dest="run_program", default='rmcomments', help="run this program against testcases [default: rmcomments]")
     optparser.add_option("-a", "--answerdir", dest="answer_dir", default='answer', help="answer directory [default: answer]")
-    optparser.add_option("-c", "--testcases", dest="testcase_dir", default='testcases', help="testcases directory [default: testcases]")
-    optparser.add_option("-d", "--dev", dest="dev_dir", default='dev', help="dev sub-directory [default: dev]")
-    optparser.add_option("-t", "--test", dest="test_dir", default='test', help="hidden test cases sub-directory [default: test]")
+    optparser.add_option("-t", "--testcases", dest="testcase_dir", default='testcases', help="testcases directory [default: testcases]")
     optparser.add_option("-e", "--ending", dest="file_suffix", default='.in', help="suffix to use for testcases [default: .in]")
     optparser.add_option("-o", "--output", dest="output_dir", default='output', help="Save the output from the testcases to this directory.")
     optparser.add_option("-z", "--zipfile", dest="zipfile", default='output', help="zip file you should upload to the leaderboard submission page on sfu-yacc.appspot.com")
-
     optparser.add_option("-l", "--logfile", dest="logfile", default=None, help="log file for debugging")
     (opts, _) = optparser.parse_args()
 
@@ -138,7 +149,10 @@ if __name__ == '__main__':
         logging.basicConfig(filename=opts.logfile, filemode='w', level=logging.INFO)
 
     zo = ZipOutput(opts)
-    zo.run_all()
-    outputs_zipfile = shutil.make_archive(opts.zipfile, 'zip', opts.output_dir)
-    print >>sys.stderr, "%s created" % (outputs_zipfile)
+    if zo.run_all():
+        outputs_zipfile = shutil.make_archive(opts.zipfile, 'zip', opts.output_dir)
+        print >>sys.stderr, "%s created" % (outputs_zipfile)
+    else:
+        logging.error("problem in creating output zip file")
+        sys.exit(1)
 
