@@ -1,0 +1,8 @@
+// COMMENT 9 
+#include <stdio.h>
+// The comment around this code has been commented out.
+// /*
+int main () {
+  return 1;
+}
+// */

@@ -1,0 +1,9 @@
+// COMMENT 13 
+// This C code generates a warning but should compile
+/* this multiline comment
+    char *s = "has a /* string in it"
+*/
+#include <stdio.h>
+int main () {
+  return 1;
+}

@@ -1,0 +1,22 @@
+// COMMENT 10
+#include <stdio.h>
+
+/* simple comment */
+
+/* a "multiline" /     
+  comment **/
+
+/*/**/  /*******************/
+
+/*/*/
+
+/*/s/t/r/e/s/*s/**t//e/s/t**/
+/*/s/t/r/e/s/*s/
+ **t//e/s/t
+ **/
+
+int main (/* no arguments here */) {
+  /* a single line / comment */
+  printf("hello, /* world */\n");
+  return 1;
+}

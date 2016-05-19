@@ -1,0 +1,5 @@
+// COMMENT 14 
+\/* this comment starts with an escape char which will result in a compile error */
+int main () {
+  return 1;
+}

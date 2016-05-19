@@ -1,0 +1,9 @@
+// COMMENT 12 
+// This is not valid C code and does not compile
+/* this multiline comment
+    char *s = "has a string */ in it"
+*/
+#include <stdio.h>
+int main () {
+  return 1;
+}

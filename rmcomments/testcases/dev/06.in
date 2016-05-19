@@ -1,0 +1,6 @@
+// COMMENT 6 
+#include <stdio.h>
+int main (/* no arguments here */) {
+  /* a single line / comment */
+  return 1;
+}

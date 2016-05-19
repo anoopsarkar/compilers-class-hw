@@ -1,0 +1,9 @@
+// COMMENT 11 
+// Nested comments are not allowed in C or C++
+// This code will sniff out if a compiler allows it or not
+#include <stdio.h>
+int main () {
+  int has_nesting = /*/*/0*/**/1;
+  printf("has nesting: %s\n", has_nesting ? "yes" : "no");
+  return 1;
+}
