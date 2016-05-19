@@ -39,6 +39,8 @@ class Check:
                     output_data = self.zipfile[testfile_key]
                     diff_lines = difflib.unified_diff(ref_data.splitlines(), output_data.splitlines(), "reference", "your-output")
                     if (sum(1 for _ in diff_lines) > 0):
+                        print "Ref:", ref_data
+                        print "Out:", output_data
                         print (os.linesep).join(diff_lines) 
                     else:
                         print >>sys.stderr, "%s correct!" % (testfile_path)
