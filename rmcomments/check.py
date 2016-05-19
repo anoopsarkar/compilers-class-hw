@@ -15,7 +15,7 @@ To customize the files used by default, run:
     python check.py -h
 """
 
-import sys, os, optparse, logging, tempfile, subprocess, shutil
+import sys, os, optparse, logging, tempfile, subprocess, shutil, difflib
 import iocollect
 
 class Check:
@@ -35,8 +35,13 @@ class Check:
 
             if testfile_key in self.zipfile:
                 with open(testfile_path, 'r') as ref:
-                    print ref.read()
-                    print self.zipfile[testfile_key]
+                    ref_data = ref.read()
+                    output_data = self.zipfile[testfile_key]
+                    diff_lines = difflib.unified_diff(ref_data.splitlines(), output_data.splitlines(), "reference", "your-output")
+                    if (sum(1 for _ in diff_lines) > 0):
+                        print (os.linesep).join(diff_lines) 
+                    else:
+                        print >>sys.stderr, "%s correct!" % (testfile_path)
 
     def check_all(self):
         # check if testcases has subdirectories
