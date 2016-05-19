@@ -1,4 +1,4 @@
-import os, logging
+import os, logging, zipfile
 
 def getfiles(path):
     if os.path.isdir(path):
@@ -14,3 +14,6 @@ def getdirs(path):
         logging.error("invalid directory or path: %s" % path)
         return []
 
+def extract_zip(filename):
+    input_zip = zipfile.ZipFile(filename)
+    return { name: input_zip.read(name) for name in input_zip.namelist() }
