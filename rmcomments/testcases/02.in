@@ -1,4 +1,0 @@
-// COMMENT 2
-/* a "multiline" /     
-  comment **/
-int main() { return 1; }

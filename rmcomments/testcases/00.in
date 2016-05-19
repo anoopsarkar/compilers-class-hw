@@ -1,3 +1,0 @@
-// COMMENT 0
-/* simple comment */
-int main() { return 1; }
