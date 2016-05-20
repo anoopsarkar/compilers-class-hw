@@ -2,7 +2,7 @@ import os, logging, zipfile
 
 def getfiles(path):
     if os.path.isdir(path):
-        return set(f for f in os.listdir(path) if not f[0] == '.')
+        return set(f for f in os.listdir(path) if (f[0] != '.') and os.path.isfile(os.path.join(path, f)))
     else:
         logging.error("invalid directory or path: %s" % path)
         return []

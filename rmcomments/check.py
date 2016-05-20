@@ -27,7 +27,8 @@ class Check:
         self.counter = 0                                   # used to keep track of total reward based on testcase type
         self.correct = 0                                   # used to keep track of how many were correctly matched to reference output
         self.total = 0                                     # used to keep track of total number of testcases with references
-        self.path_values = {'': 1, 'dev': 5, 'test': 10}   # set up this dict to reward different testcases differently
+        self.path_values = {'dev': 5, 'test': 10}          # set up this dict to reward different testcases differently
+        self.default_reward = 5                            # default reward if it does not exist in path_values
 
     def check_path(self, path, files):
         for filename in files:
@@ -39,7 +40,7 @@ class Check:
                 testfile_key = os.path.join(path, filename)
 
             # set up reward value for matching output correctly
-            correct_reward = 1
+            correct_reward = self.default_reward
             if path in self.path_values:
                 correct_reward = self.path_values[path]
 
