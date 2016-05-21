@@ -16,6 +16,7 @@ To customize the files used by default, run:
 """
 
 import sys, os, optparse, logging, tempfile, subprocess, shutil, difflib
+from collections import defaultdict
 import iocollect
 
 class Check:
@@ -24,13 +25,19 @@ class Check:
         self.ref_dir = opts.ref_dir                        # directory where references are placed
         self.zipfile = iocollect.extract_zip(opts.zipfile) # contents of output zipfile produced by `python zipout.py` as a dict
         self.linesep = "%c" % (os.linesep)                 # os independent line separator
-        self.counter = 0                                   # used to keep track of total reward based on testcase type
-        self.correct = 0                                   # used to keep track of how many were correctly matched to reference output
-        self.total = 0                                     # used to keep track of total number of testcases with references
-        self.path_values = {'dev': 5, 'test': 10}          # set up this dict to reward different testcases differently
-        self.default_reward = 5                            # default reward if it does not exist in path_values
+        self.path_score = {'dev': 1, 'test': 2}            # set up this dict to score different testcases differently
+        self.default_score = 1                             # default score if it does not exist in path_values
+
+        # perf is a dict used to keep track of total score based on testcase type with three keys:
+        # each element of perf is a dict with three (key, value) pairs
+        # num_correct: used to keep track of how many were correctly matched to reference output
+        # total: used to keep track of total number of testcases with reference outputs
+        # score: total score earned which depends on self.path_score or default_score
+        self.perf = {}
 
     def check_path(self, path, files):
+        logging.info("path=%s" % (path))
+        tally = defaultdict(int)
         for filename in files:
             if path is None or path == '':
                 testfile_path = os.path.abspath(os.path.join(self.ref_dir, filename))
@@ -39,31 +46,30 @@ class Check:
                 testfile_path = os.path.abspath(os.path.join(self.ref_dir, path, filename))
                 testfile_key = os.path.join(path, filename)
 
-            # set up reward value for matching output correctly
-            correct_reward = self.default_reward
-            if path in self.path_values:
-                correct_reward = self.path_values[path]
+            # set up score value for matching output correctly
+            score = self.default_score
+            if path in self.path_score:
+                score = self.path_score[path]
 
-            logging.info("Checking %s" % (testfile_path))
+            logging.info("Checking %s" % (testfile_key))
             if testfile_key in self.zipfile:
                 with open(testfile_path, 'r') as ref:
-                    ref_data = ref.read()
-                    output_data = self.zipfile[testfile_key]
-                    diff_lines = list(difflib.unified_diff(ref_data.splitlines(), output_data.splitlines(), "reference", "your-output", lineterm=''))
+                    ref_data = map(lambda x: x.strip(), ref.read().splitlines())
+                    output_data = map(lambda x: x.strip(), self.zipfile[testfile_key].splitlines())
+                    diff_lines = list(difflib.unified_diff(ref_data, output_data, "reference", "your-output", lineterm=''))
                     if len(diff_lines) > 0:
-                        print 80*'-'
-                        print "Diff for %s" % (testfile_key)
-                        print self.linesep.join(list(diff_lines))
+                        logging.info("Diff between reference and your output for %s" % (testfile_key))
+                        logging.info("%s%s" % (self.linesep, self.linesep.join(list(diff_lines))))
                     else:
-                        self.counter += correct_reward
-                        self.correct += 1
-                        logging.info("Correct! %s" % (testfile_path))
-                    self.total += 1
+                        tally['score'] += score
+                        tally['num_correct'] += 1
+                        logging.info("%s Correct!" % (testfile_key))
+                    tally['total'] += 1
+        self.perf[path] = dict(tally)
 
     def check_all(self):
         # check if references has subdirectories
         ref_subdirs = iocollect.getdirs(os.path.abspath(self.ref_dir))
-
         if len(ref_subdirs) > 0:
             for subdir in ref_subdirs:
                 files = iocollect.getfiles(os.path.abspath(os.path.join(self.ref_dir, subdir)))
@@ -71,11 +77,7 @@ class Check:
         else:
             files = iocollect.getfiles(os.path.abspath(self.ref_dir))
             self.check_path(None, files)
-
-        print 80*'-'
-        print "Correct: %d / %d" % (self.correct, self.total)
-        print "Score: %.02f" % (self.counter)
-        return True
+        return self.perf
 
 if __name__ == '__main__':
     #check_dir = os.path.dirname(os.path.abspath(sys.argv[0]))
@@ -89,5 +91,14 @@ if __name__ == '__main__':
         logging.basicConfig(filename=opts.logfile, filemode='w', level=logging.INFO)
 
     check = Check(opts)
-    check.check_all()
+    perf = check.check_all()
+    if perf is not None:
+        total = 0
+        for (d, tally) in perf.iteritems():
+            print "Correct(%s): %d / %d" % (d, tally['num_correct'], tally['total'])
+            print "Score(%s): %.02f" % (d, tally['score'])
+            total += tally['score']
+        print "Total Score: %.02f" % (total)
+    else:
+        print "Nothing to report!"
 
