@@ -15,7 +15,7 @@ To customize the files used by default, run:
     python check.py -h
 """
 
-import sys, os, optparse, logging, tempfile, subprocess, shutil, difflib
+import sys, os, optparse, logging, tempfile, subprocess, shutil, difflib, io
 from collections import defaultdict
 import iocollect
 
@@ -23,8 +23,7 @@ class Check:
 
     def __init__(self, opts):
         self.ref_dir = opts.ref_dir                        # directory where references are placed
-        self.zipfile = iocollect.extract_zip(opts.zipfile) # contents of output zipfile produced by `python zipout.py` as a dict
-        self.linesep = "%c" % (os.linesep)                 # os independent line separator
+        self.linesep = "{0}".format(os.linesep)            # os independent line separator
         self.path_score = {'dev': 1, 'test': 2}            # set up this dict to score different testcases differently
         self.default_score = 1                             # default score if it does not exist in path_values
 
@@ -35,8 +34,8 @@ class Check:
         # score: total score earned which depends on self.path_score or default_score
         self.perf = {}
 
-    def check_path(self, path, files):
-        logging.info("path=%s" % (path))
+    def check_path(self, path, files, zip_data):
+        logging.info("path={0}".format(path))
         tally = defaultdict(int)
         for filename in files:
             if path is None or path == '':
@@ -51,32 +50,35 @@ class Check:
             if path in self.path_score:
                 score = self.path_score[path]
 
-            logging.info("Checking %s" % (testfile_key))
-            if testfile_key in self.zipfile:
+            logging.info("Checking {0}".format(testfile_key))
+            if testfile_key in zip_data:
                 with open(testfile_path, 'r') as ref:
                     ref_data = map(lambda x: x.strip(), ref.read().splitlines())
-                    output_data = map(lambda x: x.strip(), self.zipfile[testfile_key].splitlines())
+                    output_data = map(lambda x: x.strip(), zip_data[testfile_key].splitlines())
                     diff_lines = list(difflib.unified_diff(ref_data, output_data, "reference", "your-output", lineterm=''))
                     if len(diff_lines) > 0:
-                        logging.info("Diff between reference and your output for %s" % (testfile_key))
-                        logging.info("%s%s" % (self.linesep, self.linesep.join(list(diff_lines))))
+                        logging.info("Diff between reference and your output for {0}".format(testfile_key))
+                        logging.info("{0}{1}".format(self.linesep, self.linesep.join(list(diff_lines))))
                     else:
                         tally['score'] += score
                         tally['num_correct'] += 1
-                        logging.info("%s Correct!" % (testfile_key))
+                        logging.info("{0} Correct!".format(testfile_key))
                     tally['total'] += 1
         self.perf[path] = dict(tally)
 
-    def check_all(self):
+    def check_all(self, zipcontents):
+        zipfile = io.BytesIO(zipcontents)
+        zip_data = iocollect.extract_zip(zipfile) # contents of output zipfile produced by `python zipout.py` as a dict
+
         # check if references has subdirectories
         ref_subdirs = iocollect.getdirs(os.path.abspath(self.ref_dir))
         if len(ref_subdirs) > 0:
             for subdir in ref_subdirs:
                 files = iocollect.getfiles(os.path.abspath(os.path.join(self.ref_dir, subdir)))
-                self.check_path(subdir, files)
+                self.check_path(subdir, files, zip_data)
         else:
             files = iocollect.getfiles(os.path.abspath(self.ref_dir))
-            self.check_path(None, files)
+            self.check_path(None, files, zip_data)
         return self.perf
 
 if __name__ == '__main__':
@@ -91,14 +93,18 @@ if __name__ == '__main__':
         logging.basicConfig(filename=opts.logfile, filemode='w', level=logging.INFO)
 
     check = Check(opts)
-    perf = check.check_all()
-    if perf is not None:
-        total = 0
-        for (d, tally) in perf.iteritems():
-            print "Correct(%s): %d / %d" % (d, tally['num_correct'], tally['total'])
-            print "Score(%s): %.02f" % (d, tally['score'])
-            total += tally['score']
-        print "Total Score: %.02f" % (total)
-    else:
-        print "Nothing to report!"
+    try:
+        with open(opts.zipfile, 'rb') as f:
+            perf = check.check_all(f.read())
+            if perf is not None:
+                total = 0
+                for (d, tally) in perf.iteritems():
+                    print "Correct({0}): {1} / {2}".format(d, tally['num_correct'], tally['total'])
+                    print "Score({0}): {1:.2f}".format(d, tally['score'])
+                    total += tally['score']
+                print "Total Score: {0:.2f}".format(total)
+            else:
+                print "Nothing to report!"
+    except:
+        print >>sys.stderr, "Could not process zipfile: {0}".format(opts.zipfile)
 
