@@ -28,7 +28,7 @@ class ZipOutput:
         try:
             os.makedirs(path)
         except os.error:
-            print >>sys.stderr, "Warning: %s already exists. Existing files will be over-written." % os.path.join(self.output_dir, (os.path.basename(path)))
+            print >>sys.stderr, "Warning: {0} already exists. Existing files will be over-written.".format(os.path.join(self.output_dir, (os.path.basename(path))))
             pass
 
     def run(self, stdin_file, output_path, base):
@@ -39,12 +39,14 @@ class ZipOutput:
 
         # create the output files 
         if output_path is not None:
-            stdout_path = os.path.join(output_path, "%s.out" % (base))
-            stderr_path = os.path.join(output_path, "%s.err" % (base))
+            stdout_path = os.path.join(output_path, "{0}.out".format(base))
+            stderr_path = os.path.join(output_path, "{0}.err".format(base))
+
+
             # existing files are erased!
             stdout_file = open(stdout_path, 'w')
             stderr_file = open(stderr_path, 'w')
-            status_path = os.path.join(output_path, "%s.ret" % (base))
+            status_path = os.path.join(output_path, "{0}.ret".format(base))
         else:
             stdout_file, stdout_path = tempfile.mkstemp("stdout")
             stderr_file, stderr_path = tempfile.mkstemp("stderr")
@@ -106,8 +108,8 @@ class ZipOutput:
         # check that a compiled binary exists to run on the testcases
         argv = os.path.abspath(os.path.join(self.answer_dir, self.run_program))
         if not (os.path.isfile(argv) and os.access(argv, os.X_OK)):
-            logging.error("executable missing: %s" % argv)
-            print >>sys.stderr, "Compile your source file to create an executable %s" % (argv)
+            logging.error("executable missing: {0}".format(argv))
+            print >>sys.stderr, "Compile your source file to create an executable {0}".format(argv)
             sys.exit(1)
 
         # check if testcases has subdirectories
@@ -141,7 +143,7 @@ if __name__ == '__main__':
     zo = ZipOutput(opts)
     if zo.run_all():
         outputs_zipfile = shutil.make_archive(opts.zipfile, 'zip', opts.output_dir)
-        print >>sys.stderr, "%s created" % (outputs_zipfile)
+        print >>sys.stderr, "{0} created".format(outputs_zipfile)
     else:
         logging.error("problem in creating output zip file")
         sys.exit(1)

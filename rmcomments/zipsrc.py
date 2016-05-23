@@ -18,5 +18,5 @@ if __name__ == '__main__':
     (opts, _) = optparser.parse_args()
 
     outputs_zipfile = shutil.make_archive(opts.zipfile, 'zip', opts.answer_dir)
-    print >>sys.stderr, "%s created" % (outputs_zipfile)
+    print >>sys.stderr, "{0} created".format(outputs_zipfile)
 
