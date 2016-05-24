@@ -1,5 +1,6 @@
 
-# Your documentation
+Your documentation
+------------------
 
 Make it so.
 
