@@ -21,11 +21,11 @@ import iocollect
 
 class Check:
 
-    def __init__(self, opts):
-        self.ref_dir = opts.ref_dir                        # directory where references are placed
-        self.linesep = "{0}".format(os.linesep)            # os independent line separator
-        self.path_score = {'dev': 1, 'test': 2}            # set up this dict to score different testcases differently
-        self.default_score = 1                             # default score if it does not exist in path_values
+    def __init__(self, ref_dir):
+        self.ref_dir = ref_dir                  # directory where references are placed
+        self.linesep = "{0}".format(os.linesep) # os independent line separator
+        self.path_score = {'dev': 1, 'test': 2} # set up this dict to score different testcases differently
+        self.default_score = 1                  # default score if it does not exist in path_values
 
         # perf is a dict used to keep track of total score based on testcase type with three keys:
         # each element of perf is a dict with three (key, value) pairs
@@ -92,7 +92,7 @@ if __name__ == '__main__':
     if opts.logfile is not None:
         logging.basicConfig(filename=opts.logfile, filemode='w', level=logging.INFO)
 
-    check = Check(opts)
+    check = Check(ref_dir=opts.ref_dir)
     try:
         with open(opts.zipfile, 'rb') as f:
             perf = check.check_all(f.read())
