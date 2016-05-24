@@ -1,0 +1,9 @@
+extern func print_int(int) void;
+package Test {
+	func main() int
+	{
+		var x int;
+		x = 'f' - 'a';
+		print_int(x);
+	}
+}

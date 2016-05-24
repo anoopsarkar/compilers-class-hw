@@ -1,0 +1,15 @@
+package Test {
+	func main() int
+	{
+		var c int;
+		c = '\t';
+		c = '\v';
+		c = '\r';
+		c = '\n';
+		c = '\a';
+		c = '\f';
+		c = '\b';
+		c = '\\';
+		c = '\'';
+	}
+}

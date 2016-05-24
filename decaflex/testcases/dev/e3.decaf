@@ -1,0 +1,14 @@
+
+extern func print_string(string) void;
+
+package Error3 {
+
+    func main() void {
+       var z int;
+       z = 10;
+
+       // print_string is part of the standard input-output library
+       print_string("\"); 
+    }
+
+}

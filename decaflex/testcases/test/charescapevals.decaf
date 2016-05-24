@@ -1,0 +1,15 @@
+extern func print_int(int) void;
+package Test {
+	func main() int
+	{
+		print_int('\t');
+		print_int('\v');
+		print_int('\r');
+		print_int('\n');
+		print_int('\a');
+		print_int('\f');
+		print_int('\b');
+		print_int('\\');
+		print_int('\'');
+	}
+}

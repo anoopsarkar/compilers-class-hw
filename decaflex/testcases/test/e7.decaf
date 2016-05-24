@@ -1,0 +1,14 @@
+
+extern func print_int(int) void;
+
+package Error7 {
+
+    func main() void {
+       var z int;
+       z = '';
+
+       // print_int is part of the standard input-output library
+       print_int(z); 
+    }
+
+}

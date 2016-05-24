@@ -1,0 +1,8 @@
+extern func print_string(string) void;
+
+package Test {
+	func main() int {
+		print_string("hello,");
+		print_string(" world\n");
+	}
+}
