@@ -15,5 +15,4 @@ $(targets): %: %.lex
 
 clean:
 	$(rm) $(targets)
-	$(rm) *.pyc
 
