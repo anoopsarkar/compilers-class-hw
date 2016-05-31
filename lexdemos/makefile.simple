@@ -1,0 +1,8 @@
+demo1: demo1.lex
+	flex -o demo1.c demo1.lex # flex takes your lex file and creates a C file that implements the regular expression matching code for your patterns
+	gcc -o demo1 demo1.c -ll # create the binary demo1 using demo1.c, you must link with the lex library using -ll
+	rm demo1.c # clean up the C file
+
+clean:
+	rm demo1
+

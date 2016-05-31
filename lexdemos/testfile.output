@@ -1,0 +1,191 @@
+T_A:a
+
+T_A:a
+T_A:a
+
+T_A:a
+Error: unknown token b
+
+T_A:a
+T_B:b
+
+T_A:a
+T_B:b
+T_A:a
+T_B:b
+
+T_ASTERISK:*
+
+T_ASTERISK:*
+T_ASTERISK:*
+
+T_ASTERISKS:**
+
+T_ASTERISKS:**
+Error: unknown token *
+
+T_ASTERISKS:**
+T_ASTERISKS:**
+
+T_B-FOLLOW-A:ab
+
+T_B-FOLLOW-A:aaabb
+
+T_B-FOLLOW-A:abcdefgb
+
+T_B-FOLLOW-A:ab
+Error: unknown token c
+
+Error: unknown token a
+Error: unknown token c
+
+T_STARTWITH-ABC:abc
+
+T_STARTWITH-ABC:abc
+Error: unknown token d
+
+T_STARTWITH-ABC:abc
+Error: unknown token a
+Error: unknown token b
+Error: unknown token c
+
+T_ENDWITH-ABC:abc
+
+Error: unknown token a
+Error: unknown token b
+
+Error: unknown token d
+T_ENDWITH-ABC:abc
+
+Error: unknown token a
+Error: unknown token b
+Error: unknown token c
+T_ENDWITH-ABC:abc
+
+T_A-TO-Z:a
+
+T_A-TO-Z:b
+
+T_A-TO-Z:p
+T_A-TO-Z:q
+T_A-TO-Z:r
+
+Error: unknown token 1
+
+T_A-TO-Z:p
+T_A-TO-Z:q
+T_A-TO-Z:r
+Error: unknown token 1
+
+T_NOT-A-TO-Z:1
+T_NOT-A-TO-Z:
+
+T_NOT-A-TO-Z:1
+T_NOT-A-TO-Z:2
+T_NOT-A-TO-Z:3
+T_NOT-A-TO-Z:
+
+Error: unknown token a
+T_NOT-A-TO-Z:
+
+T_NOT-A-TO-Z:1
+T_NOT-A-TO-Z:2
+Error: unknown token a
+
+T_A-STAR:a
+
+T_A-STAR:aa
+
+T_A-STAR:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+
+
+T_A-PLUS:a
+
+T_A-PLUS:aa
+
+T_A-PLUS:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+
+
+T_A-OPTIONAL:a
+
+T_A-OPTIONAL:a
+T_A-OPTIONAL:a
+
+
+Error: unknown token a
+
+T_A-TWO-OR-THREE:aa
+
+T_A-TWO-OR-THREE:aaa
+
+T_A-TWO-OR-THREE:aaa
+Error: unknown token a
+
+Error: unknown token a
+
+T_A-THEN-B:ab
+
+T_A-THEN-B:ab
+Error: unknown token a
+
+T_A-THEN-B:ab
+T_A-THEN-B:ab
+
+T_A-OR-B:a
+
+T_A-OR-B:b
+
+T_A-OR-B:a
+T_A-OR-B:b
+
+T_A-OR-B:a
+T_A-OR-B:b
+T_A-OR-B:a
+T_A-OR-B:b
+
+
+T_A-OR-B-STAR:a
+
+T_A-OR-B-STAR:b
+
+T_A-OR-B-STAR:a
+T_A-OR-B-STAR:bbbb
+
+T_A-OR-B-STAR:a
+T_A-OR-B-STAR:a
+T_A-OR-B-STAR:a
+T_A-OR-B-STAR:a
+T_A-OR-B-STAR:bbbbbbbb
+
+
+T_A-OR-B-STAR:a
+
+T_A-OR-B-STAR:b
+
+T_A-OR-B-STAR:ab
+
+T_A-OR-B-STAR:abab
+
+T_A-OR-B-STAR:abba
+
+T_A-OR-B-STAR:abbaabba
+
+T_A-OR-B-STAR:aaaaa
+
+T_A-OR-B-STAR:bbbbb
+
+T_A-STAR-B-STAR-THEN-C:aaabbbc
+
+Error: unknown token a
+Error: unknown token a
+Error: unknown token a
+Error: unknown token b
+Error: unknown token b
+Error: unknown token b
+
+T_A-STAR-B-STAR-THEN-C:bbbc
+
+T_A-STAR-B-STAR-THEN-C:aaac
+
+T_A-STAR-B-STAR-THEN-C:c
+
