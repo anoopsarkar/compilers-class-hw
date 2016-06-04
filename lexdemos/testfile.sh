@@ -107,3 +107,26 @@ echo "aaabbb" | ./demo18
 echo "bbbc" | ./demo18
 echo "aaac" | ./demo18
 echo "c" | ./demo18
+
+# rightcontext1
+echo "ab" | ./rightcontext1
+echo "ac" | ./rightcontext1
+echo "abc" | ./rightcontext1
+
+# rightcontext2
+echo "abcca" | ./rightcontext2
+
+# leftcontext-inp
+echo "inputfile \"filename\"" | ./leftcontext-inp
+
+# leftcontext
+echo "outputfile \"filename\"" | ./leftcontext
+echo "inputfile \"filename\"" | ./leftcontext
+
+# simplebigram
+echo "the cat on the mat saw the cat on the cat box on the mat spit" | ./simplebigram
+
+# bigram
+echo "the cat on the mat saw the cat on the cat box on the mat spit" | ./bigram
+
+
