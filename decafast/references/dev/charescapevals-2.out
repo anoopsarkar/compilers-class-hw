@@ -1,0 +1,1 @@
+Program(ExternFunction(print_int,VoidType,VarDef(IntType)),Package(Test,None,Method(main,IntType,None,MethodBlock(None,MethodCall(print_int,NumberExpr(11))))))

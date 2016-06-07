@@ -1,0 +1,1 @@
+Program(None,Package(C,None,Method(f,VoidType,None,MethodBlock(None,ForStmt(AssignVar(i,NumberExpr(0)),BinaryExpr(Lt,VariableExpr(i),VariableExpr(size)),AssignVar(i,BinaryExpr(Plus,VariableExpr(i),NumberExpr(1))),Block(None,AssignVar(x,NumberExpr(1))))))))

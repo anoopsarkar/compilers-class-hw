@@ -1,0 +1,1 @@
+Program(None,Package(C,None,Method(f,BoolType,None,MethodBlock(None,ReturnStmt(VariableExpr(True)))),Method(main,VoidType,None,MethodBlock(None,IfStmt(MethodCall(f,None),Block(None,AssignVar(x,NumberExpr(1))),None)))))

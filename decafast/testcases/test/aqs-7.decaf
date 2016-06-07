@@ -1,0 +1,14 @@
+package QuickSort {
+	func quickSort(left int, right int) void {
+	
+		if (right - left <= 0) {
+			return;
+		} else {
+			var pivot, part int;
+			pivot = list[right];
+			part = partition(left, right, pivot);
+			quickSort(left, part - 1);
+			quickSort(part+1, right);
+		}	
+	}
+}

@@ -1,0 +1,3 @@
+package QuickSort {
+	var x int;
+}

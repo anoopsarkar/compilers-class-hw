@@ -1,0 +1,7 @@
+extern func print_int(int) void;
+package Test {
+	func main() int
+	{
+		print_int('-');
+	}
+}

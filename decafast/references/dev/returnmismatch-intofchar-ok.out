@@ -1,0 +1,1 @@
+Program(None,Package(Test,None,Method(test,IntType,None,MethodBlock(None,ReturnStmt(NumberExpr(120)))),Method(main,IntType,None,MethodBlock(None,None))))

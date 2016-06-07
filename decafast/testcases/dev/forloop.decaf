@@ -1,0 +1,7 @@
+package C {
+	func f() void {
+		for (i = 0; i < size; i = i + 1) {
+			x = 1;
+		}
+	}
+}
