@@ -12,8 +12,8 @@
 -- needed; '?' means it is optional, '*' means 0 or more, no modifier
 -- means only one value for the argument and it is required.
 
--- For * it is print a singleton for one element, or multiple
--- elements seperated by commas, or None for zero element
+-- For * print a singleton for one element, or multiple
+-- elements seperated by commas, or None for the zero element.
 
 -- ASDL's four builtin types are identifier, int, string, object
 
