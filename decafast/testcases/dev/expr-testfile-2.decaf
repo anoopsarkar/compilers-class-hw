@@ -1,0 +1,13 @@
+extern func print_int(int) void;
+package Test {
+	func main() int
+	{ var x int;
+	  var y, z bool;
+	x = 2+2*3+5+(43*23-44);
+	x = -x;
+	y = true;
+	z = false;
+	y = true && y || z;
+	print_int(-x);
+	}
+}
