@@ -70,7 +70,7 @@ module Decaf
         | UnaryExpr(unary_operator op, expr value)
 
     rvalue = VariableExpr(identifier name)
-        | ArrayLocExpr(identifier name, expr index, expr value)
+        | ArrayLocExpr(identifier name, expr index)
 
     bool = True | False
 
