@@ -77,7 +77,6 @@ module Decaf
     binary_operator = Plus | Minus | Mult | Div | Leftshift | Rightshift | Mod | Lt | Gt | Leq | Geq | Eq | Neq | And | Or
 
     unary_operator = UnaryMinus | Not
-
 }
 
 -- References
