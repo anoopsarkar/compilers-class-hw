@@ -1,1 +1,1 @@
-Program(None,Package(C,FieldDecl(size,IntType,Scalar),FieldDecl(x,IntType,Scalar),Method(f,VoidType,None,MethodBlock(VarDef(x,IntType),VarDef(i,IntType),AssignVar(size,NumberExpr(100))))))
+Program(None,Package(C,FieldDecl(x,IntType,Scalar),FieldDecl(size,IntType,Scalar),Method(f,VoidType,None,MethodBlock(VarDef(x,IntType),VarDef(i,IntType),AssignVar(size,NumberExpr(100))))))
