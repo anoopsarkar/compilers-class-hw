@@ -65,8 +65,15 @@ To get the updated files for hw2 go to your cloned repo for `compilers-class-hw`
 
 ## Testcases changed
 
-The testcases were updated. Some files were removed and some were
-added to make a nice round score of 200 possible.
+The testcases were updated. 
+
+* Some files were removed and some were added to make a nice round
+score of 200 possible.
+* The main change was made to the output of StringConstant which
+retains the escape characters and does not interpret them (we will
+have to do this for hw3 and hw4, but for hw2 keeping the string
+output identical to hw1 enables us to have a single line output for
+each input Decaf file).
 
 ## Decaf spec changes
 

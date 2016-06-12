@@ -1,0 +1,1 @@
+Program(ExternFunction(print_int,VoidType,VarDef(IntType)),Package(Test,None,Method(main,IntType,None,MethodBlock(None,MethodCall(print_int,BinaryExpr(Plus,BinaryExpr(Plus,NumberExpr(2),BinaryExpr(Mult,NumberExpr(2),NumberExpr(3))),NumberExpr(5)))))))
