@@ -1,26 +1,26 @@
 
-extern void print_int(int);
-extern int read_int();
+extern func print_int(int) void;
+extern func read_int(void) int;
 
-class Catalan {
+package Catalan {
 
-    void main() {
+    func main() void {
        print_int( cat( read_int() ) );
     }
 
     // factorial of n
-    int fact(int n) {
+    func fact(n int) int {
        if (n == 1) { return(1); }
        else { return(n*fact(n-1)); }
     }
 
     // a choose b
-    int choose(int a, int b) { 
+    func choose(a int, b int) int { 
        return( fact(a) / (fact(b)*fact(a-b)) ); 
     }
 
     // catalan number of n
-    int cat(int n) { 
+    func cat(n int) int { 
        return( choose(2*n,n)/(n+1) ); 
     }
     

@@ -52,4 +52,45 @@ the following that is included in both your Lex and Yacc program.
 
     #endif
 
+Changes to hw2 files Decaf spec and Decaf.asdl 
+------------------------------------
+
+The following changes were made on Jun 11, 2016 to the testcases,
+the Decaf spec and the Decaf AST definition in Decaf.asdl.
+
+## Testcases changed
+
+The testcases were updated. Some files were removed and some were
+added to make a nice round score of 200 possible.
+
+## Decaf spec changes
+
+Before:
+
+    ExternType = ( string | MethodType ) .
+
+After:
+
+    ExternType = ( string | Type ) .
+
+A void type implies no arguments, e.g. for `read_int(void)` but if
+we use MethodType then `read_int(void, void, void)` would be valid
+but it should not be.
+
+## Decaf.asdl changes
+
+Added new line to reflect that a Statement can be a Block:
+
+    statement = assign
+        ... all the other definitions for statement ...
+        | block
+
+The definition of `extern_type` was fixed:
+
+    extern_type  = VarDef(StringType) | VarDef(decaf_type)
+
+Fixed the definition of `ArrayLocExpr` which previously had a third
+argument (copy/pasted from `AssignArrayLoc` by mistake).
+
+    ArrayLocExpr(identifier name, expr index)
 
