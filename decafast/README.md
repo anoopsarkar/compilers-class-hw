@@ -58,6 +58,11 @@ Changes to hw2 files Decaf spec and Decaf.asdl
 The following changes were made on Jun 11, 2016 to the testcases,
 the Decaf spec and the Decaf AST definition in Decaf.asdl.
 
+To get the updated files for hw2 go to your cloned repo for `compilers-class-hw`
+
+    cd your-path-to/compilers-class-hw
+    git pull origin master
+
 ## Testcases changed
 
 The testcases were updated. Some files were removed and some were
