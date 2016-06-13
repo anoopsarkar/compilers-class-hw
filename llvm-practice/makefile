@@ -8,7 +8,7 @@ bindir=.
 rm=/bin/rm -f
 mv=/bin/mv -f
 llvmcpp=kscope
-llvmfiles=add helloworld
+llvmfiles=add helloworld factorial
 llvmtargets=sexpr-codegen sexpr2-codegen
 
 all: $(targets) $(cpptargets) $(llvmfiles) $(llvmtargets) $(llvmcpp)
