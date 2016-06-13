@@ -7,8 +7,8 @@ mylibs=-l$(yacclib) -l$(lexlib) $(llvmlibs)
 bindir=.
 rm=/bin/rm -f
 mv=/bin/mv -f
-llvmcpp=kscope
-llvmfiles=add helloworld factorial
+llvmcpp=kscope globalscalar globalarray
+llvmfiles=add helloworld factorial rec_add
 llvmtargets=sexpr-codegen sexpr2-codegen
 
 all: $(targets) $(cpptargets) $(llvmfiles) $(llvmtargets) $(llvmcpp)

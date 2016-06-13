@@ -30,7 +30,7 @@ define i32 @main() {
 entry:
   %tmp5 = call i32 @add2(i32 3, i32 4)
   call void @print_int(i32 %tmp5)
-  %cast.nl = getelementptr [2 x i8]* @.nl, i64 0, i64 0
+  %cast.nl = getelementptr [2 x i8], [2 x i8]* @.nl, i64 0, i64 0
   call void @print_string(i8* %cast.nl)
   ret i32 0
 }

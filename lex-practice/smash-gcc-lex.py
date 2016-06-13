@@ -20,7 +20,7 @@
 import sys
 if __name__ == "__main__":
   #n = sys.maxint / 100000000
-  n = 1000000
+  n = 10000000000
   if len(sys.argv) > 1:
     n = int(sys.argv[1])
   print >>sys.stderr, "using n =", n
