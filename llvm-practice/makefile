@@ -9,7 +9,7 @@ rm=/bin/rm -f
 mv=/bin/mv -f
 llvmcpp=kscope
 llvmfiles=add helloworld
-llvmtargets=sexpr-codegen
+llvmtargets=sexpr-codegen sexpr2-codegen
 
 all: $(targets) $(cpptargets) $(llvmfiles) $(llvmtargets) $(llvmcpp)
 

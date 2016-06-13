@@ -3,8 +3,8 @@ yacclib=y
 bindir=.
 rm=/bin/rm -f
 mv=/bin/mv -f
-targets=simple-expr multexpr simple-varexpr varexpr expr-inherit
-cpptargets=usingcpp expr-interpreter
+targets=simple-expr multexpr simple-varexpr varexpr expr-inherit marker-nojoy
+cpptargets=usingcpp expr-interpreter type-inherit
 
 all: $(targets) $(cpptargets)
 
