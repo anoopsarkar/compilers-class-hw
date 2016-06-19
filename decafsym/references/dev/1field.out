@@ -1,0 +1,8 @@
+extern func print_int(int) void;
+package C {
+    var x int = 1;
+    func main() int {
+        x = 1; // using decl on line: 3
+        print_int(x) // using decl on line: 3;
+    }
+}

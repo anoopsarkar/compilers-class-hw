@@ -1,0 +1,14 @@
+extern func print_int(int) void;
+package C {
+    func foo(x int, y int, z bool) int {
+        x = 1; // using decl on line: 3
+        y = 1; // using decl on line: 3
+        z = false; // using decl on line: 3
+        print_int(x) // using decl on line: 3;
+        print_int(y) // using decl on line: 3;
+        print_int(z) // using decl on line: 3;
+    }
+    func main() int {
+        foo(1,2,true);
+    }
+}
