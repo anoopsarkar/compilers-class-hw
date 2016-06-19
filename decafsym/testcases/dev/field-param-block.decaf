@@ -1,8 +1,8 @@
 extern func print_int(int) void;
 package C {
-    int x = 1;
-    int y = 1;
-    bool z = true;
+    var x int = 1;
+    var y int = 1;
+    var z bool = true;
     func foo(x int, y int, z bool) int {
         x = 2;
         y = 2;
