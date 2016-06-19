@@ -1,0 +1,11 @@
+extern func print_int(int) void;
+package C {
+    func foo(x int) int {
+        x = 1;
+        print_int(x)
+    }
+    func main() int {
+        foo(1);
+        print_int(1)
+    }
+}
