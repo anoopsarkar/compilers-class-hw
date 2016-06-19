@@ -1,0 +1,11 @@
+extern func print_int(int) void;
+package Test {
+	func main() int
+	{
+		var x int;
+		print_int(10 % 2);
+		print_int(10 % 5);
+		print_int(10 % 3);
+		print_int(13 % 3);
+	}
+}

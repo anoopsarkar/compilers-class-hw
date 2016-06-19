@@ -1,0 +1,8 @@
+extern func read_int() int;
+
+package Test {
+	func main() int {
+		var x int;
+		x = 1;
+	}
+}

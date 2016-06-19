@@ -1,0 +1,10 @@
+extern func read_int() int;
+extern func print_int(int) void;
+
+package Test {
+	func main() int {
+		var x int;
+		x = read_int() * 100;
+		print_int(x);
+	}
+}

@@ -1,0 +1,12 @@
+extern func print_int(int) void;
+package C {
+    func foo(x int, y int) int {
+        x = 1;
+        y = 1;
+        print_int(x);
+        print_int(y);
+    }
+    func main() int {
+        foo(1,2);
+    }
+}

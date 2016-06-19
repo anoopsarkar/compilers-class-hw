@@ -1,0 +1,10 @@
+package Test {
+	func main() int
+	{
+		var b bool;
+		b = true == true;
+		b = true == false;
+		b = false == true;
+		b = false == false;
+	}
+}

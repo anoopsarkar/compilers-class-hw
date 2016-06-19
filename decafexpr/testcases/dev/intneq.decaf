@@ -1,0 +1,10 @@
+extern func print_int(int) void;
+package Test {
+	func main() int
+	{
+		var x int;
+		print_int(13 != 15);
+		print_int(13 != 13);
+		print_int(15 != 13);
+	}
+}

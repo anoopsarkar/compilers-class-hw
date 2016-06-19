@@ -1,0 +1,19 @@
+extern func print_int(int) void;
+package C {
+	func main() int {
+        var x bool;
+        var y int; 
+        { 
+            var p, q int; 
+            { 
+                var y bool; 
+                x = true; 
+                y = false;
+                p = 1;
+                q = 1;
+                print_int(p);
+                print_int(q);
+            } 
+        }
+    }
+}

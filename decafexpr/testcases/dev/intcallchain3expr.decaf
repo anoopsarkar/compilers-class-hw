@@ -1,0 +1,18 @@
+extern func print_int(int) void;
+
+package Test {
+	func test3(a int) void {
+		print_int(a);
+	}
+	func test2(a int) void {
+		print_int(a);
+		test3(a + 1);
+	}
+	func test1(a int) void {
+		print_int(a);
+		test2(a + 1);
+	}
+	func main() int {
+		test1(1);
+	}
+}

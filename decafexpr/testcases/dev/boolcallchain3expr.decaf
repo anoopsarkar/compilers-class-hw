@@ -1,0 +1,18 @@
+extern func print_int(int) void;
+
+package Test {
+	func test3(a bool) void {
+		print_int(a);
+	}
+	func test2(a bool) void {
+		print_int(a);
+		test3(!a);
+	}
+	func test1(a bool) void {
+		print_int(a);
+		test2(!a);
+	}
+	func main() int {
+		test1(true);
+	}
+}

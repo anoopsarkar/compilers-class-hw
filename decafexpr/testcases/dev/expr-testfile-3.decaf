@@ -1,0 +1,5 @@
+extern func print_int(int) void;
+package Test {
+	func main() int
+	{ var y bool; y = true; print_int(y); }
+}
