@@ -1,0 +1,15 @@
+extern func print_int(int) void;
+
+package prec {
+	func main() void {
+        var a, b, d int;
+        var c bool;
+		a = 1 >> 2 + 3;
+		b = 1 + 2 * 3;
+		c = !false || true;
+		d = 1 / 2 + -3;
+        print_int(a);
+        print_int(b);
+        print_int(d);
+	}
+}
