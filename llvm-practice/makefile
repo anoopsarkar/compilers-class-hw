@@ -9,7 +9,7 @@ rm=/bin/rm -f
 mv=/bin/mv -f
 llvmcpp=kscope globalscalar globalarray
 llvmfiles=add helloworld factorial rec_add
-llvmtargets=sexpr-codegen sexpr2-codegen
+llvmtargets=sexpr-codegen
 
 all: $(targets) $(cpptargets) $(llvmfiles) $(llvmtargets) $(llvmcpp)
 
