@@ -1,0 +1,52 @@
+-- Implement code generation for the following AST nodes. 
+-- It is a subset of the nodes in the full Decaf.asdl AST definition.
+
+module Decaf
+{
+    prog = Program(extern* extern_list, package body)
+
+    extern = ExternFunction(identifier name, method_type return_type, extern_type* typelist)
+
+    package = Package(identifier name, field_decl* field_list, method_decl* method_list)
+
+    extern_type  = VarDef(StringType) | VarDef(decaf_type)
+
+    method_decl = Method(identifier name, method_type return_type, typed_symbol* param_list, method_block block)
+
+    method_block = MethodBlock(typed_symbol* var_decl_list, statement* statement_list)
+
+    block = Block(typed_symbol* var_decl_list, statement* statement_list)
+
+    statement = assign
+        | method_call
+        | ReturnStmt(expr? return_value)
+        | block
+
+    assign = AssignVar(identifier name, expr value)
+
+    expr = rvalue
+        | method_call
+        | NumberExpr(int value)
+        | BoolExpr(bool value)
+        | BinaryExpr(binary_operator op, expr left_value, expr right_value)
+        | UnaryExpr(unary_operator op, expr value)
+
+    rvalue = VariableExpr(identifier name)
+    
+    decaf_type = IntType | BoolType
+
+    method_type = VoidType | decaf_type
+
+    typed_symbol = VarDef(identifier name, decaf_type type)
+    
+    method_call = MethodCall(identifier name, method_arg* method_arg_list)
+
+    method_arg = StringConstant(string value)
+        | expr
+    
+    bool = True | False
+
+    binary_operator = Plus | Minus | Mult | Div | Leftshift | Rightshift | Mod | Lt | Gt | Leq | Geq | Eq | Neq | And | Or
+
+    unary_operator = UnaryMinus | Not
+}
