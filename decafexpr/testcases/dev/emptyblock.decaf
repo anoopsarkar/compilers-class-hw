@@ -1,5 +1,5 @@
 package Test {
-	func main() int
-	{
-	}
+    func main() int
+    {
+    }
 }

@@ -1,6 +1,6 @@
 package Test {
-	func main() int
-	{
-		var x int;
-	}
+    func main() int
+    {
+        var x int;
+    }
 }

@@ -1,8 +1,8 @@
 extern func read_int() int;
 
 package Test {
-	func main() int {
-		var x int;
-		x = read_int();
-	}
+    func main() int {
+        var x int;
+        x = read_int();
+    }
 }

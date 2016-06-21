@@ -1,6 +1,6 @@
 extern func print_int(int) void;
 package C {
-	func main() int {
+    func main() int {
         var x bool;
         var y int; 
         { 

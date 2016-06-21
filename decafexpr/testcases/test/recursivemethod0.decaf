@@ -6,7 +6,7 @@ package Test {
         y = 1/0;
         test(x+y);
     }
-	func main() int {
+    func main() int {
         var x int;
         x = 1;
         test(x);

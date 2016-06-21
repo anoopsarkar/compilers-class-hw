@@ -1,9 +1,9 @@
 package Test {
-	func main() int
-	{
-		var x int;
-		var y int;
-		x = 1;
-		y = 1;
-	}
+    func main() int
+    {
+        var x int;
+        var y int;
+        x = 1;
+        y = 1;
+    }
 }

@@ -1,9 +1,9 @@
 extern func print_int(int) void;
 package C {
-	func f() void {
+    func f() void {
         print_int(1);
-		return ();
-	}
+        return ();
+    }
     func main() int {
         f();
     }
