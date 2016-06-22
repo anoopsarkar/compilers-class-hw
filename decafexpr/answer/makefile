@@ -9,7 +9,7 @@ rm=/bin/rm -f
 mv=/bin/mv -f
 llvmcpp=
 llvmfiles=
-llvmtargets=sexpr2-codegen decafexpr
+llvmtargets=decafexpr
 
 all: $(targets) $(cpptargets) $(llvmfiles) $(llvmtargets) $(llvmcpp)
 
