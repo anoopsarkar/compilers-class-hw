@@ -30,10 +30,10 @@ class ZipOutput:
         try:
             os.makedirs(path)
         except os.error:
-            print >>sys.stderr, "Warning: {0} already exists. Existing files will be over-written.".format(os.path.join(self.output_dir, (os.path.basename(path))))
+            print >>sys.stderr, "Warning: {} already exists. Existing files will be over-written.".format(os.path.join(self.output_dir, (os.path.basename(path))))
             pass
 
-    def run(self, stdin_file, output_path, base):
+    def run(self, filename, output_path, base):
         """
         Runs a command specified by an argument vector (including the program name)
         and returns lists of lines from stdout and stderr.
@@ -41,14 +41,13 @@ class ZipOutput:
 
         # create the output files 
         if output_path is not None:
-            stdout_path = os.path.join(output_path, "{0}.out".format(base))
-            stderr_path = os.path.join(output_path, "{0}.err".format(base))
-
+            stdout_path = os.path.join(output_path, "{}.out".format(base))
+            stderr_path = os.path.join(output_path, "{}.err".format(base))
 
             # existing files are erased!
             stdout_file = open(stdout_path, 'w')
             stderr_file = open(stderr_path, 'w')
-            status_path = os.path.join(output_path, "{0}.ret".format(base))
+            status_path = os.path.join(output_path, "{}.ret".format(base))
         else:
             stdout_file, stdout_path = tempfile.mkstemp("stdout")
             stderr_file, stderr_path = tempfile.mkstemp("stderr")
@@ -58,10 +57,11 @@ class ZipOutput:
         run_program_path = os.path.abspath(os.path.join(self.answer_dir, self.run_program))
         if os.path.exists(llvm_run_path):
             stdlib_path = os.path.abspath(os.path.join(self.answer_dir, self.stdlib))
-            llvm_files_path = os.path.abspath(os.path.join(output_path, "llvm"))
-            argv = [ llvm_run_path, '-c ' + run_program_path, '-l ' + stdlib_path, output_path, llvm_files_path, base ]
+            argv = [ llvm_run_path, '-c', run_program_path, '-l', stdlib_path, filename, output_path, "llvm", base ]
+            stdin_file = sys.stdin
         else:
             argv = run_program_path
+            stdin_file = open(testfile_path, 'r')
         try:
             try:
                 prog = subprocess.Popen(argv, stdin=stdin_file or subprocess.PIPE, stdout=stdout_file, stderr=stderr_file)
@@ -96,6 +96,7 @@ class ZipOutput:
                 os.remove(stderr_path)
 
     def run_path(self, path, files):
+        print >> sys.stderr, "running on {} files".format(path)
         # set up output directory
         if path is None or path == '':
             output_path = os.path.abspath(self.output_dir)
@@ -110,15 +111,14 @@ class ZipOutput:
             if filename[-len(self.file_suffix):] == self.file_suffix:
                 base = filename[:-len(self.file_suffix)]
                 if os.path.exists(testfile_path):
-                    with open(testfile_path) as f:
-                        self.run(f, output_path, base)
+                    self.run(testfile_path, output_path, base)
 
     def run_all(self):
         # check that a compiled binary exists to run on the testcases
         argv = os.path.abspath(os.path.join(self.answer_dir, self.run_program))
         if not (os.path.isfile(argv) and os.access(argv, os.X_OK)):
-            logging.error("executable missing: {0}".format(argv))
-            print >>sys.stderr, "Compile your source file to create an executable {0}".format(argv)
+            logging.error("executable missing: {}".format(argv))
+            print >>sys.stderr, "Compile your source file to create an executable {}".format(argv)
             sys.exit(1)
 
         # check if testcases has subdirectories
@@ -154,7 +154,7 @@ if __name__ == '__main__':
     zo = ZipOutput(opts)
     if zo.run_all():
         outputs_zipfile = shutil.make_archive(opts.zipfile, 'zip', opts.output_dir)
-        print >>sys.stderr, "{0} created".format(outputs_zipfile)
+        print >>sys.stderr, "{} created".format(outputs_zipfile)
     else:
         logging.error("problem in creating output zip file")
         sys.exit(1)

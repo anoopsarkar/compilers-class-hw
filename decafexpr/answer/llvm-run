@@ -26,9 +26,9 @@ exec  linking to make native executable
 run   running the final executable
 
 Prefix is determined by which arguments are given:
-SOURCE-FILE                          PREFIX is ./NAME
-SOURCE-FILE LOG-FILE                 PREFIX is LOG-FILE/NAME
-SOURCE-FILE LOG-FILE GROUP TESTCASE  PREFIX is LOG-FILE/GROUP/TESTCASE
+SOURCE-FILE                         PREFIX is ./NAME
+SOURCE-FILE LOG-DIR                 PREFIX is LOG-DIR/NAME
+SOURCE-FILE LOG-DIR GROUP TESTCASE  PREFIX is LOG-DIR/GROUP/TESTCASE
 
 NAME is the basename of SOURCE-FILE if SOURCE-FILE has the extension %s, and
 otherwise is a unique name generated to avoid conflicting with existing files.
@@ -52,6 +52,7 @@ import tempfile
 
 gen_name_prefix = "llvm-run" # filename prefix to use if we have to make up a name for output
 source_extension = ".decaf"
+input_extension = ".in"
 default_codegen = "./answer/decafexpr"
 default_stdlib = "./answer/decaf-stdlib.c"
 codegen_llvm_out_source = "err"
@@ -102,12 +103,12 @@ def run(msg, cmd, suffix, inpath, out_prefix):
     printfile(outpath + '.err', sys.stderr)
     return retval == 0
 
-def name_for_source_file(source_file_path, dir):
+def name_for_source_file(source_file_path, dirname):
     basename = os.path.basename(source_file_path)
     if basename.endswith(source_extension):
-        return os.path.join(dir, basename[:-len(source_extension)])
+        return os.path.join(dirname, basename[:-len(source_extension)])
     else:
-        file, path = tempfile.mkstemp(dir=dir, prefix=gen_name_prefix + ".", suffix="")
+        file, path = tempfile.mkstemp(dir=dirname, prefix=gen_name_prefix + ".", suffix="")
         os.close(file)
         return path
 
@@ -128,6 +129,7 @@ if __name__ == '__main__':
         sys.exit(2)
 
     source_file = args[0]
+    input_file = source_file[:-len(source_extension)] + input_extension
     if len(args) == 1:
         out_prefix = name_for_source_file(source_file, ".")
     else:
@@ -157,9 +159,14 @@ if __name__ == '__main__':
         run("assembling to bitcode", "%s \"%s.llvm\" -o \"%s.llvm.bc\"" % (llvmas, out_prefix, out_prefix), ".llvm.bc", None, out_prefix)
         run("converting to native code", "%s \"%s.llvm.bc\" -o \"%s.llvm.s\"" % (llc, out_prefix, out_prefix), ".llvm.s", None, out_prefix)
         run("linking", "%s -o \"%s.llvm.exec\" \"%s.llvm.s\" \"%s\"" % (cc, out_prefix, out_prefix, stdlib), ".exec", None, out_prefix)
-        run("running", "%s.llvm.exec" % (out_prefix), ".run", None, out_prefix)
+        if os.path.exists(input_file):
+            print >>sys.stderr, "using input file:", input_file
+            run("running", "%s.llvm.exec" % (out_prefix), ".run", input_file, out_prefix)
+        else:
+            run("running", "%s.llvm.exec" % (out_prefix), ".run", None, out_prefix)
     else:
         # if codegen failed, leave blank files for the check
+        print >>sys.stderr, "codegen failed"
         touch("%s.llvm.ret" % (out_prefix))
         touch("%s.run.out" % (out_prefix))
 
