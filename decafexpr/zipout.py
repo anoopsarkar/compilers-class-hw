@@ -128,7 +128,8 @@ class ZipOutput:
 if __name__ == '__main__':
     #zipout_dir = os.path.dirname(os.path.abspath(sys.argv[0]))
     optparser = optparse.OptionParser()
-    optparser.add_option("-r", "--run", dest="run_program", default='decafast', help="run this program against testcases [default: decafast]")
+    optparser.add_option("-r", "--run", dest="run_program", default='decafexpr', help="run this program against testcases [default: decafexpr]")
+    optparser.add_option("-x", "--llvmrun", dest="llvm_run", default='llvm-run', help="run this program to compile using LLVM tools [default: llvm-run]")
     optparser.add_option("-a", "--answerdir", dest="answer_dir", default='answer', help="answer directory [default: answer]")
     optparser.add_option("-t", "--testcases", dest="testcase_dir", default='testcases', help="testcases directory [default: testcases]")
     optparser.add_option("-e", "--ending", dest="file_suffix", default='.decaf', help="suffix to use for testcases [default: .decaf]")

@@ -1,3 +1,4 @@
+extern func print_int(int) void;
 package Test {
     func main() int
     {
@@ -6,5 +7,6 @@ package Test {
         b = true != false;
         b = false != true;
         b = false != false;
+        print_int(b);
     }
 }
