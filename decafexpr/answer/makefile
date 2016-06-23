@@ -50,10 +50,6 @@ $(llvmfiles): %: %.ll
 	$(shell $(llvmconfig) --bindir)/llc $@.bc
 	gcc $@.s decaf-stdlib.c -o $(bindir)/$@
 
-test: $(targets) $(cpptargets)
-	@echo "inherited attributes in yacc ..."
-	echo "2 + 3 + 4" | $(bindir)/expr-inherit
-
 clean:
 	$(rm) $(targets) $(cpptargets) $(llvmtargets) $(llvmcpp) $(llvmfiles)
 	$(rm) *.tab.h *.tab.c *.tab.cc *.lex.c *.lex.cc
