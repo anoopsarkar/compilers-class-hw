@@ -5,5 +5,7 @@ package Test {
         var x int;
         print_int(true);
         print_int(false);
+        x = 3;
+        print_int(x);
     }
 }

@@ -1,15 +1,25 @@
+extern func print_int(int) void;
 package Test {
     func main() int
     {
         var c int;
         c = '\t';
+        print_int(c);
         c = '\v';
+        print_int(c);
         c = '\r';
+        print_int(c);
         c = '\n';
+        print_int(c);
         c = '\a';
+        print_int(c);
         c = '\f';
+        print_int(c);
         c = '\b';
+        print_int(c);
         c = '\\';
+        print_int(c);
         c = '\'';
+        print_int(c);
     }
 }

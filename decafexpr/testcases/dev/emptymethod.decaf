@@ -2,6 +2,8 @@ extern func print_int(int) void;
 
 package Test {
     func test(a int, b int) void {
+        print_int(a);
+        print_int(b);
     }
     func main() int {
         test(10, 13);

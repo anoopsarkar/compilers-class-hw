@@ -4,9 +4,15 @@ package Test {
     func test(a int) void {
         var x int;
         x = 1;
+        print_int(1);
+        print_int(x);
     }
     func main() int {
         var x int;
         x = 1;
+        print_int(1);
+        test(1);
+        print_int(x);
+        test(x);
     }
 }
