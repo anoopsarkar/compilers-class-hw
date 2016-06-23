@@ -1,7 +1,7 @@
 extern func print_int(int) void;
 
 package foo {
-    func main() void {
+    func main() int {
         var flag bool;
         var a, b, c bool;
         var size int;
