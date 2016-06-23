@@ -13,6 +13,8 @@ package C {
                 q = 1;
                 print_int(p);
                 print_int(q);
+                print_int(x);
+                print_int(y);
             } 
         }
     }
