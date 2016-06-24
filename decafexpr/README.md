@@ -12,8 +12,12 @@ run the following commands:
     python zipout.py -r default
     python check.py
 
-In the answer directory use the following filenames for
-your homework solution:
+The output files are all saved to the `output` directory which has
+a sub-directory called `llvm` which contains all the intermediate
+LLVM files created for each input Decaf program.
+
+In the answer directory use the following filenames for your homework
+solution:
 
 * Lex program: decafexpr.lex
 * Yacc program: decafexpr.y

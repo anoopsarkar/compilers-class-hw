@@ -4,8 +4,6 @@ package Test {
     {
         var x int;
         var y int;
-        print_int(x);
-        print_int(y);
         x = 1;
         y = 1;
         print_int(x);

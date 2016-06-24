@@ -34,7 +34,7 @@ NAME is the basename of SOURCE-FILE if SOURCE-FILE has the extension %s, and
 otherwise is a unique name generated to avoid conflicting with existing files.
 
 Environment variables:
-LLVMCONFIG    LLVM config binary, defaults to llvm-config
+LLVMCONFIG    LLVM config binary, defaults to llvm-config-3.8
 LLVMAS        LLVM assembler, defaults to llvm-as
 LLC           LLVM native code compiler, defaults to llc
 CC            C compiler for linking, defaults to gcc
@@ -53,8 +53,8 @@ import tempfile
 gen_name_prefix = "llvm-run" # filename prefix to use if we have to make up a name for output
 source_extension = ".decaf"
 input_extension = ".in"
-default_codegen = "./answer/decafexpr"
-default_stdlib = "./answer/decaf-stdlib.c"
+default_codegen = "answer/decafexpr"
+default_stdlib = "answer/decaf-stdlib.c"
 codegen_llvm_out_source = "err"
 codegen_env_var = "CODEGEN"
 stdlib_env_var = "STDLIB"
@@ -126,6 +126,10 @@ if __name__ == '__main__':
             raise getopt.GetoptError("Not enough arguments.")
     except getopt.GetoptError, e:
         print >>sys.stderr, __doc__ % (sys.argv[0], source_extension, default_codegen, default_stdlib)
+        sys.exit(2)
+
+    if not os.path.exists(codegen):
+        print >>sys.stderr, "could not find", codegen
         sys.exit(2)
 
     source_file = args[0]

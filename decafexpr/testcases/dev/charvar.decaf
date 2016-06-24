@@ -5,7 +5,7 @@ package Test {
         var x int;
         var y int;
         x = 'f';
-        x = 'a';
+        y = 'a';
         print_int(x - y);
     }
 }

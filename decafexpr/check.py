@@ -37,6 +37,9 @@ class Check:
     def check_path(self, path, files, zip_data):
         logging.info("path={0}".format(path))
         tally = defaultdict(int)
+        tally['num_correct'] = 0
+        tally['score'] = 0
+        tally['total'] = 0
         for filename in files:
             if path is None or path == '':
                 testfile_path = os.path.abspath(os.path.join(self.ref_dir, filename))
@@ -55,6 +58,10 @@ class Check:
                 with open(testfile_path, 'r') as ref:
                     ref_data = map(lambda x: x.strip(), ref.read().splitlines())
                     output_data = map(lambda x: x.strip(), zip_data[testfile_key].splitlines())
+                    if ref_data == '' and output_data == '':
+                        tally['score'] += score
+                        tally['num_correct'] += 1
+                        logging.info("{0} Correct!".format(testfile_key))
                     diff_lines = list(difflib.unified_diff(ref_data, output_data, "reference", "your-output", lineterm=''))
                     if len(diff_lines) > 0:
                         logging.info("Diff between reference and your output for {0}".format(testfile_key))
@@ -107,4 +114,5 @@ if __name__ == '__main__':
                 print "Nothing to report!"
     except:
         print >>sys.stderr, "Could not process zipfile: {0}".format(opts.zipfile)
+        raise
 
