@@ -58,10 +58,6 @@ class Check:
                 with open(testfile_path, 'r') as ref:
                     ref_data = map(lambda x: x.strip(), ref.read().splitlines())
                     output_data = map(lambda x: x.strip(), zip_data[testfile_key].splitlines())
-                    if ref_data == '' and output_data == '':
-                        tally['score'] += score
-                        tally['num_correct'] += 1
-                        logging.info("{0} Correct!".format(testfile_key))
                     diff_lines = list(difflib.unified_diff(ref_data, output_data, "reference", "your-output", lineterm=''))
                     if len(diff_lines) > 0:
                         logging.info("Diff between reference and your output for {0}".format(testfile_key))
@@ -74,18 +70,39 @@ class Check:
         self.perf[path] = dict(tally)
 
     def check_all(self, zipcontents):
-        zipfile = io.BytesIO(zipcontents)
-        zip_data = iocollect.extract_zip(zipfile) # contents of output zipfile produced by `python zipout.py` as a dict
+        try: 
+            zipfile = io.BytesIO(zipcontents)
+            zip_data = iocollect.extract_zip(zipfile) # contents of output zipfile produced by `python zipout.py` as a dict
+        except:
+            logging.error("Could not process zip file")
+            return None
 
         # check if references has subdirectories
-        ref_subdirs = iocollect.getdirs(os.path.abspath(self.ref_dir))
+        try:
+            ref_subdirs = iocollect.getdirs(os.path.abspath(self.ref_dir))
+        except:
+            logging.error("Internal Error: Could not find references.")
+            return None
+
         if len(ref_subdirs) > 0:
             for subdir in ref_subdirs:
-                files = iocollect.getfiles(os.path.abspath(os.path.join(self.ref_dir, subdir)))
+                try:
+                    files = iocollect.getfiles(os.path.abspath(os.path.join(self.ref_dir, subdir)))
+                except:
+                    logging.error("Internal Error: Could not find references.")
+                    return None
                 self.check_path(subdir, files, zip_data)
         else:
-            files = iocollect.getfiles(os.path.abspath(self.ref_dir))
+            try:
+                files = iocollect.getfiles(os.path.abspath(self.ref_dir))
+            except:
+                logging.error("Internal Error: Could not find references.")
+                return None
             self.check_path(None, files, zip_data)
+
+        if len(self.perf.keys()) == 0:
+            return None
+
         return self.perf
 
 if __name__ == '__main__':

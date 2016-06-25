@@ -23,8 +23,10 @@ static llvm::IRBuilder<> Builder(llvm::getGlobalContext());
 // instructions in the right order
 
 // dummy main function
-// should be replaced with actual codegen for the main method 
-// using the full Decaf grammar
+// WARNING: this is not how you should implement code generation
+// for the main function!
+// You should write the codegen for the main method as 
+// part of the codegen for method declarations (MethodDecl)
 static llvm::Function *TheFunction = 0;
 
 // we have to create a main function 
@@ -112,7 +114,7 @@ int main() {
   // parse the input and create the abstract syntax tree
   int retval = yyparse();
   // remove symbol table
-  // Finish off the main function.
+  // Finish off the main function. (see the WARNING above)
   // return 0 from main, which is EXIT_SUCCESS
   Builder.CreateRet(llvm::ConstantInt::get(llvm::getGlobalContext(), llvm::APInt(32, 0)));
   // Validate the generated code, checking for consistency.
