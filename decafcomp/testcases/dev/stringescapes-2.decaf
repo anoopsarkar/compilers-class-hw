@@ -1,0 +1,7 @@
+extern func print_string(string) void;
+
+package Test {
+	func main() int {
+		print_string("\v");
+	}
+}

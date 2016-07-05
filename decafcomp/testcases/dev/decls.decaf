@@ -1,0 +1,8 @@
+package C {
+    var x, size int;
+	func f() void {
+        var x int;
+        var i int;
+        size = 100;
+    }
+}

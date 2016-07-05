@@ -1,0 +1,9 @@
+package C {
+	func f() void {
+		if (leftPtr >= rightPtr) {
+			x = 1;
+		} else {
+			x = 2;
+		}
+	}
+}

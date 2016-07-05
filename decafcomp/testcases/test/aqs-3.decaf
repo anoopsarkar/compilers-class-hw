@@ -1,0 +1,3 @@
+package QuickSort {
+	func cr() void { print_string("\n"); }
+}

@@ -1,0 +1,9 @@
+package C {
+    func f() void {
+    }
+	func main() void {
+		if (f()) {
+			x = 1;
+		}
+	}
+}

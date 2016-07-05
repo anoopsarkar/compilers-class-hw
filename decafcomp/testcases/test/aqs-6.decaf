@@ -1,0 +1,9 @@
+package QuickSort {
+	func swap(leftPtr int, rightPtr int) void {
+		
+		var temp int;
+		temp = list[leftPtr];
+		list[leftPtr] = list[rightPtr];
+		list[rightPtr] = temp;
+	}
+}

@@ -1,0 +1,6 @@
+package Test {
+	func main() int {
+		var x int;
+		x = 'x';
+	}
+}

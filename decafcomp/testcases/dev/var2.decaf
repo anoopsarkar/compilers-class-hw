@@ -1,0 +1,12 @@
+extern func print_int(int) void;
+package Test {
+    func main() int
+    {
+        var x int;
+        var y int;
+        x = 1;
+        y = 1;
+        print_int(x);
+        print_int(y);
+    }
+}

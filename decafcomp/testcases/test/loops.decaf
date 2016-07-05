@@ -1,0 +1,19 @@
+package C {
+    var x, size int;
+	func f() void {
+        var x int;
+        var i int;
+        size = 100;
+		while (true) {
+			x = 1;
+            leftPtr = 10;
+            for (i = 0; i < size; i = i + 1) {
+                x = 1;
+                rightPtr = 20;
+                if (leftPtr >= rightPtr) {
+                    x = 1;
+                }
+            }
+        }
+    }
+}

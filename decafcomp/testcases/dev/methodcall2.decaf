@@ -1,0 +1,5 @@
+package C {
+	func f() void {
+		g(1, 2);
+	}
+}
