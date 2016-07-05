@@ -1,8 +1,8 @@
 package C {
-	var int x ;
+	var x int;
 
     func main() void {
         print_string(void);
 	}
-    var int y;
+    var y int;
 }
