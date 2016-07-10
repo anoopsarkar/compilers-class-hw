@@ -5,6 +5,9 @@ package Test {
         var x int;
         var y int;
         var z int;
+        x = 0;
+        y = 0;
+        z = 0;
         print_int(x);
         print_int(y);
         print_int(z);
