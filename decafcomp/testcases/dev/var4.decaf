@@ -1,0 +1,22 @@
+extern func print_int(int) void;
+package Test {
+    func main() int
+    {
+        var p int;
+        var q int;
+        var r int;
+        var s int;
+        print_int(p);
+        print_int(q);
+        print_int(r);
+        print_int(s);
+        p = 1;
+        q = p;
+        r = q;
+        s = r;
+        print_int(p);
+        print_int(q);
+        print_int(r);
+        print_int(s);
+    }
+}
