@@ -9,7 +9,7 @@ rm=/bin/rm -f
 mv=/bin/mv -f
 llvmcpp=
 llvmfiles=
-llvmtargets=decafexpr default
+llvmtargets=decafcomp default
 
 all: $(targets) $(cpptargets) $(llvmfiles) $(llvmtargets) $(llvmcpp)
 
