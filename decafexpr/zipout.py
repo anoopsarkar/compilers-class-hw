@@ -19,6 +19,7 @@ class ZipOutput:
 
     def __init__(self, opts):
         self.run_program = opts.run_program # solution to hw that is being tested
+        self.use_llvm_run = opts.use_llvm_run # use the llvm_run program to compile the output using LLVM
         self.llvm_run = opts.llvm_run # use this program to compile the output using LLVM and execute that binary to get stdout, stderr
         self.stdlib = opts.stdlib # standard library source code to link with output when creating the binary
         self.answer_dir = opts.answer_dir # name of directory where run_program exists
@@ -33,7 +34,7 @@ class ZipOutput:
             print >>sys.stderr, "Warning: {} already exists. Existing files will be over-written.".format(os.path.join(self.output_dir, (os.path.basename(path))))
             pass
 
-    def run(self, filename, output_path, base):
+    def run(self, filename, path, output_path, base):
         """
         Runs a command specified by an argument vector (including the program name)
         and returns lists of lines from stdout and stderr.
@@ -53,12 +54,17 @@ class ZipOutput:
             stderr_file, stderr_path = tempfile.mkstemp("stderr")
             status_path = None
 
-        llvm_run_path = os.path.abspath(os.path.join(self.answer_dir, self.llvm_run))
         run_program_path = os.path.abspath(os.path.join(self.answer_dir, self.run_program))
-        if os.path.exists(llvm_run_path):
-            stdlib_path = os.path.abspath(os.path.join(self.answer_dir, self.stdlib))
-            argv = [ llvm_run_path, '-c', run_program_path, '-l', stdlib_path, filename, output_path, "llvm", base ]
-            stdin_file = sys.stdin
+        if (self.use_llvm_run):
+            llvm_run_path = os.path.abspath(os.path.join(self.answer_dir, self.llvm_run))
+            if os.path.exists(llvm_run_path) and os.access(llvm_run_path, os.X_OK):
+                stdlib_path = os.path.abspath(os.path.join(self.answer_dir, self.stdlib))
+                argv = [ llvm_run_path, '-c', run_program_path, '-l', stdlib_path, filename, "llvm", path, base ]
+                stdin_file = sys.stdin
+            else:
+                print >> sys.stderr, "error: something went wrong when trying to run the following command:"
+                print >> sys.stderr, argv
+                raise
         else:
             argv = run_program_path
             stdin_file = open(testfile_path, 'r')
@@ -111,7 +117,7 @@ class ZipOutput:
             if filename[-len(self.file_suffix):] == self.file_suffix:
                 base = filename[:-len(self.file_suffix)]
                 if os.path.exists(testfile_path):
-                    self.run(testfile_path, output_path, base)
+                    self.run(testfile_path, path, output_path, base)
 
     def run_all(self):
         # check that a compiled binary exists to run on the testcases
@@ -138,7 +144,8 @@ if __name__ == '__main__':
     #zipout_dir = os.path.dirname(os.path.abspath(sys.argv[0]))
     optparser = optparse.OptionParser()
     optparser.add_option("-r", "--run", dest="run_program", default='decafexpr', help="run this program against testcases [default: decafexpr]")
-    optparser.add_option("-x", "--llvmrun", dest="llvm_run", default='llvm-run', help="run this program to compile using LLVM tools [default: llvm-run]")
+    optparser.add_option("--use-llvm-run", dest="use_llvm_run", action="store_true", default=True, help="run this program to compile using LLVM tools [default: True]")
+    optparser.add_option("-x", "--llvmrun", dest="llvm_run", default='llvm-run', help="run this program to compile using this binary to call LLVM tools [default: llvm-run]")
     optparser.add_option("-s", "--stdlib", dest="stdlib", default='decaf-stdlib.c', help="optional standard library to link during llvm run [default: decaf-stdlib.c]")
     optparser.add_option("-a", "--answerdir", dest="answer_dir", default='answer', help="answer directory [default: answer]")
     optparser.add_option("-t", "--testcases", dest="testcase_dir", default='testcases', help="testcases directory [default: testcases]")
