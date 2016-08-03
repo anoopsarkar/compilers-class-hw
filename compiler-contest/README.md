@@ -27,5 +27,6 @@ The Prize
 ---------
 
 * The prize for the winner of the contest is a $25 gift certificate from amazon.ca
+* The prize will be handed out to the winner of the contest at the final exam.
 
 
