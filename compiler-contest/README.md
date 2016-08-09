@@ -9,6 +9,7 @@ Submission Rules for the Compiler Contest
 1. The directory `references/your-groupname` should contain the Decaf source files named with a `.decaf` file name suffix.
 1. You can create the contents of directory `references/your-groupname` by running `python zipout.py -t answer/testcases` and copying over the `.out` files to your references (sub)directory.
 1. Enter the contest by emailing me your gitlab repo or github private repo. Include the full path to the answer directory in your URL. I will pull and compile your compiler from this repository.
+1. No fuzzing allowed. The testcases are expected to be hand checked or sanitized even if you used an automated method to generate them.
 
 The Contest
 -----------
