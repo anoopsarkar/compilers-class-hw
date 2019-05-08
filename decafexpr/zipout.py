@@ -31,7 +31,7 @@ class ZipOutput:
         try:
             os.makedirs(path)
         except os.error:
-            print >>sys.stderr, "Warning: {} already exists. Existing files will be over-written.".format(os.path.join(self.output_dir, (os.path.basename(path))))
+            print("Warning: {} already exists. Existing files will be over-written.".format(os.path.join(self.output_dir, (os.path.basename(path)))), file=sys.stderr)
             pass
 
     def run(self, filename, path, output_path, base):
@@ -62,12 +62,12 @@ class ZipOutput:
                 argv = [ llvm_run_path, '-c', run_program_path, '-l', stdlib_path, filename, "llvm", path, base ]
                 stdin_file = sys.stdin
             else:
-                print >> sys.stderr, "error: something went wrong when trying to run the following command:"
-                print >> sys.stderr, argv
+                print("error: something went wrong when trying to run the following command:", file=sys.stderr)
+                print(argv, file=sys.stderr)
                 raise
         else:
             argv = run_program_path
-            stdin_file = open(testfile_path, 'r')
+            stdin_file = open(filename, 'r')
         try:
             try:
                 prog = subprocess.Popen(argv, stdin=stdin_file or subprocess.PIPE, stdout=stdout_file, stderr=stderr_file)
@@ -83,7 +83,7 @@ class ZipOutput:
                     os.close(stderr_file)
             if status_path is not None:
                 with open(status_path, 'w') as status_file:
-                  print >> status_file, prog.returncode
+                  print(prog.returncode, file=status_file)
             with open(stdout_path) as stdout_input:
                 stdout_lines = list(stdout_input)
             with open(stderr_path) as stderr_input:
@@ -92,8 +92,8 @@ class ZipOutput:
                 prog.stdin.close()
             return stdout_lines, stderr_lines, prog.returncode
         except:
-            print >> sys.stderr, "error: something went wrong when trying to run the following command:"
-            print >> sys.stderr, argv
+            print("error: something went wrong when trying to run the following command:", file=sys.stderr)
+            print(argv, file=sys.stderr)
             raise
             #sys.exit(1)
         finally:
@@ -102,7 +102,7 @@ class ZipOutput:
                 os.remove(stderr_path)
 
     def run_path(self, path, files):
-        print >> sys.stderr, "running on {} files".format(path)
+        print("running on {} files".format(path), file=sys.stderr)
         # set up output directory
         if path is None or path == '':
             output_path = os.path.abspath(self.output_dir)
@@ -124,7 +124,7 @@ class ZipOutput:
         argv = os.path.abspath(os.path.join(self.answer_dir, self.run_program))
         if not (os.path.isfile(argv) and os.access(argv, os.X_OK)):
             logging.error("executable missing: {}".format(argv))
-            print >>sys.stderr, "Compile your source file to create an executable {}".format(argv)
+            print("Compile your source file to create an executable {}".format(argv), file=sys.stderr)
             sys.exit(1)
 
         # check if testcases has subdirectories
@@ -143,8 +143,8 @@ class ZipOutput:
 if __name__ == '__main__':
     #zipout_dir = os.path.dirname(os.path.abspath(sys.argv[0]))
     optparser = optparse.OptionParser()
-    optparser.add_option("-r", "--run", dest="run_program", default='decafexpr', help="run this program against testcases [default: decafexpr]")
-    optparser.add_option("--use-llvm-run", dest="use_llvm_run", action="store_true", default=True, help="run this program to compile using LLVM tools [default: True]")
+    optparser.add_option("-r", "--run", dest="run_program", default='decaflex', help="run this program against testcases [default: decaflex]")
+    optparser.add_option("--use-llvm-run", dest="use_llvm_run", action="store_true", default=False, help="run this program to compile using LLVM tools [default: False]")
     optparser.add_option("-x", "--llvmrun", dest="llvm_run", default='llvm-run', help="run this program to compile using this binary to call LLVM tools [default: llvm-run]")
     optparser.add_option("-s", "--stdlib", dest="stdlib", default='decaf-stdlib.c', help="optional standard library to link during llvm run [default: decaf-stdlib.c]")
     optparser.add_option("-a", "--answerdir", dest="answer_dir", default='answer', help="answer directory [default: answer]")
@@ -161,7 +161,7 @@ if __name__ == '__main__':
     zo = ZipOutput(opts)
     if zo.run_all():
         outputs_zipfile = shutil.make_archive(opts.zipfile, 'zip', opts.output_dir)
-        print >>sys.stderr, "{} created".format(outputs_zipfile)
+        print("{} created".format(outputs_zipfile), file=sys.stderr)
     else:
         logging.error("problem in creating output zip file")
         sys.exit(1)

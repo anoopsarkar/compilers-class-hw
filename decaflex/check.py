@@ -53,8 +53,8 @@ class Check:
             logging.info("Checking {0}".format(testfile_key))
             if testfile_key in zip_data:
                 with open(testfile_path, 'r') as ref:
-                    ref_data = map(lambda x: x.strip(), ref.read().splitlines())
-                    output_data = map(lambda x: x.strip(), zip_data[testfile_key].splitlines())
+                    ref_data = [x.strip() for x in ref.read().splitlines()]
+                    output_data = [x.strip() for x in zip_data[testfile_key].splitlines()]
                     diff_lines = list(difflib.unified_diff(ref_data, output_data, "reference", "your-output", lineterm=''))
                     if len(diff_lines) > 0:
                         logging.info("Diff between reference and your output for {0}".format(testfile_key))
@@ -98,13 +98,13 @@ if __name__ == '__main__':
             perf = check.check_all(f.read())
             if perf is not None:
                 total = 0
-                for (d, tally) in perf.iteritems():
-                    print "Correct({0}): {1} / {2}".format(d, tally['num_correct'], tally['total'])
-                    print "Score({0}): {1:.2f}".format(d, tally['score'])
+                for (d, tally) in perf.items():
+                    print("Correct({0}): {1} / {2}".format(d, tally['num_correct'], tally['total']))
+                    print("Score({0}): {1:.2f}".format(d, tally['score']))
                     total += tally['score']
-                print "Total Score: {0:.2f}".format(total)
+                print("Total Score: {0:.2f}".format(total))
             else:
-                print "Nothing to report!"
+                print("Nothing to report!")
     except:
-        print >>sys.stderr, "Could not process zipfile: {0}".format(opts.zipfile)
+        print("Could not process zipfile: {0}".format(opts.zipfile), file=sys.stderr)
 

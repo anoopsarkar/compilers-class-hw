@@ -23,11 +23,10 @@ if __name__ == "__main__":
   n = 10000000000
   if len(sys.argv) > 1:
     n = int(sys.argv[1])
-  print >>sys.stderr, "using n =", n
+  print("using n = {}\n".format(n), file=sys.stderr)
   sys.stdout.write("#include <stdio.h>\nint main() { int ")
   #for i in xrange(n): sys.stdout.write('x')
   sys.stdout.write('x' * n)
   sys.stdout.write(r' = 1; printf("yes\n"); }')
-  print
-  print >>sys.stderr, "finished generating C code ..."
+  print("\nfinished generating C code ...\n", file=sys.stderr)
 
