@@ -23,7 +23,7 @@ class Check:
 
     def __init__(self, ref_dir):
         self.ref_dir = ref_dir                  # directory where references are placed
-        self.linesep = "{0}".format(os.linesep) # os independent line separator
+        self.linesep = "{}".format(os.linesep) # os independent line separator
         self.path_score = {'dev': 1, 'test': 2} # set up this dict to score different testcases differently
         self.default_score = 1                  # default score if it does not exist in path_values
 
@@ -35,7 +35,7 @@ class Check:
         self.perf = {}
 
     def check_path(self, path, files, zip_data):
-        logging.info("path={0}".format(path))
+        logging.info("path={}".format(path))
         tally = defaultdict(int)
         for filename in files:
             if path is None or path == '':
@@ -50,19 +50,19 @@ class Check:
             if path in self.path_score:
                 score = self.path_score[path]
 
-            logging.info("Checking {0}".format(testfile_key))
+            logging.info("Checking {}".format(testfile_key))
             if testfile_key in zip_data:
-                with open(testfile_path, 'r') as ref:
-                    ref_data = [x.strip() for x in ref.read().splitlines()]
-                    output_data = [x.strip() for x in zip_data[testfile_key].splitlines()]
+                with open(testfile_path, 'rb') as ref:
+                    ref_data = [str(x).strip() for x in ref.read().splitlines()]
+                    output_data = [str(x).strip() for x in zip_data[testfile_key].splitlines()]
                     diff_lines = list(difflib.unified_diff(ref_data, output_data, "reference", "your-output", lineterm=''))
                     if len(diff_lines) > 0:
-                        logging.info("Diff between reference and your output for {0}".format(testfile_key))
+                        logging.info("Diff between reference and your output for {}".format(testfile_key))
                         logging.info("{0}{1}".format(self.linesep, self.linesep.join(list(diff_lines))))
                     else:
                         tally['score'] += score
                         tally['num_correct'] += 1
-                        logging.info("{0} Correct!".format(testfile_key))
+                        logging.info("{} Correct!".format(testfile_key))
                     tally['total'] += 1
         self.perf[path] = dict(tally)
 
@@ -105,6 +105,7 @@ if __name__ == '__main__':
                 print("Total Score: {0:.2f}".format(total))
             else:
                 print("Nothing to report!")
-    except:
-        print("Could not process zipfile: {0}".format(opts.zipfile), file=sys.stderr)
+    except Exception as e:
+        print("Could not process zipfile: {}".format(opts.zipfile), file=sys.stderr)
+        print("ERROR: {}".format(str(e)), file=sys.stderr)
 
