@@ -149,7 +149,7 @@ if __name__ == '__main__':
     optparser.add_option("-s", "--stdlib", dest="stdlib", default='decaf-stdlib.c', help="optional standard library to link during llvm run [default: decaf-stdlib.c]")
     optparser.add_option("-a", "--answerdir", dest="answer_dir", default='answer', help="answer directory [default: answer]")
     optparser.add_option("-t", "--testcases", dest="testcase_dir", default='testcases', help="testcases directory [default: testcases]")
-    optparser.add_option("-e", "--ending", dest="file_suffix", default='.decaf', help="suffix to use for testcases [default: .decaf]")
+    optparser.add_option("-e", "--ending", dest="file_suffix", default='.in', help="suffix to use for testcases [default: .decaf]")
     optparser.add_option("-o", "--output", dest="output_dir", default='output', help="Save the output from the testcases to this directory.")
     optparser.add_option("-z", "--zipfile", dest="zipfile", default='output', help="zip file you should upload to the leaderboard submission page on sfu-yacc.appspot.com")
     optparser.add_option("-l", "--logfile", dest="logfile", default=None, help="log file for debugging")
