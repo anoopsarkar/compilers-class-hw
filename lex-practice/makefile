@@ -2,7 +2,7 @@
 lexlib=l
 bindir=.
 rm=/bin/rm -f
-targets=matchre
+targets=matchre simpletok
 cpptargets=
 
 all: $(targets) $(cpptargets)
