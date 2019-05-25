@@ -37,6 +37,9 @@ class Check:
     def check_path(self, path, files, zip_data):
         logging.info("path={}".format(path))
         tally = defaultdict(int)
+        tally['score'] = 0
+        tally['num_correct'] = 0
+        tally['total'] = 0
         for filename in files:
             if path is None or path == '':
                 testfile_path = os.path.abspath(os.path.join(self.ref_dir, filename))
@@ -99,7 +102,12 @@ if __name__ == '__main__':
             if perf is not None:
                 total = 0
                 for (d, tally) in perf.items():
-                    print("Correct({0}): {1} / {2}".format(d, tally['num_correct'], tally['total']))
+                    if 'total' not in tally or tally['total'] == 0:
+                        continue
+                    if 'num_correct' not in tally or tally['num_correct'] == 0:
+                        tally['score'] = 0.0
+                    else:
+                        print("Correct({0}): {1} / {2}".format(d, tally['num_correct'], tally['total']))
                     print("Score({0}): {1:.2f}".format(d, tally['score']))
                     total += tally['score']
                 print("Total Score: {0:.2f}".format(total))

@@ -2,7 +2,7 @@
 lexlib=l
 bindir=.
 rm=/bin/rm -f
-targets=matchre simpletok
+targets=matchre simpletok tokenizer tokenizer2
 cpptargets=
 
 all: $(targets) $(cpptargets)

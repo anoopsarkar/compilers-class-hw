@@ -3,16 +3,16 @@
 
 	Lex:
 		make matchre
-		python -c 'print "b"*100000 + "d"' | ./matchre
-		python -c 'print "b"*100000' | ./matchre
+		python3 -c 'print("b"*100000 + "d")' | ./matchre
+		python3 -c 'print("b"*100000)' | ./matchre
 		
 	Python:
-		python -c 'print "b"*100000 + "d"' | python matchre.py 
-		python -c 'print "b"*100000' | python matchre.py 
+		python3 -c 'print("b"*100000 + "d")' | python3 matchre.py 
+		python3 -c 'print("b"*100000') | python3 matchre.py 
 
 	Perl:
-		perl -e 'print "b"x100000 . "d"' | perl matchre.pl
-		perl -e 'print "b"x100000' | perl matchre.pl
+		perl -e 'print("b"x100000 . "d")' | perl matchre.pl
+		perl -e 'print("b"x100000)' | perl matchre.pl
 
   */
 #include <stdio.h>
