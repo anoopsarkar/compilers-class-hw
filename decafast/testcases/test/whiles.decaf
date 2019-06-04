@@ -1,0 +1,36 @@
+extern func print_string(string) void;
+extern func print_int(int) void;
+
+package whiles {
+  func main() int {
+    var x, y int;
+    print_string("hello\n");
+    x = 0;
+    while (x < 10) {
+      x = x + 1;
+      if (x == 5) {
+        continue;
+      }
+      if (x == 7) {
+        x = 100;
+        continue;
+      }
+      y = 0;
+      while (y < 10) {
+        y = y + 1;
+        if (y > 3 && y < 5) {
+          continue;
+        }
+        if (y == 7) {
+          break;
+        }
+        print_int(x);
+        print_string(",");
+        print_int(y);
+        print_string("\n");
+      }
+    }
+    return(0);
+  }
+}
+

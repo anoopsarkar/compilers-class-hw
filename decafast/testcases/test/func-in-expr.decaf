@@ -1,0 +1,21 @@
+
+extern func print_string(string) void;
+extern func print_int(int) void;
+
+package reach {
+  func five() int {
+    return(five());
+  }
+  func main() int {
+    var x int;
+    print_string("hello\n");
+    return(0);
+    x = 5;
+    for (x = 0; x >= 0; x = x + 1) {
+      continue;
+      x = five() / 32;
+    }
+    return(x);
+  }
+}
+

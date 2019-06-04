@@ -1,0 +1,31 @@
+extern func print_int(int) void;
+extern func print_string(string) void;
+
+package modulus {
+
+    // Test that the modulus operator works for all possible values
+    //
+    // We noticed that the built-in LLVM modulus operator (CreateSRem) does
+    //  not properly handle negative mods. According to the specifications:
+    //  for a%b if 'b' is negative then the result should be 'a' minus the
+    //  smallest multiple of 'b' that is not less than 'a'.
+    
+    func main() int {
+        print_int(4%3);
+        print_int(5%3);
+        print_int(6%3);
+        print_string("\n");
+        print_int(-4%3);
+        print_int(-5%3);
+        print_int(-6%3);
+        print_string("\n");
+        print_int(4%-3);
+        print_int(5%-3);
+        print_int(6%-3);
+        print_string("\n");
+        print_int(-4%-3);
+        print_int(-5%-3);
+        print_int(-6%-3);
+        print_string("\n");
+    }
+}

@@ -1,0 +1,28 @@
+extern func print_int(int) void;
+extern func print_string(string) void;
+
+package xkcd {
+    
+    func main() int {
+        print_int((x(k(c(d())))));
+    }
+
+    func x(a int) int {
+        return (a*2);
+    }
+
+    func k(a int) int {
+        return (a*3);
+    }
+
+    func c(a int) int {
+        return (a+4);
+    }
+
+    func d() int {
+        return (3);
+    }
+
+
+
+}

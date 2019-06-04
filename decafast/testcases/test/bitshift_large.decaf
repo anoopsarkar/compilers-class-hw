@@ -1,0 +1,18 @@
+extern func print_int(int) void;
+extern func print_string(string) void;
+
+package bitshift_large {
+    
+    func main() bool {
+        var _,__,___ int;
+        _ = 4;
+        __ = 2;
+        ___ = _ >> __;
+        print_int(___ << 30);
+        print_string("\n");
+        print_int(___ << 31);
+        print_string("\n");
+        return(false);
+    }
+
+}
