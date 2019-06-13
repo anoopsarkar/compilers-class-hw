@@ -1,3 +1,9 @@
 *.pyc
 *.zip
 log
+
+*.lex.c
+*.tab.c
+*.tab.h
+
+default
