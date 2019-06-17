@@ -32,7 +32,7 @@ module Decaf
     package = Package(identifier name, field_decl* field_list, method_decl* method_list)
 
     field_decl = FieldDecl(identifier name, decaf_type type, field_size size)
-        | AssignGlobalVar(identifier name, decaf_type type, expr value)
+        | AssignGlobalVar(identifier name, decaf_type type, constant value)
 
     field_size = Scalar | Array(int array_size)
 
@@ -48,7 +48,7 @@ module Decaf
         | method_call
         | IfStmt(expr condition, block if_block, block? else_block)
         | WhileStmt(expr condition, block while_block)
-        | ForStmt(assign* pre_assign_list, expr condition, assign* loop_assign_list)
+        | ForStmt(assign* pre_assign_list, expr condition, assign* loop_assign_list, block for_block)
         | ReturnStmt(expr? return_value)
         | BreakStmt
         | ContinueStmt
@@ -64,10 +64,12 @@ module Decaf
 
     expr = rvalue
         | method_call
-        | NumberExpr(int value)
-        | BoolExpr(bool value)
+        | constant
         | BinaryExpr(binary_operator op, expr left_value, expr right_value)
         | UnaryExpr(unary_operator op, expr value)
+
+    constant = NumberExpr(int value)
+        | BoolExpr(bool value)
 
     rvalue = VariableExpr(identifier name)
         | ArrayLocExpr(identifier name, expr index)
