@@ -7,9 +7,13 @@ module Decaf
 
     extern = ExternFunction(identifier name, method_type return_type, extern_type* typelist)
 
-    package = Package(identifier name, field_decl* field_list, method_decl* method_list)
+    package = Package(identifier name, method_decl* method_list)
 
     extern_type  = VarDef(StringType) | VarDef(decaf_type)
+
+    decaf_type = IntType | BoolType
+
+    method_type = VoidType | decaf_type
 
     method_decl = Method(identifier name, method_type return_type, typed_symbol* param_list, method_block block)
 
@@ -26,17 +30,12 @@ module Decaf
 
     expr = rvalue
         | method_call
-        | NumberExpr(int value)
-        | BoolExpr(bool value)
+        | constant
         | BinaryExpr(binary_operator op, expr left_value, expr right_value)
         | UnaryExpr(unary_operator op, expr value)
 
     rvalue = VariableExpr(identifier name)
     
-    decaf_type = IntType | BoolType
-
-    method_type = VoidType | decaf_type
-
     typed_symbol = VarDef(identifier name, decaf_type type)
     
     method_call = MethodCall(identifier name, method_arg* method_arg_list)
@@ -44,6 +43,9 @@ module Decaf
     method_arg = StringConstant(string value)
         | expr
     
+    constant = NumberExpr(int value)
+        | BoolExpr(bool value)
+
     bool = True | False
 
     binary_operator = Plus | Minus | Mult | Div | Leftshift | Rightshift | Mod | Lt | Gt | Leq | Geq | Eq | Neq | And | Or
