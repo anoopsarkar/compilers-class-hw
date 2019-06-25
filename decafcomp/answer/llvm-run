@@ -59,7 +59,7 @@ codegen_llvm_out_source = "err"
 codegen_env_var = "CODEGEN"
 stdlib_env_var = "STDLIB"
 
-llvm_config = os.environ.get('LLVMCONFIG') or 'llvm-config'
+llvm_config = os.environ.get('LLVMCONFIG') or 'llvm-config-8'
 llc_call = str(subprocess.check_output([llvm_config, "--bindir"])).strip() + '/llc'
 llvm_as_call = str(subprocess.check_output([llvm_config, "--bindir"])).strip() + '/llvm-as'
 llc = os.environ.get('LCC') or llc_call
