@@ -150,7 +150,7 @@ int main() {
   TheModule = new Module("module for very simple expressions", TheContext);
   // parse the input and create the abstract syntax tree
   int retval = yyparse();
-  // Print out all of the generated code to stderr
-  TheModule->print(errs(), nullptr);
+  // Print out all of the generated code to stdout
+  TheModule->print(outs(), nullptr);
   return(retval >= 1 ? 1 : 0);
 }
