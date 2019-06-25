@@ -14,8 +14,8 @@ using namespace llvm;
 static Module *TheModule;
 
 // this is the method used to construct the LLVM intermediate code (IR)
-static llvm::LLVMContext TheContext;
-static llvm::IRBuilder<> Builder(TheContext);
+static LLVMContext TheContext;
+static IRBuilder<> Builder(TheContext);
 // the calls to TheContext in the init above and in the
 // following code ensures that we are incrementally generating
 // instructions in the right order
@@ -151,6 +151,6 @@ int main() {
   // parse the input and create the abstract syntax tree
   int retval = yyparse();
   // Print out all of the generated code to stdout
-  TheModule->print(outs(), nullptr);
+  TheModule->print(errs(), nullptr);
   return(retval >= 1 ? 1 : 0);
 }
