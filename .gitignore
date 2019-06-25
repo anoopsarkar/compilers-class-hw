@@ -7,3 +7,5 @@ log
 *.tab.h
 
 default
+
+.DS_Store
