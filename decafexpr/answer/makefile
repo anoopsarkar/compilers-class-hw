@@ -1,5 +1,5 @@
-llvmconfig=llvm-config
-cppflags=-std=c++11 -Wno-deprecated-register
+llvmconfig=llvm-config-8
+cppflags=-Wno-deprecated-register
 lexlib=l
 yacclib=y
 llvmlibs=-lz -lncurses -ldl -lpthread
@@ -18,7 +18,7 @@ $(targets): %: %.y
 	@echo "output file:" $@
 	bison -o$@.tab.c -d $<
 	flex -o$@.lex.c $@.lex
-	gcc -o $(bindir)/$@ $@.tab.c $@.lex.c $(mylibs)
+	clang -o $(bindir)/$@ $@.tab.c $@.lex.c $(mylibs)
 	$(rm) $@.tab.c $@.tab.h $@.lex.c
 
 $(cpptargets): %: %.y
@@ -27,7 +27,7 @@ $(cpptargets): %: %.y
 	bison -b $@ -d $<
 	$(mv) $@.tab.c $@.tab.cc
 	flex -o$@.lex.cc $@.lex
-	g++ -std=c++11 -o $(bindir)/$@ $@.tab.cc $@.lex.cc $(mylibs)
+	clang++ -std=c++11 -o $(bindir)/$@ $@.tab.cc $@.lex.cc $(mylibs)
 	$(rm) $@.tab.h $@.tab.cc $@.lex.cc
 
 $(llvmtargets): %: %.y
@@ -36,19 +36,19 @@ $(llvmtargets): %: %.y
 	bison -b $@ -d $<
 	$(mv) $@.tab.c $@.tab.cc
 	flex -o$@.lex.cc $@.lex
-	gcc -g -c decaf-stdlib.c
-	g++ $(cppflags) -o $(bindir)/$@ $@.tab.cc $@.lex.cc decaf-stdlib.o $(shell $(llvmconfig) --cppflags --ldflags --libs core mcjit native) $(mylibs)
+	clang -g -c decaf-stdlib.c
+	clang++ $(cppflags) -o $(bindir)/$@ $@.tab.cc $@.lex.cc decaf-stdlib.o $(shell $(llvmconfig) --cxxflags --cppflags --cflags --ldflags --system-libs --libs all) $(mylibs)
 	$(rm) $@.tab.h $@.tab.cc $@.lex.cc 
 
 $(llvmcpp): %: %.cc
 	@echo "using llvm to compile file:" $<
-	g++ $(cppflags) -g $< $(shell $(llvmconfig) --cppflags --ldflags --libs core mcjit native) $(llvmlibs) -O3 -o $(bindir)/$@
+	clang++ $(cppflags) -g $< $(shell $(llvmconfig) --cxxflags --cppflags --cflags --ldflags --system-libs --libs all) $(llvmlibs) -O3 -o $(bindir)/$@
 
 $(llvmfiles): %: %.ll
 	@echo "using llvm to compile file:" $<
 	$(shell $(llvmconfig) --bindir)/llvm-as $<
 	$(shell $(llvmconfig) --bindir)/llc $@.bc
-	gcc $@.s decaf-stdlib.c -o $(bindir)/$@
+	clang $@.s decaf-stdlib.c -o $(bindir)/$@
 
 clean:
 	$(rm) $(targets) $(cpptargets) $(llvmtargets) $(llvmcpp) $(llvmfiles)
