@@ -57,15 +57,23 @@ the following that is included in both your Lex and Yacc program.
 
     #endif
 
-## Testcases changed
+Getting Started
+---------------
 
-The testcases and references were updated on Jun 23, 2016. Now
-`zipout.py` calls `answer/llvm-run` to check if the LLVM assembly
-can be converted to a successfully running binary. Due to this
-change, a lot of `print_int` and `print_string` statements were
-added to the Decaf programs.
+As usual start by copying and modifying the default programs
+provided to you in the `answer` directory. 
 
-Also, if the Decaf program has a call to `read_int` from the Decaf
-standard library then there must be a file with an `.in` suffix in
-the testcases directory which contains the input for `read_int`.
+* `makefile`: contains the necessary recipes for building LLVM assembly code, C++ code using LLVM API calls and Lex/Yacc programs that use the LLVM API.
+* `decaf-stdlib.c`: the Decaf standard library. Contains the extern functions used commonly in Decaf programs.
+* Default solution files:
+    * `default-defs.h`: the common header file among all the default files
+    * `default.cc`: the default classes for LLVM code generation
+    * `default.lex`: the lexer for Decaf
+    * `default.y`: the yacc program for a small fragment of Decaf which uses `default.cc` for LLVM code generation.
+* `llvm-run`: the Python program used by `check.py` in order to run a Decaf program using the following steps. Each step assumes some file names but can be changed using command line options so run `llvm-run -h` to see the options and also read the source code of `llvm-run` to understand what it is doing.  Stages are:
+    1. llvm:  source code to LLVM code generation using your `decafexpr` program
+    2. bc:    assembly to LLVM bitcode
+    3. s:     bitcode to native code
+    4. exec:  linking to make native executable
+    5. run:   running the final executable
 
