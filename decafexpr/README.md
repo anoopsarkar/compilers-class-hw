@@ -77,3 +77,10 @@ provided to you in the `answer` directory.
     4. exec:  linking to make native executable
     5. run:   running the final executable
 
+There is also a directory called `dev_llvm` which contains sample
+output LLVM assembly for each Decaf program in `testcases/dev`. You
+can check that your output LLVM assembly is roughly doing the right
+thing by comparing your output to this sample output. Note that
+your output LLVM assembly does not have to be identical to the
+sample output for the correct output to be produced.
+
