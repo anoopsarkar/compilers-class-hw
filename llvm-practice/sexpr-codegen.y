@@ -14,8 +14,9 @@ using namespace llvm;
 static Module *TheModule;
 
 // this is the method used to construct the LLVM intermediate code (IR)
-static IRBuilder<> Builder(getGlobalContext());
-// the calls to getGlobalContext() in the init above and in the
+static llvm::LLVMContext TheContext;
+static llvm::IRBuilder<> Builder(TheContext);
+// the calls to TheContext in the init above and in the
 // following code ensures that we are incrementally generating
 // instructions in the right order
 
@@ -51,8 +52,8 @@ public:
 Function *gen_print_int_def() {
   // create a extern definition for print_int
   std::vector<Type*> args;
-  args.push_back(IntegerType::get(getGlobalContext(), 32)); // print_int takes one integer argument
-  FunctionType *print_int_type = FunctionType::get(IntegerType::get(getGlobalContext(), 32), args, false);
+  args.push_back(IntegerType::get(TheContext, 32)); // print_int takes one integer argument
+  FunctionType *print_int_type = FunctionType::get(IntegerType::get(TheContext, 32), args, false);
   return Function::Create(print_int_type, Function::ExternalLinkage, "print_int", TheModule);
 }
 
@@ -63,13 +64,13 @@ Function *gen_main_def(Value *RetVal, Function *print_int) {
     throw runtime_error("something went horribly wrong\n");
   }
   // create the top-level definition for main
-  FunctionType *FT = FunctionType::get(IntegerType::get(getGlobalContext(), 32), false);
+  FunctionType *FT = FunctionType::get(IntegerType::get(TheContext, 32), false);
   Function *TheFunction = Function::Create(FT, Function::ExternalLinkage, "main", TheModule);
   if (TheFunction == 0) {
     throw runtime_error("empty function block"); 
   }
   // Create a new basic block which contains a sequence of LLVM instructions
-  BasicBlock *BB = BasicBlock::Create(getGlobalContext(), "entry", TheFunction);
+  BasicBlock *BB = BasicBlock::Create(TheContext, "entry", TheFunction);
   // All subsequent calls to IRBuilder will place instructions in this location
   Builder.SetInsertPoint(BB);
   Function *CalleeF = TheModule->getFunction(print_int->getName());
@@ -80,7 +81,7 @@ Function *gen_main_def(Value *RetVal, Function *print_int) {
   Value *CallF = Builder.CreateCall(CalleeF, RetVal, "calltmp");
   // Finish off the function.
   // return 0 from main, which is EXIT_SUCCESS
-  Builder.CreateRet(ConstantInt::get(getGlobalContext(), APInt(32, 0)));
+  Builder.CreateRet(ConstantInt::get(TheContext, APInt(32, 0)));
   return TheFunction;
 }
 
@@ -129,7 +130,7 @@ expression: expression '+' NUMBER
 %%
 
 Value *NumberExprAST::Codegen() {
-  return ConstantInt::get(getGlobalContext(), APInt(32, Val));
+  return ConstantInt::get(TheContext, APInt(32, Val));
 }
 
 Value *BinaryExprAST::Codegen() {
@@ -145,13 +146,11 @@ Value *BinaryExprAST::Codegen() {
 }
 
 int main() {
-  // initialize LLVM
-  LLVMContext &Context = getGlobalContext();
   // Make the module, which holds all the code.
-  TheModule = new Module("module for very simple expressions", Context);
+  TheModule = new Module("module for very simple expressions", TheContext);
   // parse the input and create the abstract syntax tree
   int retval = yyparse();
   // Print out all of the generated code to stderr
-  TheModule->dump();
+  TheModule->print(errs(), nullptr);
   return(retval >= 1 ? 1 : 0);
 }

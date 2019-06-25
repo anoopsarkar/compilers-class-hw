@@ -9,7 +9,8 @@
 using namespace std;
 
 static llvm::Module *TheModule;
-static llvm::IRBuilder<> Builder(llvm::getGlobalContext());
+static llvm::LLVMContext TheContext;
+static llvm::IRBuilder<> Builder(TheContext);
 
 llvm::Function *genMainDef() {
   // create the top-level definition for main
@@ -19,7 +20,7 @@ llvm::Function *genMainDef() {
     throw runtime_error("empty function block"); 
   }
   // Create a new basic block which contains a sequence of LLVM instructions
-  llvm::BasicBlock *BB = llvm::BasicBlock::Create(llvm::getGlobalContext(), "entry", TheFunction);
+  llvm::BasicBlock *BB = llvm::BasicBlock::Create(TheContext, "entry", TheFunction);
   // All subsequent calls to IRBuilder will place instructions in this location
   Builder.SetInsertPoint(BB);
   return TheFunction;
@@ -41,7 +42,7 @@ llvm::Function *genPrintStringDef() {
 
 int main() {
   // initialize LLVM
-  llvm::LLVMContext &Context = llvm::getGlobalContext();
+  llvm::LLVMContext &Context = TheContext;
   // Make the module, which holds all the code.
   TheModule = new llvm::Module("global scalar values and print_string example", Context);
 
@@ -73,5 +74,5 @@ int main() {
 
   Builder.CreateRet(Builder.getInt32(0));
   llvm::verifyFunction(*F);
-  TheModule->dump();
+  TheModule->print(llvm::errs(), nullptr);
 }
