@@ -52,57 +52,40 @@ the following that is included in both your Lex and Yacc program.
 
     #endif
 
-Changes to hw2 files Decaf spec and Decaf.asdl 
-------------------------------------
+Getting Started
+----------------
 
-The following changes were made on Jun 11, 2016 to the testcases,
-the Decaf spec and the Decaf AST definition in Decaf.asdl.
+The next 3 sections can be completed non-sequentially, but at least some work must be completed in every section to create a visible difference in output.
 
-To get the updated files for hw2 go to your cloned repo for `compilers-class-hw`
+### Input
 
-    cd your-path-to/compilers-class-hw
-    git pull origin master
+You need to use the lexer which you built in HW1. The parser will handle the tokens so there is no need to `#define` these tokens in `decafast.lex`.
 
-## Testcases changed
+Copy only your token pattern definitions from `decaflex.lex` in HW1 to `decafast.lex`. Do not copy anything from `int main()` as there is a new `int main()` function in `decafast.y`.
 
-The testcases were updated. 
+As in the default action for `T_ID` from `default.lex`, make sure to assign values directly to `yyval` whenever appropriate.
 
-* Some files were removed and some were added to make a nice round
-score of 200 possible.
-* The main change was made to the output of StringConstant which
-retains the escape characters and does not interpret them (we will
-have to do this for hw3 and hw4, but for hw2 keeping the string
-output identical to hw1 enables us to have a single line output for
-each input Decaf file).
+While whitespace was an explicit token in HW1, it is no longer necessary in HW2. Make sure that no token is returned upon recognizing whitespace, or a syntax error may occur.
 
-## Decaf spec changes
+The lexer will be run first, after which the parser will receive the tokens.
 
-Before:
+### Grammar and Program Structure
 
-    ExternType = ( string | MethodType ) .
+The parser will receive the tokens and match the sequence of tokens to a valid set of rules governing the Decaf language.
 
-After:
+In `decafast.y`, write Yacc grammar rules as per the Decaf Specification (see [Decaf Grammar](decafspec.html#decaf-grammar)) to parse the tokens created by the lexer in the structure required by the language.
 
-    ExternType = ( string | Type ) .
+Add `%token` and `%type<>` definitions to `decafast.y` as necessary. This is how the parser will receive and understand tokens processed by the lexer.
 
-A void type implies no arguments, e.g. for `read_int(void)` but if
-we use MethodType then `read_int(void, void, void)` would be valid
-but it should not be.
+### Output
 
-## Decaf.asdl changes
+An abstract syntax tree (AST) is a high-level representation of the program structure without the necessity of containing all the details in the source code; it can be thought of as an abstract representation of the source code.
 
-Added new line to reflect that a Statement can be a Block:
+The specification for the abstract syntax tree to be produced by your program is given below using the Zehpyr Abstract Syntax Definition Language.
 
-    statement = assign
-        ... all the other definitions for statement ...
-        | block
+For each grammar rule in decafast.y, write an action to create the structure of the program as you parse it component by component.
 
-The definition of `extern_type` was fixed:
+The actions will use classes from decafast.cc. Write more classes as necessary in this file, inheriting from the abstract decafAST template which will allow objects to be constructed and passed back through the rules. See class ProgramAST and class PackageAST for examples.
 
-    extern_type  = VarDef(StringType) | VarDef(decaf_type)
-
-Fixed the definition of `ArrayLocExpr` which previously had a third
-argument (copy/pasted from `AssignArrayLoc` by mistake).
-
-    ArrayLocExpr(identifier name, expr index)
+The specification for the abstract syntax tree to be produced by your program is given in the file `Decaf.asdl` in this directory. It uses the Zehpyr Abstract Syntax Definition Language. Write the string str() {} function in the classes in `decafast.cc` to output the syntax tree as a stream of text which is formed with the following specification.
 
