@@ -61,6 +61,6 @@ int main() {
 
   Builder.CreateRet(Builder.getInt32(0));
   llvm::verifyFunction(*F);
-  TheModule->print(llvm::errs(), nullptr);
+  TheModule->print(llvm::outs(), nullptr);
 }
 

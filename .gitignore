@@ -1,5 +1,6 @@
 *.pyc
 *.zip
+*.o
 log
 
 *.lex.c

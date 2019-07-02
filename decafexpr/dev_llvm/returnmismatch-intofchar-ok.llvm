@@ -1,0 +1,19 @@
+; ModuleID = 'Test'
+source_filename = "DecafExpr"
+
+declare void @print_int(i32)
+
+define i32 @test() {
+entry:
+  ret i32 120
+}
+
+define i32 @main() {
+entry:
+  %x = alloca i32
+  %calltmp = call i32 @test()
+  store i32 %calltmp, i32* %x
+  %x1 = load i32, i32* %x
+  call void @print_int(i32 %x1)
+  ret i32 0
+}

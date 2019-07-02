@@ -17,8 +17,9 @@ using namespace std;
 static llvm::Module *TheModule;
 
 // this is the method used to construct the LLVM intermediate code (IR)
-static llvm::IRBuilder<> Builder(llvm::getGlobalContext());
-// the calls to getGlobalContext() in the init above and in the
+static llvm::LLVMContext TheContext;
+static llvm::IRBuilder<> Builder(TheContext);
+// the calls to TheContext in the init above and in the
 // following code ensures that we are incrementally generating
 // instructions in the right order
 
@@ -32,13 +33,13 @@ static llvm::Function *TheFunction = 0;
 // we have to create a main function 
 llvm::Function *gen_main_def() {
   // create the top-level definition for main
-  llvm::FunctionType *FT = llvm::FunctionType::get(llvm::IntegerType::get(llvm::getGlobalContext(), 32), false);
+  llvm::FunctionType *FT = llvm::FunctionType::get(llvm::IntegerType::get(TheContext, 32), false);
   llvm::Function *TheFunction = llvm::Function::Create(FT, llvm::Function::ExternalLinkage, "main", TheModule);
   if (TheFunction == 0) {
     throw runtime_error("empty function block"); 
   }
   // Create a new basic block which contains a sequence of LLVM instructions
-  llvm::BasicBlock *BB = llvm::BasicBlock::Create(llvm::getGlobalContext(), "entry", TheFunction);
+  llvm::BasicBlock *BB = llvm::BasicBlock::Create(TheContext, "entry", TheFunction);
   // All subsequent calls to IRBuilder will place instructions in this location
   Builder.SetInsertPoint(BB);
   return TheFunction;
@@ -105,7 +106,7 @@ ignore: ignore T_ID
 
 int main() {
   // initialize LLVM
-  llvm::LLVMContext &Context = llvm::getGlobalContext();
+  llvm::LLVMContext &Context = TheContext;
   // Make the module, which holds all the code.
   TheModule = new llvm::Module("Test", Context);
   // set up symbol table
@@ -116,11 +117,11 @@ int main() {
   // remove symbol table
   // Finish off the main function. (see the WARNING above)
   // return 0 from main, which is EXIT_SUCCESS
-  Builder.CreateRet(llvm::ConstantInt::get(llvm::getGlobalContext(), llvm::APInt(32, 0)));
+  Builder.CreateRet(llvm::ConstantInt::get(TheContext, llvm::APInt(32, 0)));
   // Validate the generated code, checking for consistency.
   verifyFunction(*TheFunction);
   // Print out all of the generated code to stderr
-  TheModule->dump();
+  TheModule->print(llvm::errs(), nullptr);
   return(retval >= 1 ? EXIT_FAILURE : EXIT_SUCCESS);
 }
 
