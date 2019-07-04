@@ -63,7 +63,6 @@ class ZipOutput:
                 stdin_file = sys.stdin
             else:
                 print("error: something went wrong when trying to run the following command:", file=sys.stderr)
-                print(argv, file=sys.stderr)
                 raise
         else:
             argv = run_program_path
