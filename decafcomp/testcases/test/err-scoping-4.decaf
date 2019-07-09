@@ -1,0 +1,5 @@
+extern func foo() int;
+package Scoping {
+	func foo() void {}
+	func bar() void { var foo int; foo(); }
+}

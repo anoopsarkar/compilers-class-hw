@@ -1,0 +1,8 @@
+extern func print_int(int) void;
+
+package C {
+    func main() int {
+		break;
+        print_int(1);
+    }
+}

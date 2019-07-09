@@ -1,0 +1,9 @@
+extern func print_int(int) void;
+
+package C {
+    var foo [5] int;
+
+    func main() int {
+		var x int; foo[0] = 1; x[0] = 1;
+    }
+}

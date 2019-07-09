@@ -1,0 +1,5 @@
+extern func print_int(int) void;
+
+package C {
+	var xs[10] int; func main() int { var x int; x = xs[true]; }
+}

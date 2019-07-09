@@ -1,0 +1,26 @@
+extern func print_int(int) void;
+extern func print_string(string) void;
+
+package bitshift_small {
+    
+    func main() void {
+        print_int(foo1());
+    }
+
+    func foo1() int {
+        return (1+foo2());
+    }
+
+    func foo2() int {
+        return (intcast(!foo3()));
+    }
+
+    func foo3() bool {
+        return (-5%3 == 1);
+    }
+
+    func intcast(x int) int {
+        return (((x)));
+    }
+
+}
