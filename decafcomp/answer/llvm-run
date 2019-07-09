@@ -96,7 +96,7 @@ def run(msg, cmd, suffix, inpath, out_prefix):
     if retval == 0: 
         print('ok', file=sys.stderr)
     else:
-        print("failed (%d)" % (retval), file=sys.stderr)
+        print("non-zero return value (%d)" % (retval), file=sys.stderr)
     with open(outpath + '.ret', 'w') as ostream:
         ostream.write("%d\n" % (retval))
     printfile(outpath + '.out', sys.stdout)
