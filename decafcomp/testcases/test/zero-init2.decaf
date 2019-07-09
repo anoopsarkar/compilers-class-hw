@@ -1,0 +1,20 @@
+extern func print_int(int) void;
+extern func print_string(string) void;
+
+package C {
+  
+    func main() int {
+      var i int;
+      var b bool;
+      while (true) {
+        var i int;
+        var b bool;
+        i = 13;
+        b = true; 
+        break;
+      }
+      print_int(i);
+      print_int(b);      
+    }
+
+}

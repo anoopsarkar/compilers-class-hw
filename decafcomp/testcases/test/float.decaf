@@ -1,0 +1,26 @@
+extern func print_int(int) void;
+extern func print_string(string) void;
+
+package float {
+    
+    func main() int {
+        var x, y int;
+        x = -14;
+        y = 13;
+        print_int(x);
+        print_string("/");
+        print_int(y);
+        print_string(" = ");
+        print_int(x/y);
+        print_string(".");
+        print_int(abs(x*10000000/y-x/y*10000000));
+        print_string("\n");
+    }
+
+    func abs(x int) int {
+        if (x > 0) {return (x);}
+        return (-x);
+    }
+
+
+}

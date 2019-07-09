@@ -1,0 +1,17 @@
+extern func print_int(int) void;
+extern func print_string(string) void;
+
+package variableoverride {
+    
+    func main() int {
+        var main int;
+        main = 2;
+        if (main < 3) {
+            {var main bool; main = !main;}
+        }
+        print_int(main);
+        return ();
+    }
+
+
+}

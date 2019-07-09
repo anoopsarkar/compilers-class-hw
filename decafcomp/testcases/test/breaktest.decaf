@@ -1,0 +1,32 @@
+extern func print_string(string) void;
+extern func print_int(int) void;
+
+package breaktest {
+    
+    func main() int {
+        var i int;
+        for (i=0; i< 20; i = i+1) {
+            if (i > 1) {
+                if (i > 2) {
+                    if (i > 3) {
+                        if (i < 10) {
+                            continue;
+                            print_int(3);
+                            break;
+                        }
+                        else {
+                            if (i < 15) {
+                                while (true) {
+                                    break;
+                                    break;
+                                }
+                                print_int(i);
+                                break;
+                            }
+                        }
+                    }
+                }
+            }                   
+        }
+    }
+}

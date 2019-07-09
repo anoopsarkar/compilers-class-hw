@@ -1,0 +1,16 @@
+extern func print_string(string) void;
+
+package C {
+  
+    func main() int {
+        if (true && true && false || true && false || false || true) {
+          if (false || true && true) {
+              print_string("O");
+              if (true && false || false) {
+                print_string("NO");
+              }
+            } 
+        } 
+        print_string("K");
+    }
+}

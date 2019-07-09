@@ -1,0 +1,7 @@
+package C { 
+  func main() int { }
+  func foo() void { 
+    bar();
+  } 
+  func bar() void {}
+}

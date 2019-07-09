@@ -4,6 +4,6 @@ package Test {
     func main() int {
         var x int;
         x = 1;
-        print_string("hello world\n");
+        if (x == 1) { print_string("hello world\n"); }
     }
 }

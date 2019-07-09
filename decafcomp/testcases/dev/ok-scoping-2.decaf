@@ -1,0 +1,10 @@
+
+package Scoping {
+
+
+  func main() int {
+    
+  }
+
+  func foo(x int) void { { var x int; } }
+}

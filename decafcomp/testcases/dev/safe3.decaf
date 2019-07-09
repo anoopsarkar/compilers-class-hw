@@ -1,0 +1,10 @@
+extern func print_string(string) void;
+extern func print_int(int) void;
+
+package safe {
+  func main() int {
+    if (true) {
+      print_string("Hello, world!");
+    }
+  }
+}

@@ -4,6 +4,6 @@ package Test {
     {
         var x bool;
         x = true;
-        print_int(x);
+        if (x) { print_int(x); }
     }
 }

@@ -1,0 +1,21 @@
+
+extern func print_string(string) void;
+extern func print_int(int) void;
+
+package bs_mod_small {
+    
+    func main() bool {
+        var z,y,x int;
+        z = 4;
+        y = 3;
+        x = z << y;
+        print_int(x >> 2);
+        print_string("\n");
+        print_int(x >> 5);
+        print_string("\n");
+        print_int(x >> 6);
+        print_string("\n");
+        return;
+    }
+
+}

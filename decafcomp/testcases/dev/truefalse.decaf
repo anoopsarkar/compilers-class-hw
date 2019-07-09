@@ -1,0 +1,23 @@
+extern func print_string(string) void;
+extern func print_int(int) void;
+
+package TF {
+  var TF [32] int;
+  func main() int {
+    print_string("hello\n");
+    if (true == false) {
+      return(0);
+    } else {
+      return(0);
+    }
+    {
+      var x int;
+      x = 3;
+      x = x - 32;
+      TF[0] = TF[0] + 3;
+      TF[1] = TF[1] / 6;
+      TF[2] = TF[2] % 3;
+      TF[6] = x % TF[2];
+    }
+  }
+}

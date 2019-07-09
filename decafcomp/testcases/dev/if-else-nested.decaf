@@ -1,0 +1,20 @@
+extern func print_int(int) void;
+
+package C {
+    func main() int {
+        if (true) {
+          if (false) {
+            print_int(9);
+          } else {
+            print_int(4);
+            if (true) {
+              print_int(2);
+            } else {
+              print_int(11);
+            }
+          }
+        } else {
+          print_int(1);
+        }
+    }
+}

@@ -1,0 +1,34 @@
+
+extern func print_string(string) void;
+extern func print_int(int) void;
+
+package byone {
+  // http://stackoverflow.com/questions/1100090/looking-for-an-efficient-integer-square-root-algorithm-for-arm-thumb2
+  func sqrt(a_nInput int) int {
+    var op, res, one int;
+    op = a_nInput;
+    res = 0;
+    one = 1 << 30;
+    while (one != 0) {
+      if (op >= res + one) {
+        op = op - (res + one); res = res + 2 * one; 
+      }
+      res = res >> 1;
+      one = one >> 2; 
+    }
+    return(res);
+  }
+  func main() int {
+    var x int;
+    print_string("hello\n");
+
+    for (x = 1; x < 20; x = x + 1) {
+      var a int;
+      // random polynomial division
+      a = ( 3 + 7 *x*x - sqrt(1+2*x+3*x*x) ) / (2 * x);
+      print_int(a);
+      print_string("\n");
+    }
+  }
+}
+

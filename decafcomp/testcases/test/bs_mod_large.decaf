@@ -1,0 +1,18 @@
+
+extern func print_string(string) void;
+extern func print_int(int) void;
+
+package bs_mod_large {
+    
+    func main() int {
+        var a,b,c int;
+        a = 4;
+        b = 2;
+        c = a >> b;
+        print_int(c << -(-30%-32));
+        print_string("\n");
+        print_int(c << -(-31%-32));
+        print_string("\n");
+    }
+
+}

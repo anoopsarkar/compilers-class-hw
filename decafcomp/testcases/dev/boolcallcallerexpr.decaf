@@ -2,7 +2,7 @@ extern func print_int(int) void;
 
 package Test {
     func test(a bool) void {
-        print_int(1);
+        if (a) { print_int(1); }
     }
     func main() int {
         test(true && true);

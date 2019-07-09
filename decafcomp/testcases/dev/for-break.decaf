@@ -1,0 +1,13 @@
+extern func print_int(int) void;
+
+package C {
+    func main() int {
+        var i int;
+        for (i = 0; i < 10; i = i + 1) {
+          if (i > 5) {
+            break;
+          }
+          print_int(i);
+        }
+    }
+}

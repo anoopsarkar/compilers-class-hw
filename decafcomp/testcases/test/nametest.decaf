@@ -1,0 +1,15 @@
+extern func print_string(string) void;
+extern func print_int(int) void;
+
+package nametest {
+    
+    func main() int {
+        var _,__,___ int;
+        _ = 4;
+        __ = 3;
+        ___ = _+__;
+        print_int(___);
+        return();
+    }
+
+}

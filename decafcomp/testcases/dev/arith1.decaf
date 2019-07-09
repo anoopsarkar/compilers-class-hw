@@ -10,6 +10,8 @@ package foo {
         c = true;
         flag = a || b && !c;
         size = 1 >> 3 + 1 / -2 % 10 - 5 * 2 / 20 << 2;
-        print_int(size);
+        if (size >= 0) {
+            print_int(size);
+        }
     }
 }

@@ -1,0 +1,13 @@
+extern func print_int(int) void;
+
+package Statements {
+  
+  func main() int {
+    foo(1);
+  }
+
+  func foo(a int) void {
+    a = 2;
+    print_int(a);
+  }
+}

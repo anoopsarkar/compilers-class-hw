@@ -9,6 +9,6 @@ package Test {
     x = -y;
     }
     y = !true;
-    print_int(x);
+    if (!y) { print_int(x); }
     }
 }

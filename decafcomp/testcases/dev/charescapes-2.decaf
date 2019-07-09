@@ -1,7 +1,0 @@
-package Test {
-	func main() int
-	{
-		var c int;
-		c = '\v';
-	}
-}

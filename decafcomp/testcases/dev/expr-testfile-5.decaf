@@ -8,6 +8,6 @@ package Test {
        x=(2>=1);
        y=(2!=1);
        z=x&&y;
-       print_int(z);
+       if (true) { print_int(z); }
     }
 }

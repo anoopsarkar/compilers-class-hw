@@ -5,7 +5,7 @@ Then run:
 
     python zipout.py
 
-This will create a file `output.zip` which you can upload to the leaderboard on sfu-yacc.appspot.com
+This will create a file `output.zip`.
 
 To customize the files used by default, run:
 
@@ -150,7 +150,7 @@ if __name__ == '__main__':
     optparser.add_option("-t", "--testcases", dest="testcase_dir", default='testcases', help="testcases directory [default: testcases]")
     optparser.add_option("-e", "--ending", dest="file_suffix", default='.txt', help="suffix to use for testcases [default: .txt]")
     optparser.add_option("-o", "--output", dest="output_dir", default='output', help="Save the output from the testcases to this directory.")
-    optparser.add_option("-z", "--zipfile", dest="zipfile", default='output', help="zip file you should upload to the leaderboard submission page on sfu-yacc.appspot.com")
+    optparser.add_option("-z", "--zipfile", dest="zipfile", default='output', help="zip file with your output answers")
     optparser.add_option("-l", "--logfile", dest="logfile", default=None, help="log file for debugging")
     (opts, _) = optparser.parse_args()
 

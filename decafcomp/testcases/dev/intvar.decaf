@@ -4,8 +4,10 @@ package Test {
     {
         var x int;
         x = 1;
-        print_int(1);
-        print_int(x);
-        print_int(2);
+        if (x == 1) {
+            print_int(1);
+            print_int(x);
+            print_int(2);
+        }
     }
 }

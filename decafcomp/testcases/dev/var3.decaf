@@ -8,14 +8,18 @@ package Test {
         x = 0;
         y = 0;
         z = 0;
-        print_int(x);
-        print_int(y);
-        print_int(z);
+        if (x == 0) {
+            print_int(x);
+            print_int(y);
+            print_int(z);
+        }
         x = 1;
         y = 1;
         z = 1;
-        print_int(x);
-        print_int(y);
-        print_int(z);
+        if (x == 1) {
+            print_int(x);
+            print_int(y);
+            print_int(z);
+        }
     }
 }

@@ -7,6 +7,6 @@ package Test {
     func main() int {
         var x int;
         x = test();
-        print_int(x);
+        if (x == 'x') { print_int(x); }
     }
 }

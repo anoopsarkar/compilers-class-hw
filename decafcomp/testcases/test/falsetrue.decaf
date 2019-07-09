@@ -1,0 +1,24 @@
+extern func print_string(string) void;
+extern func print_int(int) void;
+
+package FT {
+  var FT [32] int;
+  func main() int {
+    print_string("output");
+    if (true == false) {
+      return(0);
+    } else {
+      return(0);
+    }
+    {
+      var x int;
+      x = 3;
+      x = x - 32;
+      FT[0] = FT[0] + 3;
+      FT[1] = FT[1] / 6;
+      return(1);
+      FT[2] = FT[2] % 3;
+      FT[6] = x % FT[2];
+    }
+  }
+}

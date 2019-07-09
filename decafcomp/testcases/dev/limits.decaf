@@ -1,0 +1,18 @@
+extern func print_string(string) void;
+extern func print_int(int) void;
+
+package Limits {
+  func main() int {
+    var x int;
+    x = 2147483647;
+    print_int(x); print_string(" ");
+    x = x + 1;
+    print_int(x); print_string(" ");
+    x = -2147483648;
+    print_int(x); print_string(" ");
+    x = 1 << 31;
+    print_int(x); print_string(" ");
+    x = x >> 31;
+    print_int(x); print_string(" ");
+  }
+}

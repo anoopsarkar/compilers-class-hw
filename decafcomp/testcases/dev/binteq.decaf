@@ -6,6 +6,6 @@ package Test {
         b = 13 == 15;
         b = 13 == 13;
         b = 15 == 13;
-        print_int(b);
+        if (!b) { print_int(b); }
     }
 }

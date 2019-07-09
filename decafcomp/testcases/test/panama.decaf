@@ -1,0 +1,73 @@
+extern func print_string(string) void;
+
+package C {
+  
+    func main() int {
+        if (true && a(true) || man() && false) {             // "a" + "man"
+          print_string("wat");
+        } else {
+          print_string(", ");
+          if (a(false) && canal()) {                           // "a"
+            print_string("foo");
+          } else {
+            if (true || canal()) {
+              if (true && true && plan()) {              // "plan"    
+                var flag bool;
+                flag = true;
+                while(flag && canal()) {
+                  print_string("bar");
+                  flag = false;
+                  continue;
+                }
+              } else {
+                print_string(", ");
+                if (a(false) || true && false) {             // "a"
+                  print_string("bash");
+                } else {
+                  if (false || true && canal() || man()) { // "canal"
+                    var flag bool;
+                    print_string("--");
+                    flag = true;
+                    while (flag && panama()) {          // "panama"
+                      flag = false;
+                      {{{{
+                        print_string("!");
+                        continue;
+                      }}}}
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+    }
+
+    func man() bool {
+      print_string("man");
+    }
+
+    func plan() bool {
+      print_string("plan");
+      return(false);
+    }
+
+    func a(caps bool) bool {
+      if (caps) {
+        print_string("A ");
+      } else {
+        print_string("a ");
+      }
+      return(false);
+    }
+
+    func canal() bool {
+      print_string("canal");
+      return(true);
+    }
+
+    func panama() bool {
+      print_string("Panama");
+    }
+
+}

@@ -8,9 +8,11 @@ package prec {
         b = 1 + 2 * 3;
         c = !false || true;
         d = 1 / 2 + -3;
-        print_int(a);
-        print_int(b);
-        print_int(c);
-        print_int(d);
+        if (c) {
+            print_int(a);
+            print_int(b);
+            print_int(c);
+            print_int(d);
+        }
     }
 }

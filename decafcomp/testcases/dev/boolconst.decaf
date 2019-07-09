@@ -6,6 +6,6 @@ package Test {
         print_int(true);
         print_int(false);
         x = 3;
-        print_int(x);
+        if (x == 3) { print_int(x); }
     }
 }

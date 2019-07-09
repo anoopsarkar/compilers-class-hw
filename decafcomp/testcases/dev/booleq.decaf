@@ -8,6 +8,6 @@ package Test {
         print_int(false == true);
         print_int(false == false);
         x = 3;
-        print_int(x);
+        if (x == 3) { print_int(x); }
     }
 }

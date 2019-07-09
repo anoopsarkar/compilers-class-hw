@@ -1,0 +1,12 @@
+extern func print_int(int) void;
+
+package C {
+    var foo [5] bool;
+
+    func main() int {
+        var bar bool;
+        foo[3] = true;
+        bar = foo[3];
+        print_int(bar);
+    }
+}

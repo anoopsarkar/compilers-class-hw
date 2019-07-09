@@ -1,0 +1,39 @@
+
+extern func print_string(string) void;
+extern func print_int(int) void;
+
+package byone {
+  func i(i int) int {
+    {
+      var i int;
+      i = 0;
+      if (2 > i) {
+        var i int;
+        i = 2;
+      }
+      if (2 < i) {
+      } else {
+        var i int;
+        i = 6;
+      }
+      print_int(i); print_string(",\r\n");
+      return(0);
+    }
+  }
+  func main() int {
+    var i int;
+    print_string("hello\n");
+    i = 0;
+    if (2 > i) {
+      var i int;
+      i = 2;
+    }
+    if (2 < i) {
+    } else {
+      var i int;
+      i = 6;
+    }
+    print_int(i); print_string(",\r\n");
+  }
+}
+

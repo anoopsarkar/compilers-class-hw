@@ -6,7 +6,7 @@ package Test {
         var y int;
         x = 1;
         y = 1;
-        print_int(x);
-        print_int(y);
+        if (x == 1) { print_int(x); }
+        if (y == 1) { print_int(y); }
     }
 }

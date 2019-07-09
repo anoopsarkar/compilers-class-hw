@@ -1,0 +1,10 @@
+extern func print_int(int) void;
+
+package C {
+    var foo bool;
+
+    func main() int {
+        foo = false;
+        print_int(!foo);
+    }
+}

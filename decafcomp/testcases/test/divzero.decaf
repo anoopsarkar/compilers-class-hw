@@ -1,0 +1,16 @@
+extern func print_int(int) void;
+
+package DivByZero {
+
+    func main() int {
+        var x, y int;
+        x = 5;
+        y = 0;
+        if (x < 6 || x/y == 0) {
+            print_int(x);
+        }
+        if (x < 5 && 1/0 == 0) {
+            print_int(y);
+        }
+    }
+}

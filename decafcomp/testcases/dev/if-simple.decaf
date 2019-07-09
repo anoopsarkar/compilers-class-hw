@@ -1,0 +1,13 @@
+extern func print_int(int) void;
+
+package C {
+    func main() int {
+        if (true) {
+          print_int(4);
+        }
+        if (false) {
+          print_int(13);
+        }
+        print_int(2);
+    }
+}

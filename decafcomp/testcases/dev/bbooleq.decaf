@@ -7,6 +7,6 @@ package Test {
         b = true == false;
         b = false == true;
         b = false == false;
-        print_int(b);
+        if (b) { print_int(b); }
     }
 }
