@@ -1,0 +1,18 @@
+; ModuleID = 'Test'
+source_filename = "DecafComp"
+
+declare i32 @read_int()
+
+declare void @print_int(i32)
+
+define i32 @main() {
+func:
+  %x = alloca i32
+  store i32 0, i32* %x
+  %calltmp = call i32 @read_int()
+  %multmp = mul i32 %calltmp, 100
+  store i32 %multmp, i32* %x
+  %x1 = load i32, i32* %x
+  call void @print_int(i32 %x1)
+  ret i32 0
+}

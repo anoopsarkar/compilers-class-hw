@@ -1,0 +1,7 @@
+; ModuleID = 'QuickSort'
+source_filename = "DecafComp"
+
+define void @main() {
+func:
+  ret void
+}

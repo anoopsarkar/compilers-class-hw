@@ -1,0 +1,28 @@
+; ModuleID = 'C'
+source_filename = "DecafComp"
+
+declare void @print_int(i32)
+
+define i32 @main() {
+func:
+  %i = alloca i32
+  store i32 0, i32* %i
+  store i32 1, i32* %i
+  br label %loop
+
+loop:                                             ; preds = %body, %func
+  %i1 = load i32, i32* %i
+  %lttmp = icmp slt i32 %i1, 10
+  br i1 %lttmp, label %body, label %end
+
+body:                                             ; preds = %loop
+  %i2 = load i32, i32* %i
+  call void @print_int(i32 %i2)
+  %i3 = load i32, i32* %i
+  %addtmp = add i32 %i3, 1
+  store i32 %addtmp, i32* %i
+  br label %loop
+
+end:                                              ; preds = %loop
+  ret i32 0
+}

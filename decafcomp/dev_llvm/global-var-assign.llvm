@@ -1,0 +1,19 @@
+; ModuleID = 'C'
+source_filename = "DecafComp"
+
+@foo = global i32 42
+@bar = global i1 true
+
+declare void @print_int(i32)
+
+declare void @print_string(i8*)
+
+define i32 @main() {
+func:
+  %foo = load i32, i32* @foo
+  call void @print_int(i32 %foo)
+  %bar = load i1, i1* @bar
+  %zexttmp = zext i1 %bar to i32
+  call void @print_int(i32 %zexttmp)
+  ret i32 0
+}

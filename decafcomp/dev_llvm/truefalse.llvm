@@ -1,0 +1,48 @@
+; ModuleID = 'TF'
+source_filename = "DecafComp"
+
+@TF = global [32 x i32] zeroinitializer
+@globalstring = private unnamed_addr constant [7 x i8] c"hello\0A\00", align 1
+
+declare void @print_string(i8*)
+
+declare void @print_int(i32)
+
+define i32 @main() {
+func:
+  call void @print_string(i8* getelementptr inbounds ([7 x i8], [7 x i8]* @globalstring, i32 0, i32 0))
+  br label %if
+
+if:                                               ; preds = %func
+  br i1 false, label %true, label %else
+
+true:                                             ; preds = %if
+  ret i32 0
+  br label %false
+
+false:                                            ; preds = %else, %true
+  %x = alloca i32
+  store i32 0, i32* %x
+  store i32 3, i32* %x
+  %x1 = load i32, i32* %x
+  %subtmp = sub i32 %x1, 32
+  store i32 %subtmp, i32* %x
+  %arrayval = load i32, i32* getelementptr inbounds ([32 x i32], [32 x i32]* @TF, i32 0, i32 0)
+  %addtmp = add i32 %arrayval, 3
+  store i32 %addtmp, i32* getelementptr inbounds ([32 x i32], [32 x i32]* @TF, i32 0, i32 0)
+  %arrayval2 = load i32, i32* getelementptr inbounds ([32 x i32], [32 x i32]* @TF, i32 0, i32 1)
+  %divtmp = sdiv i32 %arrayval2, 6
+  store i32 %divtmp, i32* getelementptr inbounds ([32 x i32], [32 x i32]* @TF, i32 0, i32 1)
+  %arrayval3 = load i32, i32* getelementptr inbounds ([32 x i32], [32 x i32]* @TF, i32 0, i32 2)
+  %modtmp = srem i32 %arrayval3, 3
+  store i32 %modtmp, i32* getelementptr inbounds ([32 x i32], [32 x i32]* @TF, i32 0, i32 2)
+  %x4 = load i32, i32* %x
+  %arrayval5 = load i32, i32* getelementptr inbounds ([32 x i32], [32 x i32]* @TF, i32 0, i32 2)
+  %modtmp6 = srem i32 %x4, %arrayval5
+  store i32 %modtmp6, i32* getelementptr inbounds ([32 x i32], [32 x i32]* @TF, i32 0, i32 6)
+  ret i32 0
+
+else:                                             ; preds = %if
+  ret i32 0
+  br label %false
+}

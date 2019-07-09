@@ -1,0 +1,19 @@
+; ModuleID = 'C'
+source_filename = "DecafComp"
+
+@foo = global [5 x i1] zeroinitializer
+
+declare void @print_int(i32)
+
+define i32 @main() {
+func:
+  %bar = alloca i1
+  store i1 false, i1* %bar
+  store i1 true, i1* getelementptr inbounds ([5 x i1], [5 x i1]* @foo, i32 0, i32 3)
+  %arrayval = load i1, i1* getelementptr inbounds ([5 x i1], [5 x i1]* @foo, i32 0, i32 3)
+  store i1 %arrayval, i1* %bar
+  %bar1 = load i1, i1* %bar
+  %zexttmp = zext i1 %bar1 to i32
+  call void @print_int(i32 %zexttmp)
+  ret i32 0
+}

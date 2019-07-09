@@ -1,0 +1,9 @@
+; ModuleID = 'Test'
+source_filename = "DecafExpr"
+
+define i32 @main() {
+entry:
+  %c = alloca i32
+  store i32 13, i32* %c
+  ret i32 0
+}

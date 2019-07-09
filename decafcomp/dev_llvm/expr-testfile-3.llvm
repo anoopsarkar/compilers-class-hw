@@ -1,0 +1,15 @@
+; ModuleID = 'Test'
+source_filename = "DecafComp"
+
+declare void @print_int(i32)
+
+define i32 @main() {
+func:
+  %y = alloca i1
+  store i1 false, i1* %y
+  store i1 true, i1* %y
+  %y1 = load i1, i1* %y
+  %zexttmp = zext i1 %y1 to i32
+  call void @print_int(i32 %zexttmp)
+  ret i32 0
+}

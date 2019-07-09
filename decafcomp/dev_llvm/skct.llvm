@@ -1,0 +1,42 @@
+; ModuleID = 'foo'
+source_filename = "DecafComp"
+
+@globalstring = private unnamed_addr constant [4 x i8] c"foo\00", align 1
+
+declare void @print_int(i32)
+
+declare void @print_string(i8*)
+
+define i1 @foo() {
+func:
+  call void @print_string(i8* getelementptr inbounds ([4 x i8], [4 x i8]* @globalstring, i32 0, i32 0))
+  ret i1 false
+}
+
+define i32 @main() {
+func:
+  %flag = alloca i1
+  store i1 false, i1* %flag
+  br i1 true, label %skctend, label %noskct
+
+noskct:                                           ; preds = %func
+  %calltmp = call i1 @foo()
+  br i1 %calltmp, label %noskct1, label %skctend2
+
+skctend:                                          ; preds = %skctend2, %func
+  %phival3 = phi i1 [ true, %func ], [ %ortmp, %skctend2 ]
+  store i1 %phival3, i1* %flag
+  %flag4 = load i1, i1* %flag
+  %zexttmp = zext i1 %flag4 to i32
+  call void @print_int(i32 %zexttmp)
+  ret i32 0
+
+noskct1:                                          ; preds = %noskct
+  %andtmp = and i1 %calltmp, false
+  br label %skctend2
+
+skctend2:                                         ; preds = %noskct1, %noskct
+  %phival = phi i1 [ %calltmp, %noskct ], [ %andtmp, %noskct1 ]
+  %ortmp = or i1 true, %phival
+  br label %skctend
+}

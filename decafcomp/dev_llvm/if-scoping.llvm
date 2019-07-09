@@ -1,0 +1,53 @@
+; ModuleID = 'byone'
+source_filename = "DecafComp"
+
+@fin = global [20 x i32] zeroinitializer
+@globalstring = private unnamed_addr constant [7 x i8] c"hello\0A\00", align 1
+@globalstring.1 = private unnamed_addr constant [4 x i8] c",\0D\0A\00", align 1
+
+declare void @print_string(i8*)
+
+declare void @print_int(i32)
+
+define i32 @main() {
+func:
+  %i = alloca i32
+  store i32 0, i32* %i
+  call void @print_string(i8* getelementptr inbounds ([7 x i8], [7 x i8]* @globalstring, i32 0, i32 0))
+  store i32 0, i32* %i
+  br label %if
+
+if:                                               ; preds = %func
+  %i1 = load i32, i32* %i
+  %gttmp = icmp sgt i32 2, %i1
+  br i1 %gttmp, label %true, label %false
+
+true:                                             ; preds = %if
+  %i2 = alloca i32
+  store i32 0, i32* %i2
+  store i32 2, i32* %i2
+  br label %false
+
+false:                                            ; preds = %true, %if
+  br label %if3
+
+if3:                                              ; preds = %false
+  %i4 = load i32, i32* %i
+  %lttmp = icmp slt i32 2, %i4
+  br i1 %lttmp, label %true5, label %else
+
+true5:                                            ; preds = %if3
+  br label %false6
+
+false6:                                           ; preds = %else, %true5
+  %i8 = load i32, i32* %i
+  call void @print_int(i32 %i8)
+  call void @print_string(i8* getelementptr inbounds ([4 x i8], [4 x i8]* @globalstring.1, i32 0, i32 0))
+  ret i32 0
+
+else:                                             ; preds = %if3
+  %i7 = alloca i32
+  store i32 0, i32* %i7
+  store i32 6, i32* %i7
+  br label %false6
+}

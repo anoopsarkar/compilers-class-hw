@@ -1,0 +1,75 @@
+; ModuleID = 'Catalan'
+source_filename = "DecafComp"
+
+declare void @print_int(i32)
+
+declare i32 @read_int()
+
+define void @main() {
+func:
+  %calltmp = call i32 @read_int()
+  %calltmp1 = call i32 @cat(i32 %calltmp)
+  call void @print_int(i32 %calltmp1)
+  ret void
+}
+
+define i32 @fact(i32 %n) {
+func:
+  %n1 = alloca i32
+  store i32 %n, i32* %n1
+  br label %if
+
+if:                                               ; preds = %func
+  %n2 = load i32, i32* %n1
+  %eqtmp = icmp eq i32 %n2, 1
+  br i1 %eqtmp, label %true, label %else
+
+true:                                             ; preds = %if
+  ret i32 1
+  br label %false
+
+false:                                            ; preds = %else, %true
+  ret i32 0
+
+else:                                             ; preds = %if
+  %n3 = load i32, i32* %n1
+  %n4 = load i32, i32* %n1
+  %subtmp = sub i32 %n4, 1
+  %calltmp = call i32 @fact(i32 %subtmp)
+  %multmp = mul i32 %n3, %calltmp
+  ret i32 %multmp
+  br label %false
+}
+
+define i32 @choose(i32 %a, i32 %b) {
+func:
+  %a1 = alloca i32
+  store i32 %a, i32* %a1
+  %b2 = alloca i32
+  store i32 %b, i32* %b2
+  %a3 = load i32, i32* %a1
+  %calltmp = call i32 @fact(i32 %a3)
+  %b4 = load i32, i32* %b2
+  %calltmp5 = call i32 @fact(i32 %b4)
+  %a6 = load i32, i32* %a1
+  %b7 = load i32, i32* %b2
+  %subtmp = sub i32 %a6, %b7
+  %calltmp8 = call i32 @fact(i32 %subtmp)
+  %multmp = mul i32 %calltmp5, %calltmp8
+  %divtmp = sdiv i32 %calltmp, %multmp
+  ret i32 %divtmp
+}
+
+define i32 @cat(i32 %n) {
+func:
+  %n1 = alloca i32
+  store i32 %n, i32* %n1
+  %n2 = load i32, i32* %n1
+  %multmp = mul i32 2, %n2
+  %n3 = load i32, i32* %n1
+  %calltmp = call i32 @choose(i32 %multmp, i32 %n3)
+  %n4 = load i32, i32* %n1
+  %addtmp = add i32 %n4, 1
+  %divtmp = sdiv i32 %calltmp, %addtmp
+  ret i32 %divtmp
+}

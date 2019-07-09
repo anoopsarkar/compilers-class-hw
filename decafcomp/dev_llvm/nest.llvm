@@ -1,0 +1,318 @@
+; ModuleID = 'nest'
+source_filename = "DecafComp"
+
+@globalstring = private unnamed_addr constant [7 x i8] c"hello\0A\00", align 1
+
+declare void @print_string(i8*)
+
+declare void @print_int(i32)
+
+define i32 @main() {
+func:
+  %i = alloca i32
+  store i32 0, i32* %i
+  %j = alloca i32
+  store i32 0, i32* %j
+  %k = alloca i32
+  store i32 0, i32* %k
+  %l = alloca i32
+  store i32 0, i32* %l
+  %times = alloca i32
+  store i32 0, i32* %times
+  call void @print_string(i8* getelementptr inbounds ([7 x i8], [7 x i8]* @globalstring, i32 0, i32 0))
+  store i32 0, i32* %times
+  store i32 0, i32* %i
+  br label %loop
+
+loop:                                             ; preds = %next, %func
+  %i1 = load i32, i32* %i
+  %lttmp = icmp slt i32 %i1, 10
+  br i1 %lttmp, label %body, label %end
+
+body:                                             ; preds = %loop
+  br label %if
+
+next:                                             ; preds = %false130, %true
+  %i131 = load i32, i32* %i
+  %addtmp132 = add i32 %i131, 1
+  store i32 %addtmp132, i32* %i
+  br label %loop
+
+end:                                              ; preds = %true129, %loop
+  %times133 = load i32, i32* %times
+  call void @print_int(i32 %times133)
+  ret i32 0
+
+if:                                               ; preds = %body
+  %i2 = load i32, i32* %i
+  %eqtmp = icmp eq i32 %i2, 5
+  br i1 %eqtmp, label %true, label %false
+
+true:                                             ; preds = %if
+  br label %next
+  br label %false
+
+false:                                            ; preds = %true, %if
+  store i32 0, i32* %j
+  br label %loop3
+
+loop3:                                            ; preds = %next7, %false
+  %j4 = load i32, i32* %j
+  %lttmp5 = icmp slt i32 %j4, 10
+  br i1 %lttmp5, label %body6, label %end8
+
+body6:                                            ; preds = %loop3
+  br label %if9
+
+next7:                                            ; preds = %false123, %true14
+  %j124 = load i32, i32* %j
+  %addtmp125 = add i32 %j124, 1
+  store i32 %addtmp125, i32* %j
+  br label %loop3
+
+end8:                                             ; preds = %true122, %loop3
+  br label %if126
+
+if9:                                              ; preds = %body6
+  %i10 = load i32, i32* %i
+  %eqtmp11 = icmp eq i32 %i10, 2
+  br i1 %eqtmp11, label %noskct, label %skctend
+
+noskct:                                           ; preds = %if9
+  %j12 = load i32, i32* %j
+  %eqtmp13 = icmp eq i32 %j12, 4
+  %andtmp = and i1 %eqtmp11, %eqtmp13
+  br label %skctend
+
+skctend:                                          ; preds = %noskct, %if9
+  %phival = phi i1 [ %eqtmp11, %if9 ], [ %andtmp, %noskct ]
+  br i1 %phival, label %true14, label %false15
+
+true14:                                           ; preds = %skctend
+  br label %next7
+  br label %false15
+
+false15:                                          ; preds = %true14, %skctend
+  store i32 0, i32* %k
+  br label %loop16
+
+loop16:                                           ; preds = %next20, %false15
+  %k17 = load i32, i32* %k
+  %lttmp18 = icmp slt i32 %k17, 10
+  br i1 %lttmp18, label %body19, label %end21
+
+body19:                                           ; preds = %loop16
+  br label %if22
+
+next20:                                           ; preds = %false110, %true37
+  %k111 = load i32, i32* %k
+  %addtmp112 = add i32 %k111, 1
+  store i32 %addtmp112, i32* %k
+  br label %loop16
+
+end21:                                            ; preds = %true109, %loop16
+  br label %if113
+
+if22:                                             ; preds = %body19
+  %i23 = load i32, i32* %i
+  %eqtmp24 = icmp eq i32 %i23, 8
+  br i1 %eqtmp24, label %noskct25, label %skctend26
+
+noskct25:                                         ; preds = %if22
+  %j27 = load i32, i32* %j
+  %eqtmp28 = icmp eq i32 %j27, 1
+  %andtmp29 = and i1 %eqtmp24, %eqtmp28
+  br label %skctend26
+
+skctend26:                                        ; preds = %noskct25, %if22
+  %phival30 = phi i1 [ %eqtmp24, %if22 ], [ %andtmp29, %noskct25 ]
+  br i1 %phival30, label %noskct31, label %skctend32
+
+noskct31:                                         ; preds = %skctend26
+  %k33 = load i32, i32* %k
+  %eqtmp34 = icmp eq i32 %k33, 3
+  %andtmp35 = and i1 %phival30, %eqtmp34
+  br label %skctend32
+
+skctend32:                                        ; preds = %noskct31, %skctend26
+  %phival36 = phi i1 [ %phival30, %skctend26 ], [ %andtmp35, %noskct31 ]
+  br i1 %phival36, label %true37, label %false38
+
+true37:                                           ; preds = %skctend32
+  br label %next20
+  br label %false38
+
+false38:                                          ; preds = %true37, %skctend32
+  store i32 0, i32* %l
+  br label %loop39
+
+loop39:                                           ; preds = %next43, %false38
+  %l40 = load i32, i32* %l
+  %lttmp41 = icmp slt i32 %l40, 10
+  br i1 %lttmp41, label %body42, label %end44
+
+body42:                                           ; preds = %loop39
+  br label %if45
+
+next43:                                           ; preds = %false91, %true66
+  %l92 = load i32, i32* %l
+  %addtmp93 = add i32 %l92, 1
+  store i32 %addtmp93, i32* %l
+  br label %loop39
+
+end44:                                            ; preds = %true90, %loop39
+  br label %if94
+
+if45:                                             ; preds = %body42
+  %i46 = load i32, i32* %i
+  %eqtmp47 = icmp eq i32 %i46, 1
+  br i1 %eqtmp47, label %noskct48, label %skctend49
+
+noskct48:                                         ; preds = %if45
+  %j50 = load i32, i32* %j
+  %eqtmp51 = icmp eq i32 %j50, 7
+  %andtmp52 = and i1 %eqtmp47, %eqtmp51
+  br label %skctend49
+
+skctend49:                                        ; preds = %noskct48, %if45
+  %phival53 = phi i1 [ %eqtmp47, %if45 ], [ %andtmp52, %noskct48 ]
+  br i1 %phival53, label %noskct54, label %skctend55
+
+noskct54:                                         ; preds = %skctend49
+  %k56 = load i32, i32* %k
+  %eqtmp57 = icmp eq i32 %k56, 4
+  %andtmp58 = and i1 %phival53, %eqtmp57
+  br label %skctend55
+
+skctend55:                                        ; preds = %noskct54, %skctend49
+  %phival59 = phi i1 [ %phival53, %skctend49 ], [ %andtmp58, %noskct54 ]
+  br i1 %phival59, label %noskct60, label %skctend61
+
+noskct60:                                         ; preds = %skctend55
+  %l62 = load i32, i32* %l
+  %eqtmp63 = icmp eq i32 %l62, 1
+  %andtmp64 = and i1 %phival59, %eqtmp63
+  br label %skctend61
+
+skctend61:                                        ; preds = %noskct60, %skctend55
+  %phival65 = phi i1 [ %phival59, %skctend55 ], [ %andtmp64, %noskct60 ]
+  br i1 %phival65, label %true66, label %false67
+
+true66:                                           ; preds = %skctend61
+  br label %next43
+  br label %false67
+
+false67:                                          ; preds = %true66, %skctend61
+  %times68 = load i32, i32* %times
+  %addtmp = add i32 %times68, 1
+  store i32 %addtmp, i32* %times
+  br label %if69
+
+if69:                                             ; preds = %false67
+  %i70 = load i32, i32* %i
+  %eqtmp71 = icmp eq i32 %i70, 3
+  br i1 %eqtmp71, label %noskct72, label %skctend73
+
+noskct72:                                         ; preds = %if69
+  %j74 = load i32, i32* %j
+  %eqtmp75 = icmp eq i32 %j74, 2
+  %andtmp76 = and i1 %eqtmp71, %eqtmp75
+  br label %skctend73
+
+skctend73:                                        ; preds = %noskct72, %if69
+  %phival77 = phi i1 [ %eqtmp71, %if69 ], [ %andtmp76, %noskct72 ]
+  br i1 %phival77, label %noskct78, label %skctend79
+
+noskct78:                                         ; preds = %skctend73
+  %k80 = load i32, i32* %k
+  %eqtmp81 = icmp eq i32 %k80, 6
+  %andtmp82 = and i1 %phival77, %eqtmp81
+  br label %skctend79
+
+skctend79:                                        ; preds = %noskct78, %skctend73
+  %phival83 = phi i1 [ %phival77, %skctend73 ], [ %andtmp82, %noskct78 ]
+  br i1 %phival83, label %noskct84, label %skctend85
+
+noskct84:                                         ; preds = %skctend79
+  %l86 = load i32, i32* %l
+  %eqtmp87 = icmp eq i32 %l86, 4
+  %andtmp88 = and i1 %phival83, %eqtmp87
+  br label %skctend85
+
+skctend85:                                        ; preds = %noskct84, %skctend79
+  %phival89 = phi i1 [ %phival83, %skctend79 ], [ %andtmp88, %noskct84 ]
+  br i1 %phival89, label %true90, label %false91
+
+true90:                                           ; preds = %skctend85
+  br label %end44
+  br label %false91
+
+false91:                                          ; preds = %true90, %skctend85
+  br label %next43
+
+if94:                                             ; preds = %end44
+  %i95 = load i32, i32* %i
+  %eqtmp96 = icmp eq i32 %i95, 2
+  br i1 %eqtmp96, label %noskct97, label %skctend98
+
+noskct97:                                         ; preds = %if94
+  %j99 = load i32, i32* %j
+  %eqtmp100 = icmp eq i32 %j99, 7
+  %andtmp101 = and i1 %eqtmp96, %eqtmp100
+  br label %skctend98
+
+skctend98:                                        ; preds = %noskct97, %if94
+  %phival102 = phi i1 [ %eqtmp96, %if94 ], [ %andtmp101, %noskct97 ]
+  br i1 %phival102, label %noskct103, label %skctend104
+
+noskct103:                                        ; preds = %skctend98
+  %k105 = load i32, i32* %k
+  %eqtmp106 = icmp eq i32 %k105, 2
+  %andtmp107 = and i1 %phival102, %eqtmp106
+  br label %skctend104
+
+skctend104:                                       ; preds = %noskct103, %skctend98
+  %phival108 = phi i1 [ %phival102, %skctend98 ], [ %andtmp107, %noskct103 ]
+  br i1 %phival108, label %true109, label %false110
+
+true109:                                          ; preds = %skctend104
+  br label %end21
+  br label %false110
+
+false110:                                         ; preds = %true109, %skctend104
+  br label %next20
+
+if113:                                            ; preds = %end21
+  %i114 = load i32, i32* %i
+  %eqtmp115 = icmp eq i32 %i114, 9
+  br i1 %eqtmp115, label %noskct116, label %skctend117
+
+noskct116:                                        ; preds = %if113
+  %j118 = load i32, i32* %j
+  %eqtmp119 = icmp eq i32 %j118, 1
+  %andtmp120 = and i1 %eqtmp115, %eqtmp119
+  br label %skctend117
+
+skctend117:                                       ; preds = %noskct116, %if113
+  %phival121 = phi i1 [ %eqtmp115, %if113 ], [ %andtmp120, %noskct116 ]
+  br i1 %phival121, label %true122, label %false123
+
+true122:                                          ; preds = %skctend117
+  br label %end8
+  br label %false123
+
+false123:                                         ; preds = %true122, %skctend117
+  br label %next7
+
+if126:                                            ; preds = %end8
+  %i127 = load i32, i32* %i
+  %eqtmp128 = icmp eq i32 %i127, 9
+  br i1 %eqtmp128, label %true129, label %false130
+
+true129:                                          ; preds = %if126
+  br label %end
+  br label %false130
+
+false130:                                         ; preds = %true129, %if126
+  br label %next
+}

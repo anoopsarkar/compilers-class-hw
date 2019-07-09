@@ -1,0 +1,28 @@
+; ModuleID = 'Test'
+source_filename = "DecafComp"
+
+declare void @print_int(i32)
+
+define i32 @main() {
+func:
+  %b = alloca i1
+  store i1 false, i1* %b
+  store i1 true, i1* %b
+  store i1 false, i1* %b
+  store i1 false, i1* %b
+  br label %if
+
+if:                                               ; preds = %func
+  %b1 = load i1, i1* %b
+  %nottmp = xor i1 %b1, true
+  br i1 %nottmp, label %true, label %false
+
+true:                                             ; preds = %if
+  %b2 = load i1, i1* %b
+  %zexttmp = zext i1 %b2 to i32
+  call void @print_int(i32 %zexttmp)
+  br label %false
+
+false:                                            ; preds = %true, %if
+  ret i32 0
+}

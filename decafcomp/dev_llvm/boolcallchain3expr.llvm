@@ -1,0 +1,56 @@
+; ModuleID = 'Test'
+source_filename = "DecafComp"
+
+declare void @print_int(i32)
+
+define void @test3(i1 %a) {
+func:
+  %a1 = alloca i1
+  store i1 %a, i1* %a1
+  br label %if
+
+if:                                               ; preds = %func
+  %a2 = load i1, i1* %a1
+  br i1 %a2, label %true, label %false
+
+true:                                             ; preds = %if
+  %a3 = load i1, i1* %a1
+  %zexttmp = zext i1 %a3 to i32
+  call void @print_int(i32 %zexttmp)
+  br label %false
+
+false:                                            ; preds = %true, %if
+  ret void
+}
+
+define void @test2(i1 %a) {
+func:
+  %a1 = alloca i1
+  store i1 %a, i1* %a1
+  %a2 = load i1, i1* %a1
+  %zexttmp = zext i1 %a2 to i32
+  call void @print_int(i32 %zexttmp)
+  %a3 = load i1, i1* %a1
+  %nottmp = xor i1 %a3, true
+  call void @test3(i1 %nottmp)
+  ret void
+}
+
+define void @test1(i1 %a) {
+func:
+  %a1 = alloca i1
+  store i1 %a, i1* %a1
+  %a2 = load i1, i1* %a1
+  %zexttmp = zext i1 %a2 to i32
+  call void @print_int(i32 %zexttmp)
+  %a3 = load i1, i1* %a1
+  %nottmp = xor i1 %a3, true
+  call void @test2(i1 %nottmp)
+  ret void
+}
+
+define i32 @main() {
+func:
+  call void @test1(i1 true)
+  ret i32 0
+}

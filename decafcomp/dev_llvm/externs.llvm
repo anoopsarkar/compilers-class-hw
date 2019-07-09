@@ -1,0 +1,13 @@
+; ModuleID = 'QuickSort'
+source_filename = "DecafComp"
+
+@x = global i32 0
+
+declare void @print_string(i8*)
+
+declare void @print_int(i32)
+
+define void @main() {
+func:
+  ret void
+}
