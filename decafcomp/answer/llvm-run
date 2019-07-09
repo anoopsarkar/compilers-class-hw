@@ -53,7 +53,7 @@ import tempfile
 gen_name_prefix = "llvm-run" # filename prefix to use if we have to make up a name for output
 source_extension = ".decaf"
 input_extension = ".in"
-default_codegen = "answer/decafexpr"
+default_codegen = "answer/decafcomp"
 default_stdlib = "answer/decaf-stdlib.c"
 codegen_llvm_out_source = "err"
 codegen_env_var = "CODEGEN"
