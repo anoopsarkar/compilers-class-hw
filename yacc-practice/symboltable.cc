@@ -51,7 +51,7 @@ public:
     tbl = symtbl.front();
     if ((find_ident = tbl->find(ident)) != tbl->end()) {
       cerr << "Warning: redefining previously defined identifier: " << ident << endl;
-      delete(find_ident->second);
+      //delete(find_ident->second);
       tbl->erase(ident);
     }
     (*tbl)[ident] = d;
