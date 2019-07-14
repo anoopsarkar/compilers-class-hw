@@ -17,6 +17,8 @@ using namespace std;
 
 %}
 
+%define parse.error verbose
+
 %union{
     class decafAST *ast;
     std::string *sval;
