@@ -1,4 +1,4 @@
-llvmconfig=llvm-config-10
+llvmconfig:=llvm-config
 cppflags=-Wno-deprecated-register
 lexlib=l
 yacclib=y
@@ -37,12 +37,12 @@ $(llvmtargets): %: %.y
 	$(mv) $@.tab.c $@.tab.cc
 	flex -o$@.lex.cc $@.lex
 	clang -g -c decaf-stdlib.c
-	clang++ $(cppflags) -o $(bindir)/$@ $@.tab.cc $@.lex.cc decaf-stdlib.o $(shell $(llvmconfig) --cxxflags --cppflags --cflags --ldflags --system-libs --libs core native) $(mylibs)
+	clang++ $(cppflags) -o $(bindir)/$@ $@.tab.cc $@.lex.cc decaf-stdlib.o $(shell $(llvmconfig) --cxxflags --cppflags --cflags --ldflags --libs core native) $(mylibs)
 	$(rm) $@.tab.h $@.tab.cc $@.lex.cc 
 
 $(llvmcpp): %: %.cc
 	@echo "using llvm to compile file:" $<
-	clang++ $(cppflags) -g $< $(shell $(llvmconfig) --cxxflags --cppflags --cflags --ldflags --system-libs --libs core native) $(llvmlibs) -O3 -o $(bindir)/$@
+	clang++ $(cppflags) -g $< $(shell $(llvmconfig) --cxxflags --cppflags --cflags --ldflags --libs core native) $(llvmlibs) -O3 -o $(bindir)/$@
 
 $(llvmfiles): %: %.ll
 	@echo "using llvm to compile file:" $<
