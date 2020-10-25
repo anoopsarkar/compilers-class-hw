@@ -1,4 +1,4 @@
-llvmconfig=llvm-config-8
+llvmconfig:=llvm-config
 cppflags=-Wno-deprecated-register
 lexlib=l
 yacclib=y
@@ -7,7 +7,7 @@ mylibs=-l$(yacclib) -l$(lexlib) $(llvmlibs)
 bindir=.
 rm=/bin/rm -f
 mv=/bin/mv -f
-llvmcpp=toy kscope globalscalar globalarray
+llvmcpp=globalscalar globalarray
 llvmfiles=add helloworld factorial rec_add
 llvmtargets=sexpr-codegen
 
@@ -37,12 +37,12 @@ $(llvmtargets): %: %.y
 	$(mv) $@.tab.c $@.tab.cc
 	flex -o$@.lex.cc $@.lex
 	clang -g -c decaf-stdlib.c
-	clang++ $(cppflags) -o $(bindir)/$@ $@.tab.cc $@.lex.cc decaf-stdlib.o $(shell $(llvmconfig) --cxxflags --cppflags --cflags --ldflags --system-libs --libs core native) $(mylibs)
+	clang++ $(cppflags) -o $(bindir)/$@ $@.tab.cc $@.lex.cc decaf-stdlib.o $(shell $(llvmconfig) --cxxflags --cppflags --cflags --ldflags --libs core native) $(mylibs)
 	$(rm) $@.tab.h $@.tab.cc $@.lex.cc 
 
 $(llvmcpp): %: %.cc
 	@echo "using llvm to compile file:" $<
-	clang++ $(cppflags) -g $< $(shell $(llvmconfig) --cxxflags --cppflags --cflags --ldflags --system-libs --libs core native) $(llvmlibs) -O3 -o $(bindir)/$@
+	clang++ $(cppflags) -g $< $(shell $(llvmconfig) --cxxflags --cppflags --cflags --ldflags --libs core native) $(llvmlibs) -O3 -o $(bindir)/$@
 
 $(llvmfiles): %: %.ll
 	@echo "using llvm to compile file:" $<
