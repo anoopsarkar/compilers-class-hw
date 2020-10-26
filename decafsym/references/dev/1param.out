@@ -2,5 +2,12 @@ extern func print_int(int) void;
 package C {
     func foo(x int) int {
         x = 1; // using decl on line: 3
+
         print_int(x) // using decl on line: 3
+;
     }
+    func main() int {
+        foo(1);
+        print_int(1);
+    }
+}

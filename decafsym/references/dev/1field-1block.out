@@ -4,6 +4,8 @@ package C {
     func main() int {
         var x int;
         x = 1; // using decl on line: 5
-        print_int(x) // using decl on line: 5;
+
+        print_int(x) // using decl on line: 5
+;
     }
 }
