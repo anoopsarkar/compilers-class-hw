@@ -164,7 +164,7 @@ if __name__ == '__main__':
         shutil.copy2("%s.llvm.%s" % (out_prefix, codegen_llvm_out_source), "%s.llvm" % (out_prefix))
         result &= run("assembling to bitcode", "%s \"%s.llvm\" -o \"%s.llvm.bc\"" % (llvmas, out_prefix, out_prefix), ".llvm.bc", None, out_prefix)
         result &= run("converting to native code", "%s \"%s.llvm.bc\" -o \"%s.llvm.s\"" % (llc, out_prefix, out_prefix), ".llvm.s", None, out_prefix)
-        result &= run("linking", "%s -o \"%s.llvm.exec\" \"%s.llvm.s\" \"%s\"" % (cc, out_prefix, out_prefix, stdlib), ".exec", None, out_prefix)
+        result &= run("linking", "%s -o \"%s.llvm.exec\" \"%s.llvm.s\" \"%s\" -z muldefs" % (cc, out_prefix, out_prefix, stdlib), ".exec", None, out_prefix)
         if os.path.exists(input_file):
             print("using input file:", input_file, file=sys.stderr)
             result &= run("running", "%s.llvm.exec" % (out_prefix), ".run", input_file, out_prefix)
