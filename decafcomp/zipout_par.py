@@ -15,7 +15,13 @@ To customize the files used by default, run:
 import sys, os, optparse, logging, tempfile, subprocess, shutil
 import iocollect
 import concurrent.futures
-executor = concurrent.futures.ThreadPoolExecutor(max_workers=len(os.sched_getaffinity(0)) or 1)
+
+num_workers = 1
+if 'sched_getaffinity' in dir(os):
+    num_workers = len(os.sched_getaffinity(0)) or 1
+elif 'cpu_count' in dir(os):
+    num_workers = os.cpu_count() or 1
+executor = concurrent.futures.ThreadPoolExecutor(max_workers=num_workers)
 
 class ZipOutput:
 
