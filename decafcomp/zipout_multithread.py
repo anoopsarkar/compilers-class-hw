@@ -10,6 +10,8 @@ This will create a file `output.zip`.
 To customize the files used by default, run:
 
     python zipout.py -h
+
+Multithreaded version provided by Anthony Ting (Fall 2021 batch)
 """
 
 import sys, os, optparse, logging, tempfile, subprocess, shutil
