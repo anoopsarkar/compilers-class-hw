@@ -1,0 +1,64 @@
+diff --git a/decafcomp/zipout.py b/decafcomp/zipout.py
+index 3c4ea7b..cd05952 100644
+--- a/decafcomp/zipout.py
++++ b/decafcomp/zipout.py
+@@ -14,6 +14,8 @@ To customize the files used by default, run:
+ 
+ import sys, os, optparse, logging, tempfile, subprocess, shutil
+ import iocollect
++import concurrent.futures
++executor = concurrent.futures.ThreadPoolExecutor(max_workers=len(os.sched_getaffinity(0)) or 1)
+ 
+ class ZipOutput:
+ 
+@@ -26,6 +28,9 @@ class ZipOutput:
+         self.testcase_dir = opts.testcase_dir # directory where testcases are placed
+         self.output_dir = opts.output_dir # directory for output files of your program
+         self.file_suffix = opts.file_suffix # file suffix for testcases
++        self.llvm_run_path = os.path.abspath(os.path.join(self.answer_dir, self.llvm_run))
++        self.run_program_path = os.path.abspath(os.path.join(self.answer_dir, self.run_program))
++        self.stdlib_path = os.path.abspath(os.path.join(self.answer_dir, self.stdlib))
+ 
+     def mkdirp(self, path):
+         try:
+@@ -54,11 +59,11 @@ class ZipOutput:
+             stderr_file, stderr_path = tempfile.mkstemp("stderr")
+             status_path = None
+ 
+-        run_program_path = os.path.abspath(os.path.join(self.answer_dir, self.run_program))
++        run_program_path = self.run_program_path
+         if (self.use_llvm_run):
+-            llvm_run_path = os.path.abspath(os.path.join(self.answer_dir, self.llvm_run))
++            llvm_run_path = self.llvm_run_path
+             if os.path.exists(llvm_run_path) and os.access(llvm_run_path, os.X_OK):
+-                stdlib_path = os.path.abspath(os.path.join(self.answer_dir, self.stdlib))
++                stdlib_path = self.stdlib_path
+                 argv = [ llvm_run_path, '-c', run_program_path, '-l', stdlib_path, filename, "llvm", path, base ]
+                 stdin_file = sys.stdin
+             else:
+@@ -108,6 +113,7 @@ class ZipOutput:
+         else:
+             output_path = os.path.abspath(os.path.join(self.output_dir, path))
+         self.mkdirp(output_path)
++        futures = []
+         for filename in files:
+             if path is None or path == '':
+                 testfile_path = os.path.abspath(os.path.join(self.testcase_dir, filename))
+@@ -116,7 +122,8 @@ class ZipOutput:
+             if filename[-len(self.file_suffix):] == self.file_suffix:
+                 base = filename[:-len(self.file_suffix)]
+                 if os.path.exists(testfile_path):
+-                    self.run(testfile_path, path, output_path, base)
++                    futures.append(executor.submit(self.run, testfile_path, path, output_path, base))
++        concurrent.futures.wait(futures, timeout=None, return_when=concurrent.futures.ALL_COMPLETED)
+ 
+     def run_all(self):
+         # check that a compiled binary exists to run on the testcases
+@@ -159,6 +166,7 @@ if __name__ == '__main__':
+ 
+     zo = ZipOutput(opts)
+     if zo.run_all():
++        executor.shutdown(wait=True)
+         outputs_zipfile = shutil.make_archive(opts.zipfile, 'zip', opts.output_dir)
+         print("{} created".format(outputs_zipfile), file=sys.stderr)
+     else:
