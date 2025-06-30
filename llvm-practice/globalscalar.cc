@@ -36,7 +36,7 @@ llvm::Function *genPrintIntDef() {
 llvm::Function *genPrintStringDef() {
   // create a extern definition for print_string
   std::vector<llvm::Type*> args;
-  args.push_back(Builder.getInt8Ty()); // print_string takes one string argument
+  args.push_back(llvm::PointerType::getUnqual(Builder.getInt8Ty())); // print_string takes one string argument
   return llvm::Function::Create(llvm::FunctionType::get(Builder.getVoidTy(), args, false), llvm::Function::ExternalLinkage, "print_string", TheModule);
 }
 
