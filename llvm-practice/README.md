@@ -1,8 +1,14 @@
-On macosx use homebrew to install llvm 8.0
+On macosx use homebrew to install llvm:
 
     brew install llvm
 
-Make sure you install llvm version `8.0.0_1`.
+On CSIL machines you can access the latest LLVM by using the following installation of LLVM: 
+
+    /usr/shared/CMPT/faculty/anoop/llvm
+
+You can activate the following virtual environment to access the right versions of the compiler toolchain by running: 
+
+    source /usr/shared/CMPT/faculty/anoop/base/env745/bin/activate
 
 On macosx 10.14, make sure you install the system header files:
 
