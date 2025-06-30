@@ -36,7 +36,7 @@ llvm::Function *genPrintIntDef() {
 llvm::Function *genPrintStringDef() {
   // create a extern definition for print_string
   std::vector<llvm::Type*> args;
-  args.push_back(Builder.getInt8PtrTy()); // print_string takes one string argument
+  args.push_back(Builder.getInt8Ty()); // print_string takes one string argument
   return llvm::Function::Create(llvm::FunctionType::get(Builder.getVoidTy(), args, false), llvm::Function::ExternalLinkage, "print_string", TheModule);
 }
 
@@ -48,8 +48,8 @@ int main() {
 
   // declare a global variable
   llvm::GlobalVariable *Foo = new llvm::GlobalVariable(
-    *TheModule, 
-    Builder.getInt32Ty(), 
+    *TheModule,
+    Builder.getInt32Ty(),
     false,  // variable is mutable
     llvm::GlobalValue::InternalLinkage, 
     Builder.getInt32(0), 
@@ -59,7 +59,7 @@ int main() {
   llvm::Function *print_string = genPrintStringDef();
   llvm::Function *print_int = genPrintIntDef();
   llvm::Function *F = genMainDef();
-  llvm::Value *footmp = Builder.CreateLoad(Foo, "footmp");
+  llvm::Value *footmp = Builder.CreateLoad(Builder.getInt32Ty(), Foo, "footmp");
   llvm::Value *addtmp = Builder.CreateAdd(footmp, Builder.getInt32(1), "addtmp");
   llvm::Value *CallPI = Builder.CreateCall(print_int, addtmp);
 
@@ -67,10 +67,7 @@ int main() {
   llvm::Value *GlobalStr = Builder.CreateGlobalString("\nhello, world\n", "GlobalStr");
 
   // access string for print_string
-  llvm::Type *ty = GlobalStr->getType();
-  llvm::Type *eltTy = llvm::cast<llvm::PointerType>(ty)->getElementType();
-  llvm::Value *Cast = Builder.CreateConstGEP2_32(eltTy, GlobalStr, 0, 0, "cast");
-  llvm::Value *CallPS = Builder.CreateCall(print_string, Cast);
+  llvm::Value *CallPS = Builder.CreateCall(print_string, GlobalStr);
 
   Builder.CreateRet(Builder.getInt32(0));
   llvm::verifyFunction(*F);

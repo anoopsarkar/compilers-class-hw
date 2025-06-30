@@ -53,10 +53,10 @@ int main() {
   llvm::Value *Index = Builder.getInt32(8); // access Foo[8]
   llvm::Value *ArrayIndex = Builder.CreateGEP(Builder.getInt32Ty(), ArrayLoc, Index, "arrayindex");
   llvm::Value *ArrayStore = Builder.CreateStore(Builder.getInt32(1), ArrayIndex); // Foo[8] = 1
-  llvm::Value *Value = Builder.CreateLoad(ArrayIndex, "loadtmp");
+  llvm::Value *Value = Builder.CreateLoad(Builder.getInt32Ty(), ArrayIndex, "loadtmp");
   llvm::Value *addtmp = Builder.CreateAdd(Value, Builder.getInt32(1), "addtmp");
   llvm::Value *Store = Builder.CreateStore(addtmp, ArrayIndex); // Foo[8] = Foo[8] + 1
-  llvm::Value *StoredValue = Builder.CreateLoad(ArrayIndex, "loadtmp");
+  llvm::Value *StoredValue = Builder.CreateLoad(Builder.getInt32Ty(), ArrayIndex, "loadtmp");
   llvm::Value *CallF = Builder.CreateCall(print_int, StoredValue);
 
   Builder.CreateRet(Builder.getInt32(0));
