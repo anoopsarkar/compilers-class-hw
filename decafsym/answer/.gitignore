@@ -1,1 +1,5 @@
 symboltable.cc
+decafsym-defs.h
+decafsym-descriptor.cc
+decafsym.lex
+decafsym.y
