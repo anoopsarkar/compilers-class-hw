@@ -97,10 +97,10 @@ decafpackage: T_PACKAGE T_ID T_LCB T_RCB
 ignore: ignore T_ID
     | ignore T_LCB
     | ignore T_RCB
-	| T_ID
-	| T_LCB
-	| T_RCB
-	;
+    | T_ID
+    | T_LCB
+    | T_RCB
+    ;
 
 %%
 
