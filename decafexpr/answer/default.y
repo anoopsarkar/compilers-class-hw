@@ -6,7 +6,7 @@
 #include "default-defs.h"
 
 int yylex(void);
-int yyerror(char *); 
+int yyerror(char *);
 
 // print AST?
 bool printAST = false;
@@ -26,17 +26,17 @@ static llvm::IRBuilder<> Builder(TheContext);
 // dummy main function
 // WARNING: this is not how you should implement code generation
 // for the main function!
-// You should write the codegen for the main method as 
+// You should write the codegen for the main method as
 // part of the codegen for method declarations (MethodDecl)
 static llvm::Function *TheFunction = 0;
 
-// we have to create a main function 
+// we have to create a main function
 llvm::Function *gen_main_def() {
   // create the top-level definition for main
   llvm::FunctionType *FT = llvm::FunctionType::get(llvm::IntegerType::get(TheContext, 32), false);
   llvm::Function *TheFunction = llvm::Function::Create(FT, llvm::Function::ExternalLinkage, "main", TheModule);
   if (TheFunction == 0) {
-    throw runtime_error("empty function block"); 
+    throw runtime_error("empty function block");
   }
   // Create a new basic block which contains a sequence of LLVM instructions
   llvm::BasicBlock *BB = llvm::BasicBlock::Create(TheContext, "entry", TheFunction);
@@ -66,17 +66,17 @@ llvm::Function *gen_main_def() {
 start: program
 
 program: extern_list decafpackage
-    { 
-        ProgramAST *prog = new ProgramAST((decafStmtList *)$1, (PackageAST *)$2); 
-		if (printAST) {
-			cout << getString(prog) << endl;
-		}
+    {
+        ProgramAST *prog = new ProgramAST((decafStmtList *)$1, (PackageAST *)$2);
+        if (printAST) {
+            cout << getString(prog) << endl;
+        }
         try {
             prog->Codegen();
-        } 
+        }
         catch (std::runtime_error &e) {
             cout << "semantic error: " << e.what() << endl;
-            //cout << prog->str() << endl; 
+            //cout << prog->str() << endl;
             exit(EXIT_FAILURE);
         }
         delete prog;
@@ -84,7 +84,7 @@ program: extern_list decafpackage
 
 extern_list: /* extern_list can be empty */
     { decafStmtList *slist = new decafStmtList(); $$ = slist; }
-	| T_ID extern_list
+    | T_ID extern_list
     { decafStmtList *slist = new decafStmtList(); $$ = slist; }
     ;
 
