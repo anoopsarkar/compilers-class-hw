@@ -1,2 +1,3 @@
 sexpr-codegen.lex.cc
 sexpr-codegen.tab.cc
+sexpr-codegen
