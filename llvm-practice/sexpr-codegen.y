@@ -1,11 +1,11 @@
-%{ 
+%{
 #include "exprdefs.h"
 #include "llvm/IR/DerivedTypes.h"
 #include "llvm/IR/IRBuilder.h"
 #include "llvm/IR/LLVMContext.h"
 #include "llvm/IR/Module.h"
 #include "llvm/IR/Verifier.h"
-#include <cstdio> 
+#include <cstdio>
 #include <stdexcept>
 
 using namespace llvm;
@@ -40,7 +40,7 @@ class BinaryExprAST : public ExprAST {
   char Op;
   ExprAST *LHS, *RHS;
 public:
-  BinaryExprAST(char op, ExprAST *lhs, ExprAST *rhs) 
+  BinaryExprAST(char op, ExprAST *lhs, ExprAST *rhs)
     : Op(op), LHS(lhs), RHS(rhs) {}
   virtual Value *Codegen();
   ~BinaryExprAST() {
@@ -67,7 +67,7 @@ Function *gen_main_def(Value *RetVal, Function *print_int) {
   FunctionType *FT = FunctionType::get(IntegerType::get(TheContext, 32), false);
   Function *TheFunction = Function::Create(FT, Function::ExternalLinkage, "main", TheModule);
   if (TheFunction == 0) {
-    throw runtime_error("empty function block"); 
+    throw runtime_error("empty function block");
   }
   // Create a new basic block which contains a sequence of LLVM instructions
   BasicBlock *BB = BasicBlock::Create(TheContext, "entry", TheFunction);
@@ -96,36 +96,36 @@ Function *gen_main_def(Value *RetVal, Function *print_int) {
 %type <ast> expression
 %%
 statement: expression
-	   { 
-	     // IRBuilder does constant folding by default so all the
-	     // addition and subtraction operations are computed and always result in
-	     // a constant integer value in this simple example
-	     Value *RetVal = $1->Codegen();
-	     delete $1; // get rid of abstract syntax tree
+       {
+         // IRBuilder does constant folding by default so all the
+         // addition and subtraction operations are computed and always result in
+         // a constant integer value in this simple example
+         Value *RetVal = $1->Codegen();
+         delete $1; // get rid of abstract syntax tree
 
-	     // we create an implicit print_int function call to print
-	     // out the value of the expression.
-	     Function *print_int = gen_print_int_def();
+         // we create an implicit print_int function call to print
+         // out the value of the expression.
+         Function *print_int = gen_print_int_def();
 
-	     // create the top-level function called main
-	     Function *TheFunction = gen_main_def(RetVal, print_int);
-	     // Validate the generated code, checking for consistency.
-	     verifyFunction(*TheFunction);
-  	   }
+         // create the top-level function called main
+         Function *TheFunction = gen_main_def(RetVal, print_int);
+         // Validate the generated code, checking for consistency.
+         verifyFunction(*TheFunction);
+         }
          ;
 
-expression: expression '+' NUMBER 
-            { 
-	      $$ = new BinaryExprAST('+', $1, new NumberExprAST($3));
-	    }
-          | expression '-' NUMBER 
-            { 
-	      $$ = new BinaryExprAST('-', $1, new NumberExprAST($3)); 
-	    }
-          | NUMBER 
-	    { 
-	      $$ = new NumberExprAST($1); 
-	    }
+expression: expression '+' NUMBER
+            {
+          $$ = new BinaryExprAST('+', $1, new NumberExprAST($3));
+        }
+          | expression '-' NUMBER
+            {
+          $$ = new BinaryExprAST('-', $1, new NumberExprAST($3));
+        }
+          | NUMBER
+        {
+          $$ = new NumberExprAST($1);
+        }
           ;
 %%
 
@@ -137,7 +137,7 @@ Value *BinaryExprAST::Codegen() {
   Value *L = LHS->Codegen();
   Value *R = RHS->Codegen();
   if (L == 0 || R == 0) return 0;
-  
+
   switch (Op) {
   case '+': return Builder.CreateAdd(L, R, "addtmp");
   case '-': return Builder.CreateSub(L, R, "subtmp");
