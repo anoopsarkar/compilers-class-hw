@@ -6,21 +6,33 @@
 
 using namespace std;
 
+/* token definitions */
+#define T_FUNC 16
+#define T_INT 21
+#define T_PACKAGE 35
+#define T_LCB 22
+#define T_RCB 37
+#define T_LPAREN 25
+#define T_RPAREN 40
+#define T_ID 49
+#define T_WHITESPACE 50
+#define NUMTOKENS 10
+
 %}
 
 %%
   /*
     Pattern definitions for all tokens
   */
-func                       { return 1; }
-int                        { return 2; }
-package                    { return 3; }
-\{                         { return 4; }
-\}                         { return 5; }
-\(                         { return 6; }
-\)                         { return 7; }
-[a-zA-Z\_][a-zA-Z\_0-9]*   { return 8; }
-[\t\r\a\v\b ]+             { return 9; }
+func                       { return T_FUNC; }
+int                        { return T_INT; }
+package                    { return T_PACKAGE; }
+\{                         { return T_LCB; }
+\}                         { return T_RCB; }
+\(                         { return T_LPAREN; }
+\)                         { return T_RPAREN; }
+[a-zA-Z\_][a-zA-Z\_0-9]*   { return T_ID; }
+[\t\r\a\v\b ]+             { return T_WHITESPACE; }
 \n                         { return 10; }
 .                          { cerr << "Error: unexpected character in input" << endl; return -1; }
 

@@ -3,7 +3,7 @@ lexlib=l
 bindir=.
 rm=/bin/rm -f
 targets=
-cpptargets=decaflex
+cpptargets=decaflex default
 
 all: $(targets) $(cpptargets)
 
