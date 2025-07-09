@@ -5,9 +5,9 @@ declare void @print_int(i32)
 
 define void @test3(i1 %a) {
 entry:
-  %a1 = alloca i1
-  store i1 %a, i1* %a1
-  %a2 = load i1, i1* %a1
+  %a1 = alloca i1, align 1
+  store i1 %a, ptr %a1, align 1
+  %a2 = load i1, ptr %a1, align 1
   %zexttmp = zext i1 %a2 to i32
   call void @print_int(i32 %zexttmp)
   ret void
@@ -15,24 +15,24 @@ entry:
 
 define void @test2(i1 %a) {
 entry:
-  %a1 = alloca i1
-  store i1 %a, i1* %a1
-  %a2 = load i1, i1* %a1
+  %a1 = alloca i1, align 1
+  store i1 %a, ptr %a1, align 1
+  %a2 = load i1, ptr %a1, align 1
   %zexttmp = zext i1 %a2 to i32
   call void @print_int(i32 %zexttmp)
-  %a3 = load i1, i1* %a1
+  %a3 = load i1, ptr %a1, align 1
   call void @test3(i1 %a3)
   ret void
 }
 
 define void @test1(i1 %a) {
 entry:
-  %a1 = alloca i1
-  store i1 %a, i1* %a1
-  %a2 = load i1, i1* %a1
+  %a1 = alloca i1, align 1
+  store i1 %a, ptr %a1, align 1
+  %a2 = load i1, ptr %a1, align 1
   %zexttmp = zext i1 %a2 to i32
   call void @print_int(i32 %zexttmp)
-  %a3 = load i1, i1* %a1
+  %a3 = load i1, ptr %a1, align 1
   call void @test2(i1 %a3)
   ret void
 }

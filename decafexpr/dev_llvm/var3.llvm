@@ -5,26 +5,26 @@ declare void @print_int(i32)
 
 define i32 @main() {
 entry:
-  %x = alloca i32
-  %y = alloca i32
-  %z = alloca i32
-  store i32 0, i32* %x
-  store i32 0, i32* %y
-  store i32 0, i32* %z
-  %x1 = load i32, i32* %x
+  %x = alloca i32, align 4
+  %y = alloca i32, align 4
+  %z = alloca i32, align 4
+  store i32 0, ptr %x, align 4
+  store i32 0, ptr %y, align 4
+  store i32 0, ptr %z, align 4
+  %x1 = load i32, ptr %x, align 4
   call void @print_int(i32 %x1)
-  %y2 = load i32, i32* %y
+  %y2 = load i32, ptr %y, align 4
   call void @print_int(i32 %y2)
-  %z3 = load i32, i32* %z
+  %z3 = load i32, ptr %z, align 4
   call void @print_int(i32 %z3)
-  store i32 1, i32* %x
-  store i32 1, i32* %y
-  store i32 1, i32* %z
-  %x4 = load i32, i32* %x
+  store i32 1, ptr %x, align 4
+  store i32 1, ptr %y, align 4
+  store i32 1, ptr %z, align 4
+  %x4 = load i32, ptr %x, align 4
   call void @print_int(i32 %x4)
-  %y5 = load i32, i32* %y
+  %y5 = load i32, ptr %y, align 4
   call void @print_int(i32 %y5)
-  %z6 = load i32, i32* %z
+  %z6 = load i32, ptr %z, align 4
   call void @print_int(i32 %z6)
   ret i32 0
 }

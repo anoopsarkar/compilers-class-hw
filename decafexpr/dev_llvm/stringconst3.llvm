@@ -5,12 +5,12 @@ source_filename = "DecafExpr"
 @globalstring.1 = private unnamed_addr constant [7 x i8] c" world\00", align 1
 @globalstring.2 = private unnamed_addr constant [2 x i8] c"\0A\00", align 1
 
-declare void @print_string(i8*)
+declare void @print_string(ptr)
 
 define i32 @main() {
 entry:
-  call void @print_string(i8* getelementptr inbounds ([7 x i8], [7 x i8]* @globalstring, i32 0, i32 0))
-  call void @print_string(i8* getelementptr inbounds ([7 x i8], [7 x i8]* @globalstring.1, i32 0, i32 0))
-  call void @print_string(i8* getelementptr inbounds ([2 x i8], [2 x i8]* @globalstring.2, i32 0, i32 0))
+  call void @print_string(ptr @globalstring)
+  call void @print_string(ptr @globalstring.1)
+  call void @print_string(ptr @globalstring.2)
   ret i32 0
 }
