@@ -5,17 +5,17 @@ declare void @print_int(i32)
 
 define i32 @main() {
 func:
-  %x = alloca i1
-  store i1 false, i1* %x
-  store i1 true, i1* %x
+  %x = alloca i1, align 1
+  store i1 false, ptr %x, align 1
+  store i1 true, ptr %x, align 1
   br label %if
 
 if:                                               ; preds = %func
-  %x1 = load i1, i1* %x
+  %x1 = load i1, ptr %x, align 1
   br i1 %x1, label %true, label %false
 
 true:                                             ; preds = %if
-  %x2 = load i1, i1* %x
+  %x2 = load i1, ptr %x, align 1
   %zexttmp = zext i1 %x2 to i32
   call void @print_int(i32 %zexttmp)
   br label %false

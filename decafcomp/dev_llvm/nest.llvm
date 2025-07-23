@@ -3,261 +3,259 @@ source_filename = "DecafComp"
 
 @globalstring = private unnamed_addr constant [7 x i8] c"hello\0A\00", align 1
 
-declare void @print_string(i8*)
+declare void @print_string(ptr)
 
 declare void @print_int(i32)
 
 define i32 @main() {
 func:
-  %i = alloca i32
-  store i32 0, i32* %i
-  %j = alloca i32
-  store i32 0, i32* %j
-  %k = alloca i32
-  store i32 0, i32* %k
-  %l = alloca i32
-  store i32 0, i32* %l
-  %times = alloca i32
-  store i32 0, i32* %times
-  call void @print_string(i8* getelementptr inbounds ([7 x i8], [7 x i8]* @globalstring, i32 0, i32 0))
-  store i32 0, i32* %times
-  store i32 0, i32* %i
-  br label %loop
+  %i = alloca i32, align 4
+  store i32 0, ptr %i, align 4
+  %j = alloca i32, align 4
+  store i32 0, ptr %j, align 4
+  %k = alloca i32, align 4
+  store i32 0, ptr %k, align 4
+  %l = alloca i32, align 4
+  store i32 0, ptr %l, align 4
+  %times = alloca i32, align 4
+  store i32 0, ptr %times, align 4
+  call void @print_string(ptr @globalstring)
+  store i32 0, ptr %times, align 4
+  store i32 0, ptr %i, align 4
+  br label %gate
 
-loop:                                             ; preds = %next, %func
-  %i1 = load i32, i32* %i
+gate:                                             ; preds = %func
+  %i1 = load i32, ptr %i, align 4
   %lttmp = icmp slt i32 %i1, 10
-  br i1 %lttmp, label %body, label %end
+  br i1 %lttmp, label %decl, label %end
 
-body:                                             ; preds = %loop
+loop:                                             ; preds = %next
+  %i2 = load i32, ptr %i, align 4
+  %lttmp3 = icmp slt i32 %i2, 10
+  br i1 %lttmp3, label %body, label %end
+
+decl:                                             ; preds = %gate
+  br label %body
+
+body:                                             ; preds = %decl, %loop
   br label %if
 
-next:                                             ; preds = %false130, %true
-  %i131 = load i32, i32* %i
-  %addtmp132 = add i32 %i131, 1
-  store i32 %addtmp132, i32* %i
+next:                                             ; preds = %false152, %true
+  %i4 = load i32, ptr %i, align 4
+  %addtmp = add i32 %i4, 1
+  store i32 %addtmp, ptr %i, align 4
   br label %loop
 
-end:                                              ; preds = %true129, %loop
-  %times133 = load i32, i32* %times
-  call void @print_int(i32 %times133)
+end:                                              ; preds = %true151, %loop, %gate
+  %times154 = load i32, ptr %times, align 4
+  call void @print_int(i32 %times154)
   ret i32 0
 
 if:                                               ; preds = %body
-  %i2 = load i32, i32* %i
-  %eqtmp = icmp eq i32 %i2, 5
+  %i5 = load i32, ptr %i, align 4
+  %eqtmp = icmp eq i32 %i5, 5
   br i1 %eqtmp, label %true, label %false
 
 true:                                             ; preds = %if
   br label %next
+
+false:                                            ; preds = %unreachable, %if
+  store i32 0, ptr %j, align 4
+  br label %gate6
+
+unreachable:                                      ; No predecessors!
   br label %false
 
-false:                                            ; preds = %true, %if
-  store i32 0, i32* %j
-  br label %loop3
+gate6:                                            ; preds = %false
+  %j12 = load i32, ptr %j, align 4
+  %lttmp13 = icmp slt i32 %j12, 10
+  br i1 %lttmp13, label %decl8, label %end11
 
-loop3:                                            ; preds = %next7, %false
-  %j4 = load i32, i32* %j
-  %lttmp5 = icmp slt i32 %j4, 10
-  br i1 %lttmp5, label %body6, label %end8
+loop7:                                            ; preds = %next10
+  %j14 = load i32, ptr %j, align 4
+  %lttmp15 = icmp slt i32 %j14, 10
+  br i1 %lttmp15, label %body9, label %end11
 
-body6:                                            ; preds = %loop3
-  br label %if9
+decl8:                                            ; preds = %gate6
+  br label %body9
 
-next7:                                            ; preds = %false123, %true14
-  %j124 = load i32, i32* %j
-  %addtmp125 = add i32 %j124, 1
-  store i32 %addtmp125, i32* %j
-  br label %loop3
+body9:                                            ; preds = %decl8, %loop7
+  br label %if18
 
-end8:                                             ; preds = %true122, %loop3
-  br label %if126
+next10:                                           ; preds = %false146, %true23
+  %j16 = load i32, ptr %j, align 4
+  %addtmp17 = add i32 %j16, 1
+  store i32 %addtmp17, ptr %j, align 4
+  br label %loop7
 
-if9:                                              ; preds = %body6
-  %i10 = load i32, i32* %i
-  %eqtmp11 = icmp eq i32 %i10, 2
-  br i1 %eqtmp11, label %noskct, label %skctend
+end11:                                            ; preds = %true145, %loop7, %gate6
+  br label %if148
 
-noskct:                                           ; preds = %if9
-  %j12 = load i32, i32* %j
-  %eqtmp13 = icmp eq i32 %j12, 4
-  %andtmp = and i1 %eqtmp11, %eqtmp13
+if18:                                             ; preds = %body9
+  %i19 = load i32, ptr %i, align 4
+  %eqtmp20 = icmp eq i32 %i19, 2
+  br i1 %eqtmp20, label %noskct, label %skctend
+
+noskct:                                           ; preds = %if18
+  %j21 = load i32, ptr %j, align 4
+  %eqtmp22 = icmp eq i32 %j21, 4
+  %andtmp = and i1 %eqtmp20, %eqtmp22
   br label %skctend
 
-skctend:                                          ; preds = %noskct, %if9
-  %phival = phi i1 [ %eqtmp11, %if9 ], [ %andtmp, %noskct ]
-  br i1 %phival, label %true14, label %false15
+skctend:                                          ; preds = %noskct, %if18
+  %phival = phi i1 [ %eqtmp20, %if18 ], [ %andtmp, %noskct ]
+  br i1 %phival, label %true23, label %false24
 
-true14:                                           ; preds = %skctend
-  br label %next7
-  br label %false15
+true23:                                           ; preds = %skctend
+  br label %next10
 
-false15:                                          ; preds = %true14, %skctend
-  store i32 0, i32* %k
-  br label %loop16
+false24:                                          ; preds = %unreachable25, %skctend
+  store i32 0, ptr %k, align 4
+  br label %gate26
 
-loop16:                                           ; preds = %next20, %false15
-  %k17 = load i32, i32* %k
-  %lttmp18 = icmp slt i32 %k17, 10
-  br i1 %lttmp18, label %body19, label %end21
+unreachable25:                                    ; No predecessors!
+  br label %false24
 
-body19:                                           ; preds = %loop16
-  br label %if22
+gate26:                                           ; preds = %false24
+  %k32 = load i32, ptr %k, align 4
+  %lttmp33 = icmp slt i32 %k32, 10
+  br i1 %lttmp33, label %decl28, label %end31
 
-next20:                                           ; preds = %false110, %true37
-  %k111 = load i32, i32* %k
-  %addtmp112 = add i32 %k111, 1
-  store i32 %addtmp112, i32* %k
-  br label %loop16
+loop27:                                           ; preds = %next30
+  %k34 = load i32, ptr %k, align 4
+  %lttmp35 = icmp slt i32 %k34, 10
+  br i1 %lttmp35, label %body29, label %end31
 
-end21:                                            ; preds = %true109, %loop16
-  br label %if113
+decl28:                                           ; preds = %gate26
+  br label %body29
 
-if22:                                             ; preds = %body19
-  %i23 = load i32, i32* %i
-  %eqtmp24 = icmp eq i32 %i23, 8
-  br i1 %eqtmp24, label %noskct25, label %skctend26
+body29:                                           ; preds = %decl28, %loop27
+  br label %if38
 
-noskct25:                                         ; preds = %if22
-  %j27 = load i32, i32* %j
-  %eqtmp28 = icmp eq i32 %j27, 1
-  %andtmp29 = and i1 %eqtmp24, %eqtmp28
-  br label %skctend26
+next30:                                           ; preds = %false134, %true53
+  %k36 = load i32, ptr %k, align 4
+  %addtmp37 = add i32 %k36, 1
+  store i32 %addtmp37, ptr %k, align 4
+  br label %loop27
 
-skctend26:                                        ; preds = %noskct25, %if22
-  %phival30 = phi i1 [ %eqtmp24, %if22 ], [ %andtmp29, %noskct25 ]
-  br i1 %phival30, label %noskct31, label %skctend32
+end31:                                            ; preds = %true133, %loop27, %gate26
+  br label %if136
 
-noskct31:                                         ; preds = %skctend26
-  %k33 = load i32, i32* %k
-  %eqtmp34 = icmp eq i32 %k33, 3
-  %andtmp35 = and i1 %phival30, %eqtmp34
-  br label %skctend32
+if38:                                             ; preds = %body29
+  %i39 = load i32, ptr %i, align 4
+  %eqtmp40 = icmp eq i32 %i39, 8
+  br i1 %eqtmp40, label %noskct41, label %skctend42
 
-skctend32:                                        ; preds = %noskct31, %skctend26
-  %phival36 = phi i1 [ %phival30, %skctend26 ], [ %andtmp35, %noskct31 ]
-  br i1 %phival36, label %true37, label %false38
+noskct41:                                         ; preds = %if38
+  %j43 = load i32, ptr %j, align 4
+  %eqtmp44 = icmp eq i32 %j43, 1
+  %andtmp45 = and i1 %eqtmp40, %eqtmp44
+  br label %skctend42
 
-true37:                                           ; preds = %skctend32
-  br label %next20
-  br label %false38
+skctend42:                                        ; preds = %noskct41, %if38
+  %phival46 = phi i1 [ %eqtmp40, %if38 ], [ %andtmp45, %noskct41 ]
+  br i1 %phival46, label %noskct47, label %skctend48
 
-false38:                                          ; preds = %true37, %skctend32
-  store i32 0, i32* %l
-  br label %loop39
+noskct47:                                         ; preds = %skctend42
+  %k49 = load i32, ptr %k, align 4
+  %eqtmp50 = icmp eq i32 %k49, 3
+  %andtmp51 = and i1 %phival46, %eqtmp50
+  br label %skctend48
 
-loop39:                                           ; preds = %next43, %false38
-  %l40 = load i32, i32* %l
-  %lttmp41 = icmp slt i32 %l40, 10
-  br i1 %lttmp41, label %body42, label %end44
+skctend48:                                        ; preds = %noskct47, %skctend42
+  %phival52 = phi i1 [ %phival46, %skctend42 ], [ %andtmp51, %noskct47 ]
+  br i1 %phival52, label %true53, label %false54
 
-body42:                                           ; preds = %loop39
-  br label %if45
+true53:                                           ; preds = %skctend48
+  br label %next30
 
-next43:                                           ; preds = %false91, %true66
-  %l92 = load i32, i32* %l
-  %addtmp93 = add i32 %l92, 1
-  store i32 %addtmp93, i32* %l
-  br label %loop39
+false54:                                          ; preds = %unreachable55, %skctend48
+  store i32 0, ptr %l, align 4
+  br label %gate56
 
-end44:                                            ; preds = %true90, %loop39
+unreachable55:                                    ; No predecessors!
+  br label %false54
+
+gate56:                                           ; preds = %false54
+  %l62 = load i32, ptr %l, align 4
+  %lttmp63 = icmp slt i32 %l62, 10
+  br i1 %lttmp63, label %decl58, label %end61
+
+loop57:                                           ; preds = %next60
+  %l64 = load i32, ptr %l, align 4
+  %lttmp65 = icmp slt i32 %l64, 10
+  br i1 %lttmp65, label %body59, label %end61
+
+decl58:                                           ; preds = %gate56
+  br label %body59
+
+body59:                                           ; preds = %decl58, %loop57
+  br label %if68
+
+next60:                                           ; preds = %false116, %true89
+  %l66 = load i32, ptr %l, align 4
+  %addtmp67 = add i32 %l66, 1
+  store i32 %addtmp67, ptr %l, align 4
+  br label %loop57
+
+end61:                                            ; preds = %true115, %loop57, %gate56
+  br label %if118
+
+if68:                                             ; preds = %body59
+  %i69 = load i32, ptr %i, align 4
+  %eqtmp70 = icmp eq i32 %i69, 1
+  br i1 %eqtmp70, label %noskct71, label %skctend72
+
+noskct71:                                         ; preds = %if68
+  %j73 = load i32, ptr %j, align 4
+  %eqtmp74 = icmp eq i32 %j73, 7
+  %andtmp75 = and i1 %eqtmp70, %eqtmp74
+  br label %skctend72
+
+skctend72:                                        ; preds = %noskct71, %if68
+  %phival76 = phi i1 [ %eqtmp70, %if68 ], [ %andtmp75, %noskct71 ]
+  br i1 %phival76, label %noskct77, label %skctend78
+
+noskct77:                                         ; preds = %skctend72
+  %k79 = load i32, ptr %k, align 4
+  %eqtmp80 = icmp eq i32 %k79, 4
+  %andtmp81 = and i1 %phival76, %eqtmp80
+  br label %skctend78
+
+skctend78:                                        ; preds = %noskct77, %skctend72
+  %phival82 = phi i1 [ %phival76, %skctend72 ], [ %andtmp81, %noskct77 ]
+  br i1 %phival82, label %noskct83, label %skctend84
+
+noskct83:                                         ; preds = %skctend78
+  %l85 = load i32, ptr %l, align 4
+  %eqtmp86 = icmp eq i32 %l85, 1
+  %andtmp87 = and i1 %phival82, %eqtmp86
+  br label %skctend84
+
+skctend84:                                        ; preds = %noskct83, %skctend78
+  %phival88 = phi i1 [ %phival82, %skctend78 ], [ %andtmp87, %noskct83 ]
+  br i1 %phival88, label %true89, label %false90
+
+true89:                                           ; preds = %skctend84
+  br label %next60
+
+false90:                                          ; preds = %unreachable91, %skctend84
+  %times92 = load i32, ptr %times, align 4
+  %addtmp93 = add i32 %times92, 1
+  store i32 %addtmp93, ptr %times, align 4
   br label %if94
 
-if45:                                             ; preds = %body42
-  %i46 = load i32, i32* %i
-  %eqtmp47 = icmp eq i32 %i46, 1
-  br i1 %eqtmp47, label %noskct48, label %skctend49
+unreachable91:                                    ; No predecessors!
+  br label %false90
 
-noskct48:                                         ; preds = %if45
-  %j50 = load i32, i32* %j
-  %eqtmp51 = icmp eq i32 %j50, 7
-  %andtmp52 = and i1 %eqtmp47, %eqtmp51
-  br label %skctend49
-
-skctend49:                                        ; preds = %noskct48, %if45
-  %phival53 = phi i1 [ %eqtmp47, %if45 ], [ %andtmp52, %noskct48 ]
-  br i1 %phival53, label %noskct54, label %skctend55
-
-noskct54:                                         ; preds = %skctend49
-  %k56 = load i32, i32* %k
-  %eqtmp57 = icmp eq i32 %k56, 4
-  %andtmp58 = and i1 %phival53, %eqtmp57
-  br label %skctend55
-
-skctend55:                                        ; preds = %noskct54, %skctend49
-  %phival59 = phi i1 [ %phival53, %skctend49 ], [ %andtmp58, %noskct54 ]
-  br i1 %phival59, label %noskct60, label %skctend61
-
-noskct60:                                         ; preds = %skctend55
-  %l62 = load i32, i32* %l
-  %eqtmp63 = icmp eq i32 %l62, 1
-  %andtmp64 = and i1 %phival59, %eqtmp63
-  br label %skctend61
-
-skctend61:                                        ; preds = %noskct60, %skctend55
-  %phival65 = phi i1 [ %phival59, %skctend55 ], [ %andtmp64, %noskct60 ]
-  br i1 %phival65, label %true66, label %false67
-
-true66:                                           ; preds = %skctend61
-  br label %next43
-  br label %false67
-
-false67:                                          ; preds = %true66, %skctend61
-  %times68 = load i32, i32* %times
-  %addtmp = add i32 %times68, 1
-  store i32 %addtmp, i32* %times
-  br label %if69
-
-if69:                                             ; preds = %false67
-  %i70 = load i32, i32* %i
-  %eqtmp71 = icmp eq i32 %i70, 3
-  br i1 %eqtmp71, label %noskct72, label %skctend73
-
-noskct72:                                         ; preds = %if69
-  %j74 = load i32, i32* %j
-  %eqtmp75 = icmp eq i32 %j74, 2
-  %andtmp76 = and i1 %eqtmp71, %eqtmp75
-  br label %skctend73
-
-skctend73:                                        ; preds = %noskct72, %if69
-  %phival77 = phi i1 [ %eqtmp71, %if69 ], [ %andtmp76, %noskct72 ]
-  br i1 %phival77, label %noskct78, label %skctend79
-
-noskct78:                                         ; preds = %skctend73
-  %k80 = load i32, i32* %k
-  %eqtmp81 = icmp eq i32 %k80, 6
-  %andtmp82 = and i1 %phival77, %eqtmp81
-  br label %skctend79
-
-skctend79:                                        ; preds = %noskct78, %skctend73
-  %phival83 = phi i1 [ %phival77, %skctend73 ], [ %andtmp82, %noskct78 ]
-  br i1 %phival83, label %noskct84, label %skctend85
-
-noskct84:                                         ; preds = %skctend79
-  %l86 = load i32, i32* %l
-  %eqtmp87 = icmp eq i32 %l86, 4
-  %andtmp88 = and i1 %phival83, %eqtmp87
-  br label %skctend85
-
-skctend85:                                        ; preds = %noskct84, %skctend79
-  %phival89 = phi i1 [ %phival83, %skctend79 ], [ %andtmp88, %noskct84 ]
-  br i1 %phival89, label %true90, label %false91
-
-true90:                                           ; preds = %skctend85
-  br label %end44
-  br label %false91
-
-false91:                                          ; preds = %true90, %skctend85
-  br label %next43
-
-if94:                                             ; preds = %end44
-  %i95 = load i32, i32* %i
-  %eqtmp96 = icmp eq i32 %i95, 2
+if94:                                             ; preds = %false90
+  %i95 = load i32, ptr %i, align 4
+  %eqtmp96 = icmp eq i32 %i95, 3
   br i1 %eqtmp96, label %noskct97, label %skctend98
 
 noskct97:                                         ; preds = %if94
-  %j99 = load i32, i32* %j
-  %eqtmp100 = icmp eq i32 %j99, 7
+  %j99 = load i32, ptr %j, align 4
+  %eqtmp100 = icmp eq i32 %j99, 2
   %andtmp101 = and i1 %eqtmp96, %eqtmp100
   br label %skctend98
 
@@ -266,53 +264,103 @@ skctend98:                                        ; preds = %noskct97, %if94
   br i1 %phival102, label %noskct103, label %skctend104
 
 noskct103:                                        ; preds = %skctend98
-  %k105 = load i32, i32* %k
-  %eqtmp106 = icmp eq i32 %k105, 2
+  %k105 = load i32, ptr %k, align 4
+  %eqtmp106 = icmp eq i32 %k105, 6
   %andtmp107 = and i1 %phival102, %eqtmp106
   br label %skctend104
 
 skctend104:                                       ; preds = %noskct103, %skctend98
   %phival108 = phi i1 [ %phival102, %skctend98 ], [ %andtmp107, %noskct103 ]
-  br i1 %phival108, label %true109, label %false110
+  br i1 %phival108, label %noskct109, label %skctend110
 
-true109:                                          ; preds = %skctend104
-  br label %end21
-  br label %false110
+noskct109:                                        ; preds = %skctend104
+  %l111 = load i32, ptr %l, align 4
+  %eqtmp112 = icmp eq i32 %l111, 4
+  %andtmp113 = and i1 %phival108, %eqtmp112
+  br label %skctend110
 
-false110:                                         ; preds = %true109, %skctend104
-  br label %next20
+skctend110:                                       ; preds = %noskct109, %skctend104
+  %phival114 = phi i1 [ %phival108, %skctend104 ], [ %andtmp113, %noskct109 ]
+  br i1 %phival114, label %true115, label %false116
 
-if113:                                            ; preds = %end21
-  %i114 = load i32, i32* %i
-  %eqtmp115 = icmp eq i32 %i114, 9
-  br i1 %eqtmp115, label %noskct116, label %skctend117
+true115:                                          ; preds = %skctend110
+  br label %end61
 
-noskct116:                                        ; preds = %if113
-  %j118 = load i32, i32* %j
-  %eqtmp119 = icmp eq i32 %j118, 1
-  %andtmp120 = and i1 %eqtmp115, %eqtmp119
-  br label %skctend117
+false116:                                         ; preds = %unreachable117, %skctend110
+  br label %next60
 
-skctend117:                                       ; preds = %noskct116, %if113
-  %phival121 = phi i1 [ %eqtmp115, %if113 ], [ %andtmp120, %noskct116 ]
-  br i1 %phival121, label %true122, label %false123
+unreachable117:                                   ; No predecessors!
+  br label %false116
 
-true122:                                          ; preds = %skctend117
-  br label %end8
-  br label %false123
+if118:                                            ; preds = %end61
+  %i119 = load i32, ptr %i, align 4
+  %eqtmp120 = icmp eq i32 %i119, 2
+  br i1 %eqtmp120, label %noskct121, label %skctend122
 
-false123:                                         ; preds = %true122, %skctend117
-  br label %next7
+noskct121:                                        ; preds = %if118
+  %j123 = load i32, ptr %j, align 4
+  %eqtmp124 = icmp eq i32 %j123, 7
+  %andtmp125 = and i1 %eqtmp120, %eqtmp124
+  br label %skctend122
 
-if126:                                            ; preds = %end8
-  %i127 = load i32, i32* %i
-  %eqtmp128 = icmp eq i32 %i127, 9
-  br i1 %eqtmp128, label %true129, label %false130
+skctend122:                                       ; preds = %noskct121, %if118
+  %phival126 = phi i1 [ %eqtmp120, %if118 ], [ %andtmp125, %noskct121 ]
+  br i1 %phival126, label %noskct127, label %skctend128
 
-true129:                                          ; preds = %if126
+noskct127:                                        ; preds = %skctend122
+  %k129 = load i32, ptr %k, align 4
+  %eqtmp130 = icmp eq i32 %k129, 2
+  %andtmp131 = and i1 %phival126, %eqtmp130
+  br label %skctend128
+
+skctend128:                                       ; preds = %noskct127, %skctend122
+  %phival132 = phi i1 [ %phival126, %skctend122 ], [ %andtmp131, %noskct127 ]
+  br i1 %phival132, label %true133, label %false134
+
+true133:                                          ; preds = %skctend128
+  br label %end31
+
+false134:                                         ; preds = %unreachable135, %skctend128
+  br label %next30
+
+unreachable135:                                   ; No predecessors!
+  br label %false134
+
+if136:                                            ; preds = %end31
+  %i137 = load i32, ptr %i, align 4
+  %eqtmp138 = icmp eq i32 %i137, 9
+  br i1 %eqtmp138, label %noskct139, label %skctend140
+
+noskct139:                                        ; preds = %if136
+  %j141 = load i32, ptr %j, align 4
+  %eqtmp142 = icmp eq i32 %j141, 1
+  %andtmp143 = and i1 %eqtmp138, %eqtmp142
+  br label %skctend140
+
+skctend140:                                       ; preds = %noskct139, %if136
+  %phival144 = phi i1 [ %eqtmp138, %if136 ], [ %andtmp143, %noskct139 ]
+  br i1 %phival144, label %true145, label %false146
+
+true145:                                          ; preds = %skctend140
+  br label %end11
+
+false146:                                         ; preds = %unreachable147, %skctend140
+  br label %next10
+
+unreachable147:                                   ; No predecessors!
+  br label %false146
+
+if148:                                            ; preds = %end11
+  %i149 = load i32, ptr %i, align 4
+  %eqtmp150 = icmp eq i32 %i149, 9
+  br i1 %eqtmp150, label %true151, label %false152
+
+true151:                                          ; preds = %if148
   br label %end
-  br label %false130
 
-false130:                                         ; preds = %true129, %if126
+false152:                                         ; preds = %unreachable153, %if148
   br label %next
+
+unreachable153:                                   ; No predecessors!
+  br label %false152
 }

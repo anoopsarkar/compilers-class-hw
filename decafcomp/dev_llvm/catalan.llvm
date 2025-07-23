@@ -15,61 +15,71 @@ func:
 
 define i32 @fact(i32 %n) {
 func:
-  %n1 = alloca i32
-  store i32 %n, i32* %n1
+  %n1 = alloca i32, align 4
+  store i32 %n, ptr %n1, align 4
   br label %if
 
 if:                                               ; preds = %func
-  %n2 = load i32, i32* %n1
+  %n2 = load i32, ptr %n1, align 4
   %eqtmp = icmp eq i32 %n2, 1
   br i1 %eqtmp, label %true, label %else
 
 true:                                             ; preds = %if
   ret i32 1
-  br label %false
 
-false:                                            ; preds = %else, %true
+false:                                            ; preds = %unreachable5, %unreachable
   ret i32 0
 
 else:                                             ; preds = %if
-  %n3 = load i32, i32* %n1
-  %n4 = load i32, i32* %n1
+  %n3 = load i32, ptr %n1, align 4
+  %n4 = load i32, ptr %n1, align 4
   %subtmp = sub i32 %n4, 1
   %calltmp = call i32 @fact(i32 %subtmp)
   %multmp = mul i32 %n3, %calltmp
   ret i32 %multmp
+
+unreachable:                                      ; No predecessors!
+  br label %false
+
+unreachable5:                                     ; No predecessors!
   br label %false
 }
 
 define i32 @choose(i32 %a, i32 %b) {
 func:
-  %a1 = alloca i32
-  store i32 %a, i32* %a1
-  %b2 = alloca i32
-  store i32 %b, i32* %b2
-  %a3 = load i32, i32* %a1
+  %a1 = alloca i32, align 4
+  store i32 %a, ptr %a1, align 4
+  %b2 = alloca i32, align 4
+  store i32 %b, ptr %b2, align 4
+  %a3 = load i32, ptr %a1, align 4
   %calltmp = call i32 @fact(i32 %a3)
-  %b4 = load i32, i32* %b2
+  %b4 = load i32, ptr %b2, align 4
   %calltmp5 = call i32 @fact(i32 %b4)
-  %a6 = load i32, i32* %a1
-  %b7 = load i32, i32* %b2
+  %a6 = load i32, ptr %a1, align 4
+  %b7 = load i32, ptr %b2, align 4
   %subtmp = sub i32 %a6, %b7
   %calltmp8 = call i32 @fact(i32 %subtmp)
   %multmp = mul i32 %calltmp5, %calltmp8
   %divtmp = sdiv i32 %calltmp, %multmp
   ret i32 %divtmp
+
+unreachable:                                      ; No predecessors!
+  ret i32 0
 }
 
 define i32 @cat(i32 %n) {
 func:
-  %n1 = alloca i32
-  store i32 %n, i32* %n1
-  %n2 = load i32, i32* %n1
+  %n1 = alloca i32, align 4
+  store i32 %n, ptr %n1, align 4
+  %n2 = load i32, ptr %n1, align 4
   %multmp = mul i32 2, %n2
-  %n3 = load i32, i32* %n1
+  %n3 = load i32, ptr %n1, align 4
   %calltmp = call i32 @choose(i32 %multmp, i32 %n3)
-  %n4 = load i32, i32* %n1
+  %n4 = load i32, ptr %n1, align 4
   %addtmp = add i32 %n4, 1
   %divtmp = sdiv i32 %calltmp, %addtmp
   ret i32 %divtmp
+
+unreachable:                                      ; No predecessors!
+  ret i32 0
 }

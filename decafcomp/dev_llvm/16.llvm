@@ -1,0 +1,3 @@
+70: syntax error at )
+; ModuleID = 'DecafComp'
+source_filename = "DecafComp"

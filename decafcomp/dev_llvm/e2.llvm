@@ -1,0 +1,4 @@
+Error: unterminated string constant
+11: syntax error at """
+; ModuleID = 'DecafComp'
+source_filename = "DecafComp"

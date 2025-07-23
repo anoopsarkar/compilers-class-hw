@@ -5,16 +5,16 @@ declare void @print_int(i32)
 
 define i32 @main() {
 func:
-  %a = alloca i32
-  store i32 0, i32* %a
-  %b = alloca i32
-  store i32 0, i32* %b
-  %d = alloca i32
-  store i32 0, i32* %d
-  %c = alloca i1
-  store i1 false, i1* %c
-  store i32 3, i32* %a
-  store i32 7, i32* %b
+  %a = alloca i32, align 4
+  store i32 0, ptr %a, align 4
+  %b = alloca i32, align 4
+  store i32 0, ptr %b, align 4
+  %d = alloca i32, align 4
+  store i32 0, ptr %d, align 4
+  %c = alloca i1, align 1
+  store i1 false, ptr %c, align 1
+  store i32 3, ptr %a, align 4
+  store i32 7, ptr %b, align 4
   br i1 true, label %skctend, label %noskct
 
 noskct:                                           ; preds = %func
@@ -22,23 +22,23 @@ noskct:                                           ; preds = %func
 
 skctend:                                          ; preds = %noskct, %func
   %phival = phi i1 [ true, %func ], [ true, %noskct ]
-  store i1 %phival, i1* %c
-  store i32 -3, i32* %d
+  store i1 %phival, ptr %c, align 1
+  store i32 -3, ptr %d, align 4
   br label %if
 
 if:                                               ; preds = %skctend
-  %c1 = load i1, i1* %c
+  %c1 = load i1, ptr %c, align 1
   br i1 %c1, label %true, label %false
 
 true:                                             ; preds = %if
-  %a2 = load i32, i32* %a
+  %a2 = load i32, ptr %a, align 4
   call void @print_int(i32 %a2)
-  %b3 = load i32, i32* %b
+  %b3 = load i32, ptr %b, align 4
   call void @print_int(i32 %b3)
-  %c4 = load i1, i1* %c
+  %c4 = load i1, ptr %c, align 1
   %zexttmp = zext i1 %c4 to i32
   call void @print_int(i32 %zexttmp)
-  %d5 = load i32, i32* %d
+  %d5 = load i32, ptr %d, align 4
   call void @print_int(i32 %d5)
   br label %false
 

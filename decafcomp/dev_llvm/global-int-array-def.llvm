@@ -1,18 +1,1 @@
-; ModuleID = 'C'
-source_filename = "DecafComp"
-
-@foo = global [5 x i32] zeroinitializer
-
-declare void @print_int(i32)
-
-define i32 @main() {
-func:
-  %bar = alloca i32
-  store i32 0, i32* %bar
-  store i32 2, i32* getelementptr inbounds ([5 x i32], [5 x i32]* @foo, i32 0, i32 3)
-  %arrayval = load i32, i32* getelementptr inbounds ([5 x i32], [5 x i32]* @foo, i32 0, i32 3)
-  store i32 %arrayval, i32* %bar
-  %bar1 = load i32, i32* %bar
-  call void @print_int(i32 %bar1)
-  ret i32 0
-}
+Assertion failed: (getTypeID() == ArrayTyID), function getArrayElementType, file Type.h, line 412.

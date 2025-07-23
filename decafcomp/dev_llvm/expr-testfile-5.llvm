@@ -5,32 +5,32 @@ declare void @print_int(i32)
 
 define i32 @main() {
 func:
-  %x = alloca i1
-  store i1 false, i1* %x
-  %y = alloca i1
-  store i1 false, i1* %y
-  %z = alloca i1
-  store i1 false, i1* %z
-  store i1 true, i1* %x
-  store i1 true, i1* %y
-  %x1 = load i1, i1* %x
+  %x = alloca i1, align 1
+  store i1 false, ptr %x, align 1
+  %y = alloca i1, align 1
+  store i1 false, ptr %y, align 1
+  %z = alloca i1, align 1
+  store i1 false, ptr %z, align 1
+  store i1 true, ptr %x, align 1
+  store i1 true, ptr %y, align 1
+  %x1 = load i1, ptr %x, align 1
   br i1 %x1, label %noskct, label %skctend
 
 noskct:                                           ; preds = %func
-  %y2 = load i1, i1* %y
+  %y2 = load i1, ptr %y, align 1
   %andtmp = and i1 %x1, %y2
   br label %skctend
 
 skctend:                                          ; preds = %noskct, %func
   %phival = phi i1 [ %x1, %func ], [ %andtmp, %noskct ]
-  store i1 %phival, i1* %z
+  store i1 %phival, ptr %z, align 1
   br label %if
 
 if:                                               ; preds = %skctend
   br i1 true, label %true, label %false
 
 true:                                             ; preds = %if
-  %z3 = load i1, i1* %z
+  %z3 = load i1, ptr %z, align 1
   %zexttmp = zext i1 %z3 to i32
   call void @print_int(i32 %zexttmp)
   br label %false

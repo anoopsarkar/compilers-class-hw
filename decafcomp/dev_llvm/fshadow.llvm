@@ -5,35 +5,35 @@ source_filename = "DecafComp"
 @globalstring.1 = private unnamed_addr constant [7 x i8] c"hello\0A\00", align 1
 @globalstring.2 = private unnamed_addr constant [4 x i8] c",\0D\0A\00", align 1
 
-declare void @print_string(i8*)
+declare void @print_string(ptr)
 
 declare void @print_int(i32)
 
 define i32 @i(i32 %i) {
 func:
-  %i1 = alloca i32
-  store i32 %i, i32* %i1
-  %i2 = alloca i32
-  store i32 0, i32* %i2
-  store i32 0, i32* %i2
+  %i1 = alloca i32, align 4
+  store i32 %i, ptr %i1, align 4
+  %i2 = alloca i32, align 4
+  store i32 0, ptr %i2, align 4
+  store i32 0, ptr %i2, align 4
   br label %if
 
 if:                                               ; preds = %func
-  %i3 = load i32, i32* %i2
+  %i3 = load i32, ptr %i2, align 4
   %gttmp = icmp sgt i32 2, %i3
   br i1 %gttmp, label %true, label %false
 
 true:                                             ; preds = %if
-  %i4 = alloca i32
-  store i32 0, i32* %i4
-  store i32 2, i32* %i4
+  %i4 = alloca i32, align 4
+  store i32 0, ptr %i4, align 4
+  store i32 2, ptr %i4, align 4
   br label %false
 
 false:                                            ; preds = %true, %if
   br label %if5
 
 if5:                                              ; preds = %false
-  %i6 = load i32, i32* %i2
+  %i6 = load i32, ptr %i2, align 4
   %lttmp = icmp slt i32 2, %i6
   br i1 %lttmp, label %true7, label %else
 
@@ -41,42 +41,45 @@ true7:                                            ; preds = %if5
   br label %false8
 
 false8:                                           ; preds = %else, %true7
-  %i10 = load i32, i32* %i2
+  %i10 = load i32, ptr %i2, align 4
   call void @print_int(i32 %i10)
-  call void @print_string(i8* getelementptr inbounds ([4 x i8], [4 x i8]* @globalstring, i32 0, i32 0))
+  call void @print_string(ptr @globalstring)
   ret i32 0
 
 else:                                             ; preds = %if5
-  %i9 = alloca i32
-  store i32 0, i32* %i9
-  store i32 6, i32* %i9
+  %i9 = alloca i32, align 4
+  store i32 0, ptr %i9, align 4
+  store i32 6, ptr %i9, align 4
   br label %false8
+
+unreachable:                                      ; No predecessors!
+  ret i32 0
 }
 
 define i32 @main() {
 func:
-  %i = alloca i32
-  store i32 0, i32* %i
-  call void @print_string(i8* getelementptr inbounds ([7 x i8], [7 x i8]* @globalstring.1, i32 0, i32 0))
-  store i32 0, i32* %i
+  %i = alloca i32, align 4
+  store i32 0, ptr %i, align 4
+  call void @print_string(ptr @globalstring.1)
+  store i32 0, ptr %i, align 4
   br label %if
 
 if:                                               ; preds = %func
-  %i1 = load i32, i32* %i
+  %i1 = load i32, ptr %i, align 4
   %gttmp = icmp sgt i32 2, %i1
   br i1 %gttmp, label %true, label %false
 
 true:                                             ; preds = %if
-  %i2 = alloca i32
-  store i32 0, i32* %i2
-  store i32 2, i32* %i2
+  %i2 = alloca i32, align 4
+  store i32 0, ptr %i2, align 4
+  store i32 2, ptr %i2, align 4
   br label %false
 
 false:                                            ; preds = %true, %if
   br label %if3
 
 if3:                                              ; preds = %false
-  %i4 = load i32, i32* %i
+  %i4 = load i32, ptr %i, align 4
   %lttmp = icmp slt i32 2, %i4
   br i1 %lttmp, label %true5, label %else
 
@@ -84,14 +87,14 @@ true5:                                            ; preds = %if3
   br label %false6
 
 false6:                                           ; preds = %else, %true5
-  %i8 = load i32, i32* %i
+  %i8 = load i32, ptr %i, align 4
   call void @print_int(i32 %i8)
-  call void @print_string(i8* getelementptr inbounds ([4 x i8], [4 x i8]* @globalstring.2, i32 0, i32 0))
+  call void @print_string(ptr @globalstring.2)
   ret i32 0
 
 else:                                             ; preds = %if3
-  %i7 = alloca i32
-  store i32 0, i32* %i7
-  store i32 6, i32* %i7
+  %i7 = alloca i32, align 4
+  store i32 0, ptr %i7, align 4
+  store i32 6, ptr %i7, align 4
   br label %false6
 }

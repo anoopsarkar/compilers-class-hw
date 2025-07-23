@@ -1,0 +1,3 @@
+6: syntax error at var
+; ModuleID = 'DecafComp'
+source_filename = "DecafComp"

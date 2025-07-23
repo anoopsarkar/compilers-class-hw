@@ -5,48 +5,48 @@ declare void @print_int(i32)
 
 define i32 @main() {
 func:
-  %x = alloca i32
-  store i32 0, i32* %x
-  %y = alloca i32
-  store i32 0, i32* %y
-  %z = alloca i32
-  store i32 0, i32* %z
-  store i32 0, i32* %x
-  store i32 0, i32* %y
-  store i32 0, i32* %z
+  %x = alloca i32, align 4
+  store i32 0, ptr %x, align 4
+  %y = alloca i32, align 4
+  store i32 0, ptr %y, align 4
+  %z = alloca i32, align 4
+  store i32 0, ptr %z, align 4
+  store i32 0, ptr %x, align 4
+  store i32 0, ptr %y, align 4
+  store i32 0, ptr %z, align 4
   br label %if
 
 if:                                               ; preds = %func
-  %x1 = load i32, i32* %x
+  %x1 = load i32, ptr %x, align 4
   %eqtmp = icmp eq i32 %x1, 0
   br i1 %eqtmp, label %true, label %false
 
 true:                                             ; preds = %if
-  %x2 = load i32, i32* %x
+  %x2 = load i32, ptr %x, align 4
   call void @print_int(i32 %x2)
-  %y3 = load i32, i32* %y
+  %y3 = load i32, ptr %y, align 4
   call void @print_int(i32 %y3)
-  %z4 = load i32, i32* %z
+  %z4 = load i32, ptr %z, align 4
   call void @print_int(i32 %z4)
   br label %false
 
 false:                                            ; preds = %true, %if
-  store i32 1, i32* %x
-  store i32 1, i32* %y
-  store i32 1, i32* %z
+  store i32 1, ptr %x, align 4
+  store i32 1, ptr %y, align 4
+  store i32 1, ptr %z, align 4
   br label %if5
 
 if5:                                              ; preds = %false
-  %x6 = load i32, i32* %x
+  %x6 = load i32, ptr %x, align 4
   %eqtmp7 = icmp eq i32 %x6, 1
   br i1 %eqtmp7, label %true8, label %false9
 
 true8:                                            ; preds = %if5
-  %x10 = load i32, i32* %x
+  %x10 = load i32, ptr %x, align 4
   call void @print_int(i32 %x10)
-  %y11 = load i32, i32* %y
+  %y11 = load i32, ptr %y, align 4
   call void @print_int(i32 %y11)
-  %z12 = load i32, i32* %z
+  %z12 = load i32, ptr %z, align 4
   call void @print_int(i32 %z12)
   br label %false9
 

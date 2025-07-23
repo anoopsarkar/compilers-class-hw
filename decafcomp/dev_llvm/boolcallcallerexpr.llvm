@@ -5,12 +5,12 @@ declare void @print_int(i32)
 
 define void @test(i1 %a) {
 func:
-  %a1 = alloca i1
-  store i1 %a, i1* %a1
+  %a1 = alloca i1, align 1
+  store i1 %a, ptr %a1, align 1
   br label %if
 
 if:                                               ; preds = %func
-  %a2 = load i1, i1* %a1
+  %a2 = load i1, ptr %a1, align 1
   br i1 %a2, label %true, label %false
 
 true:                                             ; preds = %if

@@ -5,22 +5,22 @@ declare void @print_int(i32)
 
 define i32 @main() {
 func:
-  %x = alloca i32
-  store i32 0, i32* %x
+  %x = alloca i32, align 4
+  store i32 0, ptr %x, align 4
   call void @print_int(i32 1)
   call void @print_int(i32 0)
   call void @print_int(i32 0)
   call void @print_int(i32 1)
-  store i32 3, i32* %x
+  store i32 3, ptr %x, align 4
   br label %if
 
 if:                                               ; preds = %func
-  %x1 = load i32, i32* %x
+  %x1 = load i32, ptr %x, align 4
   %eqtmp = icmp eq i32 %x1, 3
   br i1 %eqtmp, label %true, label %false
 
 true:                                             ; preds = %if
-  %x2 = load i32, i32* %x
+  %x2 = load i32, ptr %x, align 4
   call void @print_int(i32 %x2)
   br label %false
 

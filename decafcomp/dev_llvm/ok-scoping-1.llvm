@@ -5,9 +5,9 @@ declare i32 @foo()
 
 define i32 @main() {
 func:
-  %x = alloca i32
-  store i32 0, i32* %x
-  %x1 = alloca i32
-  store i32 0, i32* %x1
+  %x = alloca i32, align 4
+  store i32 0, ptr %x, align 4
+  %x1 = alloca i32, align 4
+  store i32 0, ptr %x1, align 4
   ret i32 0
 }

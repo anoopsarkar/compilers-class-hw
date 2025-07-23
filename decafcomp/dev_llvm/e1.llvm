@@ -1,0 +1,4 @@
+Error: unknown escape sequence in string constant
+11: syntax error at "\z"
+; ModuleID = 'DecafComp'
+source_filename = "DecafComp"

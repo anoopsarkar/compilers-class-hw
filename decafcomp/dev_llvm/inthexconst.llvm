@@ -5,8 +5,8 @@ declare void @print_int(i32)
 
 define i32 @main() {
 func:
-  %x = alloca i32
-  store i32 0, i32* %x
+  %x = alloca i32, align 4
+  store i32 0, ptr %x, align 4
   call void @print_int(i32 0)
   call void @print_int(i32 6575)
   call void @print_int(i32 -6575)

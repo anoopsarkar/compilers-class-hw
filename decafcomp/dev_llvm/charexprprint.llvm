@@ -5,10 +5,10 @@ declare void @print_int(i32)
 
 define i32 @main() {
 func:
-  %x = alloca i32
-  store i32 0, i32* %x
-  store i32 102, i32* %x
-  %x1 = load i32, i32* %x
+  %x = alloca i32, align 4
+  store i32 0, ptr %x, align 4
+  store i32 102, ptr %x, align 4
+  %x1 = load i32, ptr %x, align 4
   %subtmp = sub i32 %x1, 97
   call void @print_int(i32 %subtmp)
   ret i32 0

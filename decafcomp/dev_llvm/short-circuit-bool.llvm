@@ -6,47 +6,53 @@ source_filename = "DecafComp"
 
 declare void @print_int(i32)
 
-declare void @print_string(i8*)
+declare void @print_string(ptr)
 
 define i1 @foo(i32 %x) {
 func:
-  %x1 = alloca i32
-  store i32 %x, i32* %x1
-  call void @print_string(i8* getelementptr inbounds ([4 x i8], [4 x i8]* @globalstring, i32 0, i32 0))
-  %x2 = load i32, i32* %x1
+  %x1 = alloca i32, align 4
+  store i32 %x, ptr %x1, align 4
+  call void @print_string(ptr @globalstring)
+  %x2 = load i32, ptr %x1, align 4
   %gttmp = icmp sgt i32 %x2, 200
   ret i1 %gttmp
+
+unreachable:                                      ; No predecessors!
+  ret i1 true
 }
 
 define i1 @bar(i32 %x, i32 %y) {
 func:
-  %x1 = alloca i32
-  store i32 %x, i32* %x1
-  %y2 = alloca i32
-  store i32 %y, i32* %y2
-  call void @print_string(i8* getelementptr inbounds ([4 x i8], [4 x i8]* @globalstring.1, i32 0, i32 0))
-  %x3 = load i32, i32* %x1
-  %y4 = load i32, i32* %y2
+  %x1 = alloca i32, align 4
+  store i32 %x, ptr %x1, align 4
+  %y2 = alloca i32, align 4
+  store i32 %y, ptr %y2, align 4
+  call void @print_string(ptr @globalstring.1)
+  %x3 = load i32, ptr %x1, align 4
+  %y4 = load i32, ptr %y2, align 4
   %neqtmp = icmp ne i32 %x3, %y4
   ret i1 %neqtmp
+
+unreachable:                                      ; No predecessors!
+  ret i1 true
 }
 
 define i32 @main() {
 func:
-  %x = alloca i32
-  store i32 0, i32* %x
-  %y = alloca i32
-  store i32 0, i32* %y
-  %w = alloca i1
-  store i1 false, i1* %w
-  store i32 99, i32* %x
-  store i32 201, i32* %y
-  %x1 = load i32, i32* %x
+  %x = alloca i32, align 4
+  store i32 0, ptr %x, align 4
+  %y = alloca i32, align 4
+  store i32 0, ptr %y, align 4
+  %w = alloca i1, align 1
+  store i1 false, ptr %w, align 1
+  store i32 99, ptr %x, align 4
+  store i32 201, ptr %y, align 4
+  %x1 = load i32, ptr %x, align 4
   %lttmp = icmp slt i32 %x1, 100
   br i1 %lttmp, label %skctend, label %noskct
 
 noskct:                                           ; preds = %func
-  %x2 = load i32, i32* %x
+  %x2 = load i32, ptr %x, align 4
   %calltmp = call i1 @foo(i32 %x2)
   br i1 %calltmp, label %noskct3, label %skctend4
 
@@ -55,8 +61,8 @@ skctend:                                          ; preds = %skctend4, %func
   br i1 %phival8, label %skctend10, label %noskct9
 
 noskct3:                                          ; preds = %noskct
-  %x5 = load i32, i32* %x
-  %y6 = load i32, i32* %y
+  %x5 = load i32, ptr %x, align 4
+  %y6 = load i32, ptr %y, align 4
   %calltmp7 = call i1 @bar(i32 %x5, i32 %y6)
   %andtmp = and i1 %calltmp, %calltmp7
   br label %skctend4
@@ -71,8 +77,8 @@ noskct9:                                          ; preds = %skctend
 
 skctend10:                                        ; preds = %skctend12, %skctend
   %phival15 = phi i1 [ %phival8, %skctend ], [ %ortmp14, %skctend12 ]
-  store i1 %phival15, i1* %w
-  %w16 = load i1, i1* %w
+  store i1 %phival15, ptr %w, align 1
+  %w16 = load i1, ptr %w, align 1
   %zexttmp = zext i1 %w16 to i32
   call void @print_int(i32 %zexttmp)
   ret i32 0

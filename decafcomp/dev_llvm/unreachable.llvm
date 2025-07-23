@@ -3,46 +3,66 @@ source_filename = "DecafComp"
 
 @globalstring = private unnamed_addr constant [7 x i8] c"hello\0A\00", align 1
 
-declare void @print_string(i8*)
+declare void @print_string(ptr)
 
 declare void @print_int(i32)
 
 define i32 @five() {
 func:
   ret i32 5
+
+unreachable:                                      ; No predecessors!
   %calltmp = call i32 @five()
   ret i32 %calltmp
+
+unreachable1:                                     ; No predecessors!
+  ret i32 0
 }
 
 define i32 @main() {
 func:
-  %x = alloca i32
-  store i32 0, i32* %x
-  call void @print_string(i8* getelementptr inbounds ([7 x i8], [7 x i8]* @globalstring, i32 0, i32 0))
+  %x = alloca i32, align 4
+  store i32 0, ptr %x, align 4
+  call void @print_string(ptr @globalstring)
   ret i32 0
-  store i32 5, i32* %x
-  store i32 0, i32* %x
+
+unreachable:                                      ; No predecessors!
+  store i32 5, ptr %x, align 4
+  store i32 0, ptr %x, align 4
+  br label %gate
+
+gate:                                             ; preds = %unreachable
+  %x1 = load i32, ptr %x, align 4
+  %geqtmp = icmp sge i32 %x1, 0
+  br i1 %geqtmp, label %decl, label %end
+
+loop:                                             ; preds = %next
+  %x2 = load i32, ptr %x, align 4
+  %geqtmp3 = icmp sge i32 %x2, 0
+  br i1 %geqtmp3, label %body, label %end
+
+decl:                                             ; preds = %gate
+  br label %body
+
+body:                                             ; preds = %decl, %loop
+  br label %next
+
+next:                                             ; preds = %unreachable5, %body
+  %x4 = load i32, ptr %x, align 4
+  %addtmp = add i32 %x4, 1
+  store i32 %addtmp, ptr %x, align 4
   br label %loop
 
-loop:                                             ; preds = %next, %func
-  %x1 = load i32, i32* %x
-  %geqtmp = icmp sge i32 %x1, 0
-  br i1 %geqtmp, label %body, label %end
+end:                                              ; preds = %loop, %gate
+  %x6 = load i32, ptr %x, align 4
+  ret i32 %x6
 
-body:                                             ; preds = %loop
-  br label %next
+unreachable5:                                     ; No predecessors!
   %calltmp = call i32 @five()
   %divtmp = sdiv i32 %calltmp, 32
-  store i32 %divtmp, i32* %x
+  store i32 %divtmp, ptr %x, align 4
   br label %next
 
-next:                                             ; preds = %body, %body
-  %x2 = load i32, i32* %x
-  %addtmp = add i32 %x2, 1
-  store i32 %addtmp, i32* %x
-  br label %loop
-
-end:                                              ; preds = %loop
-  %x3 = load i32, i32* %x
-  ret i32 %x3
+unreachable7:                                     ; No predecessors!
+  ret i32 0
 }

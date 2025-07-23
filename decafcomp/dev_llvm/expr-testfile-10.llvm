@@ -6,15 +6,21 @@ declare void @print_int(i32)
 define i32 @foo() {
 func:
   ret i32 10
+
+unreachable:                                      ; No predecessors!
+  ret i32 0
 }
 
 define i32 @bar(i32 %x) {
 func:
-  %x1 = alloca i32
-  store i32 %x, i32* %x1
-  %x2 = load i32, i32* %x1
+  %x1 = alloca i32, align 4
+  store i32 %x, ptr %x1, align 4
+  %x2 = load i32, ptr %x1, align 4
   %addtmp = add i32 %x2, 10
   ret i32 %addtmp
+
+unreachable:                                      ; No predecessors!
+  ret i32 0
 }
 
 define i32 @main() {

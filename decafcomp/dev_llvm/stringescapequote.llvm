@@ -3,10 +3,10 @@ source_filename = "DecafComp"
 
 @globalstring = private unnamed_addr constant [2 x i8] c"\22\00", align 1
 
-declare void @print_string(i8*)
+declare void @print_string(ptr)
 
 define i32 @main() {
 func:
-  call void @print_string(i8* getelementptr inbounds ([2 x i8], [2 x i8]* @globalstring, i32 0, i32 0))
+  call void @print_string(ptr @globalstring)
   ret i32 0
 }

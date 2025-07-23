@@ -8,9 +8,9 @@ func:
 
 define void @foo(i32 %x) {
 func:
-  %x1 = alloca i32
-  store i32 %x, i32* %x1
-  %x2 = alloca i32
-  store i32 0, i32* %x2
+  %x1 = alloca i32, align 4
+  store i32 %x, ptr %x1, align 4
+  %x2 = alloca i32, align 4
+  store i32 0, ptr %x2, align 4
   ret void
 }

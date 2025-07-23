@@ -1,0 +1,4 @@
+Error: string constant is missing closing delimiter
+11: syntax error at "\"); 
+; ModuleID = 'DecafComp'
+source_filename = "DecafComp"

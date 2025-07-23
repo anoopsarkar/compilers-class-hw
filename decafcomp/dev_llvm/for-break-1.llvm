@@ -5,41 +5,51 @@ declare void @print_int(i32)
 
 define i32 @main() {
 func:
-  %i = alloca i32
-  store i32 0, i32* %i
-  store i32 0, i32* %i
-  br label %loop
+  %i = alloca i32, align 4
+  store i32 0, ptr %i, align 4
+  store i32 0, ptr %i, align 4
+  br label %gate
 
-loop:                                             ; preds = %next, %func
-  %i1 = load i32, i32* %i
+gate:                                             ; preds = %func
+  %i1 = load i32, ptr %i, align 4
   %lttmp = icmp slt i32 %i1, 10
-  br i1 %lttmp, label %body, label %end
+  br i1 %lttmp, label %decl, label %end
 
-body:                                             ; preds = %loop
+loop:                                             ; preds = %next
+  %i2 = load i32, ptr %i, align 4
+  %lttmp3 = icmp slt i32 %i2, 10
+  br i1 %lttmp3, label %body, label %end
+
+decl:                                             ; preds = %gate
+  br label %body
+
+body:                                             ; preds = %decl, %loop
   br label %if
 
 next:                                             ; preds = %false
-  %i4 = load i32, i32* %i
+  %i4 = load i32, ptr %i, align 4
   %addtmp = add i32 %i4, 1
-  store i32 %addtmp, i32* %i
+  store i32 %addtmp, ptr %i, align 4
   br label %loop
 
-end:                                              ; preds = %true, %loop
+end:                                              ; preds = %true, %loop, %gate
   call void @print_int(i32 0)
   ret i32 0
 
 if:                                               ; preds = %body
-  %i2 = load i32, i32* %i
-  %modtmp = srem i32 %i2, 2
+  %i5 = load i32, ptr %i, align 4
+  %modtmp = srem i32 %i5, 2
   %eqtmp = icmp eq i32 %modtmp, 0
   br i1 %eqtmp, label %true, label %false
 
 true:                                             ; preds = %if
   br label %end
-  br label %false
 
-false:                                            ; preds = %true, %if
-  %i3 = load i32, i32* %i
-  call void @print_int(i32 %i3)
+false:                                            ; preds = %unreachable, %if
+  %i6 = load i32, ptr %i, align 4
+  call void @print_int(i32 %i6)
   br label %next
+
+unreachable:                                      ; No predecessors!
+  br label %false
 }

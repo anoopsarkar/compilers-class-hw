@@ -5,18 +5,21 @@ source_filename = "DecafComp"
 
 declare void @print_int(i32)
 
-declare void @print_string(i8*)
+declare void @print_string(ptr)
 
 define i1 @foo() {
 func:
-  call void @print_string(i8* getelementptr inbounds ([4 x i8], [4 x i8]* @globalstring, i32 0, i32 0))
+  call void @print_string(ptr @globalstring)
   ret i1 false
+
+unreachable:                                      ; No predecessors!
+  ret i1 true
 }
 
 define i32 @main() {
 func:
-  %flag = alloca i1
-  store i1 false, i1* %flag
+  %flag = alloca i1, align 1
+  store i1 false, ptr %flag, align 1
   br i1 true, label %skctend, label %noskct
 
 noskct:                                           ; preds = %func
@@ -25,8 +28,8 @@ noskct:                                           ; preds = %func
 
 skctend:                                          ; preds = %skctend2, %func
   %phival3 = phi i1 [ true, %func ], [ %ortmp, %skctend2 ]
-  store i1 %phival3, i1* %flag
-  %flag4 = load i1, i1* %flag
+  store i1 %phival3, ptr %flag, align 1
+  %flag4 = load i1, ptr %flag, align 1
   %zexttmp = zext i1 %flag4 to i32
   call void @print_int(i32 %zexttmp)
   ret i32 0

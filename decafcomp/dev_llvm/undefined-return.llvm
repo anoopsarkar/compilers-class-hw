@@ -4,13 +4,16 @@ source_filename = "DecafComp"
 define i32 @foo() {
 func:
   ret i32 0
+
+unreachable:                                      ; No predecessors!
+  ret i32 0
 }
 
 define i32 @main() {
 func:
-  %x = alloca i32
-  store i32 0, i32* %x
+  %x = alloca i32, align 4
+  store i32 0, ptr %x, align 4
   %calltmp = call i32 @foo()
-  store i32 %calltmp, i32* %x
+  store i32 %calltmp, ptr %x, align 4
   ret i32 0
 }

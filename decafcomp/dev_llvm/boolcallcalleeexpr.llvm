@@ -5,26 +5,27 @@ declare void @print_int(i32)
 
 define void @test(i1 %a) {
 func:
-  %a1 = alloca i1
-  store i1 %a, i1* %a1
+  %a1 = alloca i1, align 1
+  store i1 %a, ptr %a1, align 1
   br label %if
 
 if:                                               ; preds = %func
-  %a2 = load i1, i1* %a1
+  %a2 = load i1, ptr %a1, align 1
   br i1 %a2, label %true, label %false
 
 true:                                             ; preds = %if
-  %a3 = load i1, i1* %a1
+  %a3 = load i1, ptr %a1, align 1
   br i1 %a3, label %skctend, label %noskct
 
 false:                                            ; preds = %skctend, %if
   ret void
 
 noskct:                                           ; preds = %true
+  %ortmp = or i1 %a3, false
   br label %skctend
 
 skctend:                                          ; preds = %noskct, %true
-  %phival = phi i1 [ %a3, %true ], [ %a3, %noskct ]
+  %phival = phi i1 [ %a3, %true ], [ %ortmp, %noskct ]
   %zexttmp = zext i1 %phival to i32
   call void @print_int(i32 %zexttmp)
   br label %false

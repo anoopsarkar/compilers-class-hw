@@ -5,31 +5,31 @@ declare void @print_int(i32)
 
 define void @test(i32 %a, i32 %b) {
 func:
-  %a1 = alloca i32
-  store i32 %a, i32* %a1
-  %b2 = alloca i32
-  store i32 %b, i32* %b2
-  %x = alloca i32
-  store i32 0, i32* %x
-  store i32 1, i32* %x
-  %a3 = load i32, i32* %a1
+  %a1 = alloca i32, align 4
+  store i32 %a, ptr %a1, align 4
+  %b2 = alloca i32, align 4
+  store i32 %b, ptr %b2, align 4
+  %x = alloca i32, align 4
+  store i32 0, ptr %x, align 4
+  store i32 1, ptr %x, align 4
+  %a3 = load i32, ptr %a1, align 4
   call void @print_int(i32 %a3)
-  %b4 = load i32, i32* %b2
+  %b4 = load i32, ptr %b2, align 4
   call void @print_int(i32 %b4)
-  %x5 = load i32, i32* %x
+  %x5 = load i32, ptr %x, align 4
   call void @print_int(i32 %x5)
   ret void
 }
 
 define i32 @main() {
 func:
-  %x = alloca i32
-  store i32 0, i32* %x
-  store i32 1, i32* %x
-  %x1 = load i32, i32* %x
+  %x = alloca i32, align 4
+  store i32 0, ptr %x, align 4
+  store i32 1, ptr %x, align 4
+  %x1 = load i32, ptr %x, align 4
   call void @print_int(i32 %x1)
-  %x2 = load i32, i32* %x
-  %x3 = load i32, i32* %x
+  %x2 = load i32, ptr %x, align 4
+  %x3 = load i32, ptr %x, align 4
   %addtmp = add i32 %x3, 1
   call void @test(i32 %x2, i32 %addtmp)
   ret i32 0

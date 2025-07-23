@@ -7,6 +7,9 @@ define void @f() {
 func:
   call void @print_int(i32 1)
   ret void
+
+unreachable:                                      ; No predecessors!
+  ret void
 }
 
 define i32 @main() {

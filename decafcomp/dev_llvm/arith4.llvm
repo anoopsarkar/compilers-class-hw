@@ -5,18 +5,18 @@ declare void @print_int(i32)
 
 define i32 @main() {
 func:
-  %size = alloca i32
-  store i32 0, i32* %size
-  store i32 0, i32* %size
+  %size = alloca i32, align 4
+  store i32 0, ptr %size, align 4
+  store i32 0, ptr %size, align 4
   br label %if
 
 if:                                               ; preds = %func
-  %size1 = load i32, i32* %size
+  %size1 = load i32, ptr %size, align 4
   %geqtmp = icmp sge i32 %size1, 0
   br i1 %geqtmp, label %true, label %false
 
 true:                                             ; preds = %if
-  %size2 = load i32, i32* %size
+  %size2 = load i32, ptr %size, align 4
   call void @print_int(i32 %size2)
   br label %false
 

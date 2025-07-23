@@ -1,0 +1,3 @@
+29: syntax error at void
+; ModuleID = 'DecafComp'
+source_filename = "DecafComp"

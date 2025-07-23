@@ -11,9 +11,9 @@ func:
 
 define void @foo(i32 %a) {
 func:
-  %a1 = alloca i32
-  store i32 %a, i32* %a1
-  %a2 = load i32, i32* %a1
+  %a1 = alloca i32, align 4
+  store i32 %a, ptr %a1, align 4
+  %a2 = load i32, ptr %a1, align 4
   call void @print_int(i32 %a2)
   ret void
 }

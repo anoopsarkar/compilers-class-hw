@@ -5,45 +5,56 @@ declare void @print_int(i32)
 
 define i32 @main() {
 func:
-  %i = alloca i32
-  store i32 0, i32* %i
-  %flag = alloca i1
-  store i1 false, i1* %flag
-  store i1 false, i1* %flag
-  store i32 1, i32* %i
-  br label %loop
+  %i = alloca i32, align 4
+  store i32 0, ptr %i, align 4
+  %flag = alloca i1, align 1
+  store i1 false, ptr %flag, align 1
+  store i1 false, ptr %flag, align 1
+  store i32 1, ptr %i, align 4
+  br label %gate
 
-loop:                                             ; preds = %false, %func
-  %i1 = load i32, i32* %i
+gate:                                             ; preds = %func
+  %i1 = load i32, ptr %i, align 4
   %lttmp = icmp slt i32 %i1, 10
-  br i1 %lttmp, label %body, label %end
+  br i1 %lttmp, label %decl, label %end
 
-body:                                             ; preds = %loop
-  %flag2 = alloca i1
-  store i1 false, i1* %flag2
-  store i1 true, i1* %flag2
-  %i3 = load i32, i32* %i
-  %addtmp = add i32 %i3, 1
-  store i32 %addtmp, i32* %i
+loop:                                             ; preds = %false
+  %i2 = load i32, ptr %i, align 4
+  %lttmp3 = icmp slt i32 %i2, 10
+  br i1 %lttmp3, label %body, label %end
+
+decl:                                             ; preds = %gate
+  %flag4 = alloca i1, align 1
+  store i1 false, ptr %flag4, align 1
+  br label %body
+
+body:                                             ; preds = %decl, %loop
+  store i1 false, ptr %flag4, align 1
+  store i1 true, ptr %flag4, align 1
+  %i5 = load i32, ptr %i, align 4
+  %addtmp = add i32 %i5, 1
+  store i32 %addtmp, ptr %i, align 4
   br label %if
 
-end:                                              ; preds = %true, %loop
-  %i5 = load i32, i32* %i
-  call void @print_int(i32 %i5)
-  %flag6 = load i1, i1* %flag
-  %zexttmp = zext i1 %flag6 to i32
+end:                                              ; preds = %true, %loop, %gate
+  %i7 = load i32, ptr %i, align 4
+  call void @print_int(i32 %i7)
+  %flag8 = load i1, ptr %flag, align 1
+  %zexttmp = zext i1 %flag8 to i32
   call void @print_int(i32 %zexttmp)
   ret i32 0
 
 if:                                               ; preds = %body
-  %i4 = load i32, i32* %i
-  %gttmp = icmp sgt i32 %i4, 5
+  %i6 = load i32, ptr %i, align 4
+  %gttmp = icmp sgt i32 %i6, 5
   br i1 %gttmp, label %true, label %false
 
 true:                                             ; preds = %if
   br label %end
-  br label %false
 
-false:                                            ; preds = %true, %if
+false:                                            ; preds = %unreachable, %if
   br label %loop
+
+unreachable:                                      ; No predecessors!
+  br label %false
 }
