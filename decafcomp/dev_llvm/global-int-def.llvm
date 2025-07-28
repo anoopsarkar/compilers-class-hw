@@ -1,0 +1,14 @@
+; ModuleID = 'C'
+source_filename = "DecafComp"
+
+@foo = global i32 0
+
+declare void @print_int(i32)
+
+define i32 @main() {
+func:
+  store i32 3, ptr @foo, align 4
+  %foo = load i32, ptr @foo, align 4
+  call void @print_int(i32 %foo)
+  ret i32 0
+}

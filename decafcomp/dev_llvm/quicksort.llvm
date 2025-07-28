@@ -1,1 +1,380 @@
-Assertion failed: (getTypeID() == ArrayTyID), function getArrayElementType, file Type.h, line 412.
+; ModuleID = 'QuickSort'
+source_filename = "DecafComp"
+
+@list = global [100 x i32] zeroinitializer
+@globalstring = private unnamed_addr constant [2 x i8] c"\0A\00", align 1
+@globalstring.1 = private unnamed_addr constant [7 x i8] c"List:\0A\00", align 1
+@globalstring.2 = private unnamed_addr constant [2 x i8] c" \00", align 1
+@globalstring.3 = private unnamed_addr constant [16 x i8] c"After sorting:\0A\00", align 1
+
+declare void @print_string(ptr)
+
+declare void @print_int(i32)
+
+define void @cr() {
+func:
+  call void @print_string(ptr @globalstring)
+  ret void
+}
+
+define void @displayList(i32 %start, i32 %len) {
+func:
+  %start1 = alloca i32, align 4
+  store i32 %start, ptr %start1, align 4
+  %len2 = alloca i32, align 4
+  store i32 %len, ptr %len2, align 4
+  %j = alloca i32, align 4
+  store i32 0, ptr %j, align 4
+  call void @print_string(ptr @globalstring.1)
+  %start3 = load i32, ptr %start1, align 4
+  store i32 %start3, ptr %j, align 4
+  br label %gate
+
+gate:                                             ; preds = %func
+  %j4 = load i32, ptr %j, align 4
+  %start5 = load i32, ptr %start1, align 4
+  %len6 = load i32, ptr %len2, align 4
+  %addtmp = add i32 %start5, %len6
+  %lttmp = icmp slt i32 %j4, %addtmp
+  br i1 %lttmp, label %decl, label %end
+
+loop:                                             ; preds = %next
+  %j7 = load i32, ptr %j, align 4
+  %start8 = load i32, ptr %start1, align 4
+  %len9 = load i32, ptr %len2, align 4
+  %addtmp10 = add i32 %start8, %len9
+  %lttmp11 = icmp slt i32 %j7, %addtmp10
+  br i1 %lttmp11, label %body, label %end
+
+decl:                                             ; preds = %gate
+  br label %body
+
+body:                                             ; preds = %decl, %loop
+  %j14 = load i32, ptr %j, align 4
+  %arrayloc = getelementptr inbounds [100 x i32], ptr @list, i32 0, i32 %j14
+  %arrayval = load i32, ptr %arrayloc, align 4
+  call void @print_int(i32 %arrayval)
+  call void @print_string(ptr @globalstring.2)
+  br label %if
+
+next:                                             ; preds = %false
+  %j12 = load i32, ptr %j, align 4
+  %addtmp13 = add i32 %j12, 1
+  store i32 %addtmp13, ptr %j, align 4
+  br label %loop
+
+end:                                              ; preds = %loop, %gate
+  ret void
+
+if:                                               ; preds = %body
+  %j15 = load i32, ptr %j, align 4
+  %start16 = load i32, ptr %start1, align 4
+  %subtmp = sub i32 %j15, %start16
+  %addtmp17 = add i32 %subtmp, 1
+  %modtmp = srem i32 %addtmp17, 20
+  %eqtmp = icmp eq i32 %modtmp, 0
+  br i1 %eqtmp, label %skctend, label %noskct
+
+noskct:                                           ; preds = %if
+  %j18 = load i32, ptr %j, align 4
+  %addtmp19 = add i32 %j18, 1
+  %start20 = load i32, ptr %start1, align 4
+  %len21 = load i32, ptr %len2, align 4
+  %addtmp22 = add i32 %start20, %len21
+  %eqtmp23 = icmp eq i32 %addtmp19, %addtmp22
+  %ortmp = or i1 %eqtmp, %eqtmp23
+  br label %skctend
+
+skctend:                                          ; preds = %noskct, %if
+  %phival = phi i1 [ %eqtmp, %if ], [ %ortmp, %noskct ]
+  br i1 %phival, label %true, label %false
+
+true:                                             ; preds = %skctend
+  call void @cr()
+  br label %false
+
+false:                                            ; preds = %true, %skctend
+  br label %next
+}
+
+define void @initList(i32 %size) {
+func:
+  %size1 = alloca i32, align 4
+  store i32 %size, ptr %size1, align 4
+  %i = alloca i32, align 4
+  store i32 0, ptr %i, align 4
+  store i32 0, ptr %i, align 4
+  br label %gate
+
+gate:                                             ; preds = %func
+  %i2 = load i32, ptr %i, align 4
+  %size3 = load i32, ptr %size1, align 4
+  %lttmp = icmp slt i32 %i2, %size3
+  br i1 %lttmp, label %decl, label %end
+
+loop:                                             ; preds = %next
+  %i4 = load i32, ptr %i, align 4
+  %size5 = load i32, ptr %size1, align 4
+  %lttmp6 = icmp slt i32 %i4, %size5
+  br i1 %lttmp6, label %body, label %end
+
+decl:                                             ; preds = %gate
+  br label %body
+
+body:                                             ; preds = %decl, %loop
+  %i8 = load i32, ptr %i, align 4
+  %arrayloc = getelementptr inbounds [100 x i32], ptr @list, i32 0, i32 %i8
+  %i9 = load i32, ptr %i, align 4
+  %multmp = mul i32 %i9, 2382983
+  %modtmp = srem i32 %multmp, 100
+  store i32 %modtmp, ptr %arrayloc, align 4
+  br label %next
+
+next:                                             ; preds = %body
+  %i7 = load i32, ptr %i, align 4
+  %addtmp = add i32 %i7, 1
+  store i32 %addtmp, ptr %i, align 4
+  br label %loop
+
+end:                                              ; preds = %loop, %gate
+  ret void
+}
+
+define void @swap(i32 %leftPtr, i32 %rightPtr) {
+func:
+  %leftPtr1 = alloca i32, align 4
+  store i32 %leftPtr, ptr %leftPtr1, align 4
+  %rightPtr2 = alloca i32, align 4
+  store i32 %rightPtr, ptr %rightPtr2, align 4
+  %temp = alloca i32, align 4
+  store i32 0, ptr %temp, align 4
+  %leftPtr3 = load i32, ptr %leftPtr1, align 4
+  %arrayloc = getelementptr inbounds [100 x i32], ptr @list, i32 0, i32 %leftPtr3
+  %arrayval = load i32, ptr %arrayloc, align 4
+  store i32 %arrayval, ptr %temp, align 4
+  %leftPtr4 = load i32, ptr %leftPtr1, align 4
+  %arrayloc5 = getelementptr inbounds [100 x i32], ptr @list, i32 0, i32 %leftPtr4
+  %rightPtr6 = load i32, ptr %rightPtr2, align 4
+  %arrayloc7 = getelementptr inbounds [100 x i32], ptr @list, i32 0, i32 %rightPtr6
+  %arrayval8 = load i32, ptr %arrayloc7, align 4
+  store i32 %arrayval8, ptr %arrayloc5, align 4
+  %rightPtr9 = load i32, ptr %rightPtr2, align 4
+  %arrayloc10 = getelementptr inbounds [100 x i32], ptr @list, i32 0, i32 %rightPtr9
+  %temp11 = load i32, ptr %temp, align 4
+  store i32 %temp11, ptr %arrayloc10, align 4
+  ret void
+}
+
+define void @quickSort(i32 %left, i32 %right) {
+func:
+  %left1 = alloca i32, align 4
+  store i32 %left, ptr %left1, align 4
+  %right2 = alloca i32, align 4
+  store i32 %right, ptr %right2, align 4
+  br label %if
+
+if:                                               ; preds = %func
+  %right3 = load i32, ptr %right2, align 4
+  %left4 = load i32, ptr %left1, align 4
+  %subtmp = sub i32 %right3, %left4
+  %leqtmp = icmp sle i32 %subtmp, 0
+  br i1 %leqtmp, label %true, label %else
+
+true:                                             ; preds = %if
+  ret void
+
+false:                                            ; preds = %else, %unreachable
+  ret void
+
+else:                                             ; preds = %if
+  %pivot = alloca i32, align 4
+  store i32 0, ptr %pivot, align 4
+  %part = alloca i32, align 4
+  store i32 0, ptr %part, align 4
+  %right5 = load i32, ptr %right2, align 4
+  %arrayloc = getelementptr inbounds [100 x i32], ptr @list, i32 0, i32 %right5
+  %arrayval = load i32, ptr %arrayloc, align 4
+  store i32 %arrayval, ptr %pivot, align 4
+  %left6 = load i32, ptr %left1, align 4
+  %right7 = load i32, ptr %right2, align 4
+  %pivot8 = load i32, ptr %pivot, align 4
+  %calltmp = call i32 @partition(i32 %left6, i32 %right7, i32 %pivot8)
+  store i32 %calltmp, ptr %part, align 4
+  %left9 = load i32, ptr %left1, align 4
+  %part10 = load i32, ptr %part, align 4
+  %subtmp11 = sub i32 %part10, 1
+  call void @quickSort(i32 %left9, i32 %subtmp11)
+  %part12 = load i32, ptr %part, align 4
+  %addtmp = add i32 %part12, 1
+  %right13 = load i32, ptr %right2, align 4
+  call void @quickSort(i32 %addtmp, i32 %right13)
+  br label %false
+
+unreachable:                                      ; No predecessors!
+  br label %false
+}
+
+define void @main() {
+func:
+  %size = alloca i32, align 4
+  store i32 0, ptr %size, align 4
+  store i32 100, ptr %size, align 4
+  %size1 = load i32, ptr %size, align 4
+  call void @initList(i32 %size1)
+  %size2 = load i32, ptr %size, align 4
+  call void @displayList(i32 0, i32 %size2)
+  %size3 = load i32, ptr %size, align 4
+  %subtmp = sub i32 %size3, 1
+  call void @quickSort(i32 0, i32 %subtmp)
+  call void @print_string(ptr @globalstring.3)
+  %size4 = load i32, ptr %size, align 4
+  call void @displayList(i32 0, i32 %size4)
+  ret void
+}
+
+define i32 @partition(i32 %left, i32 %right, i32 %pivot) {
+func:
+  %left1 = alloca i32, align 4
+  store i32 %left, ptr %left1, align 4
+  %right2 = alloca i32, align 4
+  store i32 %right, ptr %right2, align 4
+  %pivot3 = alloca i32, align 4
+  store i32 %pivot, ptr %pivot3, align 4
+  %leftPtr = alloca i32, align 4
+  store i32 0, ptr %leftPtr, align 4
+  %rightPtr = alloca i32, align 4
+  store i32 0, ptr %rightPtr, align 4
+  %left4 = load i32, ptr %left1, align 4
+  %subtmp = sub i32 %left4, 1
+  store i32 %subtmp, ptr %leftPtr, align 4
+  %right5 = load i32, ptr %right2, align 4
+  store i32 %right5, ptr %rightPtr, align 4
+  br label %gate
+
+gate:                                             ; preds = %func
+  br i1 true, label %decl, label %end
+
+loop:                                             ; preds = %false40
+  br i1 true, label %body, label %end
+
+decl:                                             ; preds = %gate
+  br label %body
+
+body:                                             ; preds = %decl, %loop
+  br label %gate6
+
+end:                                              ; preds = %true39, %loop, %gate
+  %leftPtr44 = load i32, ptr %leftPtr, align 4
+  %right45 = load i32, ptr %right2, align 4
+  call void @swap(i32 %leftPtr44, i32 %right45)
+  %leftPtr46 = load i32, ptr %leftPtr, align 4
+  ret i32 %leftPtr46
+
+gate6:                                            ; preds = %body
+  br i1 true, label %decl8, label %end10
+
+loop7:                                            ; preds = %false
+  br i1 true, label %body9, label %end10
+
+decl8:                                            ; preds = %gate6
+  br label %body9
+
+body9:                                            ; preds = %decl8, %loop7
+  %leftPtr11 = load i32, ptr %leftPtr, align 4
+  %addtmp = add i32 %leftPtr11, 1
+  store i32 %addtmp, ptr %leftPtr, align 4
+  br label %if
+
+end10:                                            ; preds = %true, %loop7, %gate6
+  br label %gate14
+
+if:                                               ; preds = %body9
+  %leftPtr12 = load i32, ptr %leftPtr, align 4
+  %arrayloc = getelementptr inbounds [100 x i32], ptr @list, i32 0, i32 %leftPtr12
+  %arrayval = load i32, ptr %arrayloc, align 4
+  %pivot13 = load i32, ptr %pivot3, align 4
+  %geqtmp = icmp sge i32 %arrayval, %pivot13
+  br i1 %geqtmp, label %true, label %false
+
+true:                                             ; preds = %if
+  br label %end10
+
+false:                                            ; preds = %unreachable, %if
+  br label %loop7
+
+unreachable:                                      ; No predecessors!
+  br label %false
+
+gate14:                                           ; preds = %end10
+  br i1 true, label %decl16, label %end18
+
+loop15:                                           ; preds = %false33
+  br i1 true, label %body17, label %end18
+
+decl16:                                           ; preds = %gate14
+  br label %body17
+
+body17:                                           ; preds = %decl16, %loop15
+  br label %if19
+
+end18:                                            ; preds = %true32, %true21, %loop15, %gate14
+  br label %if35
+
+if19:                                             ; preds = %body17
+  %rightPtr20 = load i32, ptr %rightPtr, align 4
+  %leqtmp = icmp sle i32 %rightPtr20, 0
+  br i1 %leqtmp, label %true21, label %false22
+
+true21:                                           ; preds = %if19
+  br label %end18
+
+false22:                                          ; preds = %unreachable23, %if19
+  %rightPtr24 = load i32, ptr %rightPtr, align 4
+  %subtmp25 = sub i32 %rightPtr24, 1
+  store i32 %subtmp25, ptr %rightPtr, align 4
+  br label %if26
+
+unreachable23:                                    ; No predecessors!
+  br label %false22
+
+if26:                                             ; preds = %false22
+  %rightPtr27 = load i32, ptr %rightPtr, align 4
+  %arrayloc28 = getelementptr inbounds [100 x i32], ptr @list, i32 0, i32 %rightPtr27
+  %arrayval29 = load i32, ptr %arrayloc28, align 4
+  %pivot30 = load i32, ptr %pivot3, align 4
+  %leqtmp31 = icmp sle i32 %arrayval29, %pivot30
+  br i1 %leqtmp31, label %true32, label %false33
+
+true32:                                           ; preds = %if26
+  br label %end18
+
+false33:                                          ; preds = %unreachable34, %if26
+  br label %loop15
+
+unreachable34:                                    ; No predecessors!
+  br label %false33
+
+if35:                                             ; preds = %end18
+  %leftPtr36 = load i32, ptr %leftPtr, align 4
+  %rightPtr37 = load i32, ptr %rightPtr, align 4
+  %geqtmp38 = icmp sge i32 %leftPtr36, %rightPtr37
+  br i1 %geqtmp38, label %true39, label %else
+
+true39:                                           ; preds = %if35
+  br label %end
+
+false40:                                          ; preds = %else, %unreachable41
+  br label %loop
+
+else:                                             ; preds = %if35
+  %leftPtr42 = load i32, ptr %leftPtr, align 4
+  %rightPtr43 = load i32, ptr %rightPtr, align 4
+  call void @swap(i32 %leftPtr42, i32 %rightPtr43)
+  br label %false40
+
+unreachable41:                                    ; No predecessors!
+  br label %false40
+
+unreachable47:                                    ; No predecessors!
+  ret i32 0
+}

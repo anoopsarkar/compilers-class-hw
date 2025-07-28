@@ -1,1 +1,18 @@
-Assertion failed: (getTypeID() == ArrayTyID), function getArrayElementType, file Type.h, line 412.
+; ModuleID = 'C'
+source_filename = "DecafComp"
+
+@foo = global [5 x i32] zeroinitializer
+
+declare void @print_int(i32)
+
+define i32 @main() {
+func:
+  %bar = alloca i32, align 4
+  store i32 0, ptr %bar, align 4
+  store i32 2, ptr getelementptr inbounds ([5 x i32], ptr @foo, i32 0, i32 3), align 4
+  %arrayval = load i32, ptr getelementptr inbounds ([5 x i32], ptr @foo, i32 0, i32 3), align 4
+  store i32 %arrayval, ptr %bar, align 4
+  %bar1 = load i32, ptr %bar, align 4
+  call void @print_int(i32 %bar1)
+  ret i32 0
+}
